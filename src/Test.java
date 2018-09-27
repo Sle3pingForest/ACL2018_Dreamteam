@@ -5,6 +5,6 @@ public class Test {
 	}
 	
 	public String toString(){
-		return "hello";
+		return "hello world";
 	}
 }
