@@ -4,9 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.Personnages.Heros;
 import model.mur.Mur;
 import model.mur.MurNormal;
+import model.personnages.Heros;
 
 
 public class Labyrinthe {
@@ -117,4 +117,14 @@ public class Labyrinthe {
 			System.out.println();
 		}
 	}
+
+	public Heros getHeros() {
+		return heros;
+	}
+
+	public void setHeros(Heros heros) {
+		this.heros = heros;
+	}
+	
+
 }
