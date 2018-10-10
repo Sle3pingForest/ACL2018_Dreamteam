@@ -74,7 +74,7 @@ public class Labyrinthe {
 		int y = heros.getY();
 		int x = heros.getX();
 		
-		if(y < hauteur && tabMur[x][y+1] == null){
+		if(y < hauteur-1 && tabMur[x][y+1] == null){
 			heros.goBas();
 		}
 	}
@@ -83,7 +83,7 @@ public class Labyrinthe {
 		int y = heros.getY();
 		int x = heros.getX();
 		
-		if(x < longeur && tabMur[x +1][y] == null){
+		if(x < longeur-1 && tabMur[x +1][y] == null){
 			heros.goDroite();
 		}
 	}
