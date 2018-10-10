@@ -1,4 +1,4 @@
-package model.Personnages;
+package model.personnages;
 
 public class Heros {
 
