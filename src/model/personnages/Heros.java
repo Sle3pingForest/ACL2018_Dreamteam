@@ -1,39 +1,16 @@
 package model.personnages;
 
-public class Heros {
+public class Heros extends Personnage {
 
-    protected int x;
-    protected int y;
-
-
-    public Heros(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
+    private String nom;
 
 
-    public void goGauche(){
-        x--;
-    }
-
-    public void goDroite(){
-        x++;
-    }
-
-    public void goHaut(){
-        y--;
-    }
-
-    public void goBas(){
-        y++;
+    public Heros(int x, int y, String nom){
+    	super(x,y);
+    	this.pointVie = 5;
+    	this.nom = nom;
+    	this.attaque = 2;
+    	this.defense = 0;
     }
 
     public String toString(){

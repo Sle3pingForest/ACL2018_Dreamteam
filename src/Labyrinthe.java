@@ -3,23 +3,56 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import model.mur.Mur;
 import model.mur.MurNormal;
 import model.personnages.Heros;
+import model.personnages.monstres.FabriqueMonstre;
+import model.personnages.monstres.Monstre;
 
 
 public class Labyrinthe {
+	private String[] tabNomMonstre ={"Orc","Dragon"};
+	private int longeur = 10, hauteur = 7;
+	private Mur[][] tabMur ;
+	private Heros heros;
+	private ArrayList<Monstre> listeMonstres;
+	private FabriqueMonstre creationMonstres;
 	
-	protected int longeur = 10, hauteur = 7;
-	public Mur[][] tabMur ;
-	public Heros heros;
 	
-	public Labyrinthe(String fichierName){
+	public Labyrinthe(String fichierName, String nom, int nombre){
+		this.heros =  new Heros(0,0, nom);
 		this.tabMur = new Mur[longeur][hauteur];
+		this.creationMonstres = new FabriqueMonstre();
+		this.listeMonstres = new ArrayList<>();
 		constructionLabyrinthe(fichierName);
-		this.heros =  new Heros(0,0);
+		creationMonstres(nombre);
 		
+	}
+	
+	private void creationMonstres(int nombreMonstre){
+		
+		for(int i = 0; i < nombreMonstre; ++i){
+			int rng  = (int)(Math.random() * (tabNomMonstre.length)) ;
+			int posX = (int)(Math.random() * (10));
+			int posY = (int)(Math.random() * (7));
+			boolean correct = false;
+			while(!correct){
+				if(tabMur[posX][posY] == null){
+					correct = true;
+					listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
+					System.out.println(posX + " ," + posY);
+				
+				}
+				else{
+					posX = (int)(Math.random() * (10));
+					posY = (int)(Math.random() * (7));
+				}
+			}
+		}
+			
 	}
 	
 	public void constructionLabyrinthe(String fichierName){
@@ -39,8 +72,7 @@ public class Labyrinthe {
 		            for(int i = 0; i < this.longeur; i++){
 		            	char c = line.charAt(i);
 		            	if(c=='1'){
-		            		Mur m = new MurNormal(xMur, i);
-		            		this.tabMur[i][xMur] = m;
+		            		this.tabMur[i][xMur] = new MurNormal(i, xMur);
 		            	}
 		            }
 		            line = br.readLine();
@@ -104,12 +136,19 @@ public class Labyrinthe {
 			for( int j = 0; j < this.longeur ; j++){
 				if(i == y && j == x ){
 					System.out.print("H");
-				}else{
+				}
+				else{
 					if(tabMur[j][i] != null){
-						System.out.print("m");
+						System.out.print("+");
 					}
 					else{
-						System.out.print("0");
+						for (Monstre m : listeMonstres){
+							if(m.getX() == j && i == m.getY()){
+								System.out.print("k");
+							}
+						}
+
+						System.out.print("=");
 					}
 				}
 				
