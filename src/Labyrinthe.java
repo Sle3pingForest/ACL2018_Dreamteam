@@ -43,7 +43,6 @@ public class Labyrinthe {
 				if(tabMur[posX][posY] == null){
 					correct = true;
 					listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
-					System.out.println(posX + " ," + posY);
 				
 				}
 				else{
