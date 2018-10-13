@@ -9,6 +9,7 @@ import java.util.Random;
 import model.mur.Mur;
 import model.mur.MurNormal;
 import model.personnages.Heros;
+import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Orc;
@@ -135,8 +136,24 @@ public class Labyrinthe {
 	
 	public void deplacerMonstres(){
 		for(Monstre monstre :listeMonstres){
-			int direction =  (int)(Math.random() * (4));
-			monstre.deplacement(direction);
+			int x = monstre.getX();
+			int y =  monstre.getY();
+			Random r = new Random();
+			int direction =  r.nextInt(5);
+			
+			if(direction == 1 && x < longeur-1 && tabMur[x +1][y] == null){
+				monstre.goDroite();
+			}
+			if(direction == 2 && y > 0 && tabMur[x][y-1] == null ){
+				monstre.goHaut();
+			}
+			
+			if(direction == 3 && x > 0 && tabMur[x-1][y] == null ){
+				monstre.goGauche();
+			}
+			if (direction == 4 && y < hauteur-1 && tabMur[x][y+1] == null){
+				monstre.goBas();
+			}
 		}
 	}
 	
@@ -156,11 +173,11 @@ public class Labyrinthe {
 					else{
 						boolean avoirMonstre = false;
 						for (Monstre m : listeMonstres){
-							if(m.getX() == j && i == m.getY()){
+							if(m.getX() == j && i == m.getY() && !avoirMonstre){
 								if(m instanceof Orc){
 									System.out.print("O");
 								}
-								else{
+								if(m instanceof Dragon){
 									System.out.print("D");
 								}
 								avoirMonstre = true;
