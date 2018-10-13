@@ -92,7 +92,7 @@ public class Labyrinthe {
 		}
 	}
 	
-	public void deplacerHaut(){
+	public void deplacerHerosHaut(){
 		int y = heros.getY();
 		int x = heros.getX();
 		
@@ -101,7 +101,7 @@ public class Labyrinthe {
 		}
 	}
 	
-	public void deplacerBas(){
+	public void deplacerHerosBas(){
 		int y = heros.getY();
 		int x = heros.getX();
 		
@@ -110,7 +110,7 @@ public class Labyrinthe {
 		}
 	}
 	
-	public void deplacerDroite(){
+	public void deplacerHerosDroite(){
 		int y = heros.getY();
 		int x = heros.getX();
 		
@@ -119,7 +119,7 @@ public class Labyrinthe {
 		}
 	}
 	
-	public void deplacerGauche(){
+	public void deplacerHerosGauche(){
 		int y = heros.getY();
 		int x = heros.getX();
 		

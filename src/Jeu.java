@@ -19,19 +19,19 @@ public class Jeu {
 
             if (!deplacement.equals("p")) {
                 if (deplacement.equals("q")) {
-                	laby.deplacerGauche();
+                	laby.deplacerHerosGauche();
 
                 }
                 if (deplacement.equals("s")) {
-                	laby.deplacerBas();
+                	laby.deplacerHerosBas();
 
                 }
                 if (deplacement.equals("d")) {
-                	laby.deplacerDroite();
+                	laby.deplacerHerosDroite();
 
                 }
                 if (deplacement.equals("z")) {
-                	laby.deplacerHaut();
+                	laby.deplacerHerosHaut();
                 }
                 System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
             }
