@@ -13,7 +13,7 @@ public class Jeu {
 
         String deplacement = "";
 
-        while (!deplacement.equals("p")) {
+        while (!deplacement.equals("p") && !Labyrinthe.MORT_HEROS) {
         	laby.afficher();
             deplacement = sc.nextLine();
 
@@ -33,7 +33,10 @@ public class Jeu {
                 if (deplacement.equals("z")) {
                 	laby.deplacerHerosHaut();
                 }
+
                 laby.deplacerMonstres();
+
+                laby.collison();
                 //System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
             }
             

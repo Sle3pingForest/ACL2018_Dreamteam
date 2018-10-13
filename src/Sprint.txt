@@ -1,0 +1,3 @@
+1er sprint: Creation heros,Creation mur, Creation labytrinthe, positionne heros dans labyrinthe, deplacement heros dans labyrinthe
+
+2eme Sprint: Creation Monstres, Creation Objet, Deplacement Monstres Gestion de Contact Heros Monstres, Interface graphique 

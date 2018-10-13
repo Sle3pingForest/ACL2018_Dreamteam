@@ -22,6 +22,7 @@ public class Labyrinthe {
 	private Heros heros;
 	private ArrayList<Monstre> listeMonstres;
 	private FabriqueMonstre creationMonstres;
+	public static boolean MORT_HEROS = false;
 	
 	
 	public Labyrinthe(String fichierName, String nom, int nombre){
@@ -34,17 +35,17 @@ public class Labyrinthe {
 		
 	}
 	
-	
 	//Construction Monstres et Labyrinthe
 	private void creationMonstres(int nombreMonstre){
 		
 		for(int i = 0; i < nombreMonstre; ++i){
 			int rng  = (int)(Math.random() * (tabNomMonstre.length)) ;
+
 			int posX = (int)(Math.random() * (10));
 			int posY = (int)(Math.random() * (7));
 			boolean correct = false;
 			while(!correct){
-				if(tabMur[posX][posY] == null){
+				if(tabMur[posX][posY] == null && posX != this.heros.getX() && posY != this.heros.getY()){
 					correct = true;
 					listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
 				
@@ -157,6 +158,14 @@ public class Labyrinthe {
 		}
 	}
 	
+	public void collison(){
+		for(Monstre monstre: listeMonstres){
+			if(this.heros.getX() == monstre.getX() && this.heros.getY() == monstre.getY()){
+				MORT_HEROS = true;
+			}
+		}
+	}
+	
 	//AFFICHAGE
 	public void afficher(){
 		int x =  heros.getX();
@@ -194,7 +203,6 @@ public class Labyrinthe {
 		}
 	}
 
-	
 	//GETTER ET SETTER
 	public Heros getHeros() {
 		return heros;
