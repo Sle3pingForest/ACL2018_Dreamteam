@@ -11,6 +11,7 @@ import model.mur.MurNormal;
 import model.personnages.Heros;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
+import model.personnages.monstres.Orc;
 
 
 public class Labyrinthe {
@@ -32,6 +33,8 @@ public class Labyrinthe {
 		
 	}
 	
+	
+	//Construction Monstres et Labyrinthe
 	private void creationMonstres(int nombreMonstre){
 		
 		for(int i = 0; i < nombreMonstre; ++i){
@@ -91,7 +94,9 @@ public class Labyrinthe {
 		    System.out.println ("Le fichier n'a pas été trouvé");
 		}
 	}
+	/*********** fin de construction**************/
 	
+	//GESTION DEPLACEMENT HEROS et Monstre
 	public void deplacerHerosHaut(){
 		int y = heros.getY();
 		int x = heros.getX();
@@ -128,6 +133,14 @@ public class Labyrinthe {
 		}
 	}
 	
+	public void deplacerMonstres(){
+		for(Monstre monstre :listeMonstres){
+			int direction =  (int)(Math.random() * (4));
+			monstre.deplacement(direction);
+		}
+	}
+	
+	//AFFICHAGE
 	public void afficher(){
 		int x =  heros.getX();
 		int y = heros.getY();
@@ -141,13 +154,21 @@ public class Labyrinthe {
 						System.out.print("+");
 					}
 					else{
+						boolean avoirMonstre = false;
 						for (Monstre m : listeMonstres){
 							if(m.getX() == j && i == m.getY()){
-								System.out.print("k");
+								if(m instanceof Orc){
+									System.out.print("O");
+								}
+								else{
+									System.out.print("D");
+								}
+								avoirMonstre = true;
 							}
 						}
-
-						System.out.print("=");
+						if(!avoirMonstre){
+							System.out.print("=");
+						}
 					}
 				}
 				
@@ -156,6 +177,8 @@ public class Labyrinthe {
 		}
 	}
 
+	
+	//GETTER ET SETTER
 	public Heros getHeros() {
 		return heros;
 	}

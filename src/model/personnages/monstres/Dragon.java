@@ -8,6 +8,9 @@ public class Dragon extends Monstre{
 		this.pointVie = 10;
 		this.defense = 5;
 	}
+	
+	
+	
 	public int getX(){
 		return this.x;
 	}

@@ -16,4 +16,19 @@ public abstract class Monstre extends Personnage {
 		return this.y;
 	}
 
+	public void deplacement(int a){
+		if(a == 1 ){
+			goDroite();
+		}
+		if(a == 2){
+			goHaut();
+		}
+		if(a == 3){
+			goGauche();
+		}
+		else{
+			goBas();
+		}
+	}
+
 }

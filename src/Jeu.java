@@ -33,7 +33,7 @@ public class Jeu {
                 if (deplacement.equals("z")) {
                 	laby.deplacerHerosHaut();
                 }
-                System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
+                //System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
             }
             
         }
