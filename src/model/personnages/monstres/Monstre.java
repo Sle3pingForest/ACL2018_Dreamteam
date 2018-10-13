@@ -16,4 +16,5 @@ public abstract class Monstre extends Personnage {
 		return this.y;
 	}
 
+
 }

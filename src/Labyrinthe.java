@@ -10,8 +10,10 @@ import java.util.Random;
 import model.mur.Mur;
 import model.mur.MurNormal;
 import model.personnages.Heros;
+import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
+import model.personnages.monstres.Orc;
 
 
 public class Labyrinthe {
@@ -21,6 +23,7 @@ public class Labyrinthe {
 	private Heros heros;
 	private ArrayList<Monstre> listeMonstres;
 	private FabriqueMonstre creationMonstres;
+	public static boolean MORT_HEROS = false;
 	
 	
 	public Labyrinthe(String fichierName, String nom, int nombre){
@@ -33,15 +36,17 @@ public class Labyrinthe {
 		
 	}
 	
+	//Construction Monstres et Labyrinthe
 	private void creationMonstres(int nombreMonstre){
 		
 		for(int i = 0; i < nombreMonstre; ++i){
 			int rng  = (int)(Math.random() * (tabNomMonstre.length)) ;
+
 			int posX = (int)(Math.random() * (10));
 			int posY = (int)(Math.random() * (7));
 			boolean correct = false;
 			while(!correct){
-				if(tabMur[posX][posY] == null){
+				if(tabMur[posX][posY] == null && posX != this.heros.getX() && posY != this.heros.getY()){
 					correct = true;
 					listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
 				
@@ -92,7 +97,9 @@ public class Labyrinthe {
 		    System.out.println ("Le fichier n'a pas été trouvé");
 		}
 	}
+	/*********** fin de construction**************/
 	
+	//GESTION DEPLACEMENT HEROS et Monstre
 	public void deplacerHerosHaut(){
 		int y = heros.getY();
 		int x = heros.getX();
@@ -129,6 +136,38 @@ public class Labyrinthe {
 		}
 	}
 	
+	public void deplacerMonstres(){
+		for(Monstre monstre :listeMonstres){
+			int x = monstre.getX();
+			int y =  monstre.getY();
+			Random r = new Random();
+			int direction =  r.nextInt(5);
+			
+			if(direction == 1 && x < longeur-1 && tabMur[x +1][y] == null){
+				monstre.goDroite();
+			}
+			if(direction == 2 && y > 0 && tabMur[x][y-1] == null ){
+				monstre.goHaut();
+			}
+			
+			if(direction == 3 && x > 0 && tabMur[x-1][y] == null ){
+				monstre.goGauche();
+			}
+			if (direction == 4 && y < hauteur-1 && tabMur[x][y+1] == null){
+				monstre.goBas();
+			}
+		}
+	}
+	
+	public void collison(){
+		for(Monstre monstre: listeMonstres){
+			if(this.heros.getX() == monstre.getX() && this.heros.getY() == monstre.getY()){
+				MORT_HEROS = true;
+			}
+		}
+	}
+	
+	//AFFICHAGE
 	public void afficher(){
 		int x =  heros.getX();
 		int y = heros.getY();
@@ -142,13 +181,21 @@ public class Labyrinthe {
 						System.out.print("+");
 					}
 					else{
+						boolean avoirMonstre = false;
 						for (Monstre m : listeMonstres){
-							if(m.getX() == j && i == m.getY()){
-								System.out.print("k");
+							if(m.getX() == j && i == m.getY() && !avoirMonstre){
+								if(m instanceof Orc){
+									System.out.print("O");
+								}
+								if(m instanceof Dragon){
+									System.out.print("D");
+								}
+								avoirMonstre = true;
 							}
 						}
-
-						System.out.print("=");
+						if(!avoirMonstre){
+							System.out.print("=");
+						}
 					}
 				}
 				
@@ -157,6 +204,7 @@ public class Labyrinthe {
 		}
 	}
 
+	//GETTER ET SETTER
 	public Heros getHeros() {
 		return heros;
 	}

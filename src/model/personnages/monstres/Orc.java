@@ -8,6 +8,7 @@ public class Orc extends Monstre{
 		this.pointVie = 3;
 	}
 	
+	
 	public int getX(){
 		return this.x;
 	}
@@ -15,5 +16,7 @@ public class Orc extends Monstre{
 	public int getY(){
 		return this.y;
 	}
-
+	
+	
+	
 }

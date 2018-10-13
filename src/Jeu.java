@@ -5,7 +5,7 @@ public class Jeu {
 
     public static void main(String args[]) {
 
-        Labyrinthe laby = new Labyrinthe("src/murLvl1.txt", "SleepingForest",10);
+        Labyrinthe laby = new Labyrinthe("src/murLvl1.txt", "SleepingForest",5);
         Scanner sc = new Scanner(System.in);
         System.out.print("Pour deplacer le personnage utilisez ZQSD\n");
         System.out.print("Pour quitter utilisez p\n");
@@ -13,7 +13,7 @@ public class Jeu {
 
         String deplacement = "";
 
-        while (!deplacement.equals("p")) {
+        while (!deplacement.equals("p") && !Labyrinthe.MORT_HEROS) {
         	laby.afficher();
             deplacement = sc.nextLine();
 
@@ -33,7 +33,11 @@ public class Jeu {
                 if (deplacement.equals("z")) {
                 	laby.deplacerHerosHaut();
                 }
-                System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
+
+                laby.deplacerMonstres();
+
+                laby.collison();
+                //System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
             }
             
         }
