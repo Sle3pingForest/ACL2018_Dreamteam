@@ -1,3 +1,4 @@
+package model;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +11,7 @@ import java.util.Random;
 import model.mur.Mur;
 import model.mur.MurNormal;
 import model.personnages.Heros;
+import model.personnages.Personnage;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
@@ -20,7 +22,7 @@ public class Labyrinthe {
 	private String[] tabNomMonstre ={"Orc","Dragon"};
 	private int longeur = 10, hauteur = 7;
 	private Mur[][] tabMur ;
-	private Heros heros;
+	private Personnage heros;
 	private ArrayList<Monstre> listeMonstres;
 	private FabriqueMonstre creationMonstres;
 	public static boolean MORT_HEROS = false;
@@ -205,7 +207,7 @@ public class Labyrinthe {
 	}
 
 	//GETTER ET SETTER
-	public Heros getHeros() {
+	public Personnage getHeros() {
 		return heros;
 	}
 

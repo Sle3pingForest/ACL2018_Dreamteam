@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import model.Labyrinthe;
+
 public class Jeu {
 
 

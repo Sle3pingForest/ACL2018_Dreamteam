@@ -1,6 +1,6 @@
 package model.mur;
 
-public class Mur {
+public abstract class Mur {
 	protected int posX, posY;
 	
 	public Mur(int x, int y){
