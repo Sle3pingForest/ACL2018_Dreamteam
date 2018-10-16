@@ -221,11 +221,9 @@ public class Labyrinthe {
 		this.listeMonstres = listeMonstres;
 	}
 	
-	
+	/*
 	public ArrayList<String> deplacementMonstre(int x,int y) {
 		String t = "";
-		
-		/*----------*/
 		
 		ArrayList<String> chemin = new ArrayList<>();
 		chemin.add(t);
@@ -254,11 +252,20 @@ public class Labyrinthe {
 			}
 		}
 		
-		/*--------------*/
 		return chemin;
 	}
+*/
+	/*
 	
-	public int[][] deplacement(int x,int y) {
+	public void DepMonstre() {
+		for (Monstre m: listeMonstres) {
+			deplacementIntelligentMonstre(m);
+		}
+	}
+	// fait bouger le monstre vers le heros de facon "intelligente" chemin le plus court
+	public int[][] deplacementIntelligentMonstre(Monstre m) {
+		int x = m.getX();
+		int y = m.getY();
 		int[][] tab = new int[longeur][hauteur];
 		boolean trouve = false;
 		
@@ -274,15 +281,37 @@ public class Labyrinthe {
 		}
 		remplirTableau(tab, x, y);
 		
+		ArrayList<String> dep = calculChemin(tab, m);
+		
+		// recupere le premier deplacement du monstre
+		String s = dep.get(dep.size() - 1);
+		switch(s) {
+		case "s":
+			m.goBas();
+			break;
+		case "z":
+			m.goHaut();
+			break;
+		case "q":
+			m.goGauche();
+			break;
+		case "d":
+			m.goDroite();
+			break;
+		}
 		
 		return tab;
 	}
 	
+	
+	// cherche un chemin du monstre vers le heros en valuant les cases
+	// la valuation correspond au nombre de deplacement necessaire
 	public void remplirTableau(int[][] tab,int x,int y) {
 		boolean faire[] = new boolean[4];
 		Arrays.fill(faire, false);
 		if (y >= 0 && y < hauteur && x >= 0 && x < longeur) {
 			if (verifChemin(tab) == false && tabMur[x][y] == null) {
+				// regarde pour chaque direction s'il existe un chemin dont la case n'a pas deja ete value
 				if ((x+1) < longeur && tabMur[x+1][y] == null && tab[x+1][y] == -1 ) {
 					tab[x+1][y] = tab[x][y] + 1;
 					faire[0] = true;
@@ -308,13 +337,17 @@ public class Labyrinthe {
 		}
 	}
 	
-	public ArrayList<String> calculChemin(int[][] t) {
+	
+	// Calcul du chemin de larrivee (heros) vers le depart (monstre)
+	public ArrayList<String> calculChemin(int[][] t, Monstre m) {
 		int x = heros.getX();
 		int y = heros.getY();
 		ArrayList<String> tab = new ArrayList<>();
 		
 		int min = Integer.MAX_VALUE;
 		while (min > 1 && x >= 0 && y >= 0) {
+			// on stocke le chemin du heros vers le monstre
+			// tant quon est pas arrive a la case de deplacement +1 du monstre
 			String s = "";
 			int i = -1,j = -1;
 			if ((x+1) < longeur && t[x+1][y] > 0 && min > t[x+1][y]) {
@@ -345,9 +378,27 @@ public class Labyrinthe {
 			y = j;
 			tab.add(s);
 		}
+		
+		String s = "";
+		if (tab.get(0) == "") {
+			// Si le monstre est a 1 case du heros
+			int xm = m.getX(), ym = m.getY();
+			int xh = heros.getX(), yh = heros.getY();
+			if (xm == xh) {
+				if (ym + 1 == yh) s = "s";
+				else s = "z";
+				
+			} else {
+				if (xm +1 == xh) s = "d";
+				else s = "q";
+			}
+			tab.set(0,s);
+		}
 		return tab;
 	}
-	
+
+	//  verifie si un chemin vers le heros a ete trouve
+	// donc on regarde si une des 4 cases autour du heros est numerote
 	public boolean verifChemin(int[][] tab) {
 		boolean trouve = false;
 		int x = heros.getX();
@@ -367,35 +418,8 @@ public class Labyrinthe {
 		return trouve;
 	}
 	
-	
-	
-	public static void main(String[] args) {
-		Labyrinthe laby = new Labyrinthe("src/murLvl1.txt", "SleepingForest",1);
-		
-		int x = laby.getListeMonstres().get(0).getX();
-		int y = laby.getListeMonstres().get(0).getY();
-		
-		System.out.println("MONSTRE " + x + "   " + y);
-		int[][]tab = laby.deplacement(x,y);
-		
-		
-		for(int v=0;v<tab[0].length;v++) {
-			for(int w=0;w<tab.length;w++) 
-				System.out.print(tab[w][v] + " ");
-			
-			System.out.println();
-		}
-		
 
-		ArrayList<String> l = laby.calculChemin(tab);
-
-		System.out.println("test");
-		System.out.println(l.size());
-		System.out.println(l.get(l.size()-1));
-		
-	}
-
-
+*/
 	
 
 }
