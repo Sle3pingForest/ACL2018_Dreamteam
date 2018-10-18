@@ -41,7 +41,6 @@ public class Jeu {
                 laby.depMonstre(tab);
 
                 laby.collison();
-                //System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
                 if (Labyrinthe.MORT_HEROS) System.out.println("YOU DIED");
                 
             }
