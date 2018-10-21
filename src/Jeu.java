@@ -1,47 +1,66 @@
-import java.util.Scanner;
+import org.newdawn.slick.*;
+import org.newdawn.slick.Graphics;
+import vues.Heros;
+import vues.Labyrinthe;
 
-public class Jeu {
+import java.util.ArrayList;
 
+/* C'est la class principal de notre jeu
+* Elle sair de boucle principal mais aussi de Controlleur pour les touche */
+public class Jeu extends BasicGame {
 
-    public static void main(String args[]) {
+    private GameContainer container;
+    private Labyrinthe laby;
+    private ArrayList<Heros> lesHeros;
 
-        Labyrinthe laby = new Labyrinthe("src/murLvl1.txt", "SleepingForest",5);
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Pour deplacer le personnage utilisez ZQSD\n");
-        System.out.print("Pour quitter utilisez p\n");
+    public Jeu() {
+        super("Link thes Labyrinthe's Master");
+        lesHeros = new ArrayList<Heros>();
+    }
 
+    @Override
+    public void init(GameContainer container) throws SlickException {
+        this.container = container;
+        laby = new Labyrinthe();
+        lesHeros.add(new Heros(Heros.ROUGE,300,350));
+    }
 
-        String deplacement = "";
-
-        while (!deplacement.equals("p") && !Labyrinthe.MORT_HEROS) {
-        	laby.afficher();
-            deplacement = sc.nextLine();
-
-            if (!deplacement.equals("p")) {
-                if (deplacement.equals("q")) {
-                	laby.deplacerHerosGauche();
-
-                }
-                if (deplacement.equals("s")) {
-                	laby.deplacerHerosBas();
-
-                }
-                if (deplacement.equals("d")) {
-                	laby.deplacerHerosDroite();
-
-                }
-                if (deplacement.equals("z")) {
-                	laby.deplacerHerosHaut();
-                }
-
-                laby.deplacerMonstres();
-
-                laby.collison();
-                //System.out.println(laby.getHeros().getX() + "**" + laby.getHeros().getY());
-            }
-            
+    @Override
+    public void render(GameContainer container, Graphics g) throws SlickException {
+        laby.render(container,g);
+        for(Heros h : lesHeros){
+            h.render(container,g);
         }
+    }
+
+    public void keyPressed(int key, char c) {
+        if(key == Input.KEY_ESCAPE){
+            container.exit();
+        }
+        switch (key) {
+            case Input.KEY_UP:  lesHeros.get(0).goHaut();    break;
+            case Input.KEY_LEFT: lesHeros.get(0).goGauche();   break;
+            case Input.KEY_DOWN: lesHeros.get(0).goBas();   break;
+            case Input.KEY_RIGHT: lesHeros.get(0).goDroite();  break;
+        }
+    }
+
+    public void keyReleased(int key, char c) {
+        switch (key) {
+            case Input.KEY_UP:  lesHeros.get(0).arretHaut();    break;
+            case Input.KEY_LEFT: lesHeros.get(0).arretGauche();   break;
+            case Input.KEY_DOWN: lesHeros.get(0).arretBas();   break;
+            case Input.KEY_RIGHT: lesHeros.get(0).arretDroite();  break;
+        }
+    }
+
+    @Override
+    public void update(GameContainer container, int delta) throws SlickException {
+        lesHeros.get(0).update(container,delta);
+    }
 
 
+    public static void main(String[] args) throws SlickException {
+        new AppGameContainer(new Jeu(), 1920, 1080, true).start();
     }
 }
