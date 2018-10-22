@@ -75,7 +75,7 @@ public class Labyrinthe {
             {
                 String line = br.readLine();
                 longueur = line.length()-2;// on retire 2  pour le passage a la ligne
-                hauteur = 1;
+                hauteur = 0;
                 while (line != null)
                 {
                     if(line.length() == longueur+2){

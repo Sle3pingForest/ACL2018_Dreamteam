@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ACL2018_Dreamteam:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ACL2018_Dreamteam_jar</output-path>
+    <root id="archive" name="ACL2018_Dreamteam_jar.jar">
+      <element id="archive" name="ACL2018_Dreamteam.jar">
+        <element id="module-output" name="ACL2018_Dreamteam" />
+      </element>
+      <element id="library" level="project" name="jinput" />
+      <element id="library" level="project" name="slick" />
+      <element id="library" level="project" name="lwjgl" />
+    </root>
+  </artifact>
+</component>

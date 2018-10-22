@@ -35,7 +35,7 @@ public class Heros {
 
 
 
-    private final static  float VITESSE = 1;
+    private final static  float VITESSE = 10;
 
     private float x ,y;
     private int vertical = 0;
@@ -140,34 +140,34 @@ public class Heros {
         Animation animation = new Animation();
         Image img = spriteSheet.getSprite(3, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(4, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(5, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(6, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(7, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(8, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(9, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(10, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(11, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(12, 51);
         img = img.getFlippedCopy(true,false);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         this.animations[AVANCER_DROITE] = animation;
     }
 

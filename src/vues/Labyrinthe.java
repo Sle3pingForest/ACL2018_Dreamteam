@@ -10,10 +10,14 @@ public class Labyrinthe {
     public final static int HAUTEUR_MUR = 31;
     public final static int LARGEUR_MUR = 32;
     private model.Labyrinthe lab;
+    private int longeurCarte;
+    private int hauteurCarte;
 
     public Labyrinthe() throws SlickException {
         ElementDecor.mettreForet();
         lab = new model.Labyrinthe("murLvl1.txt","link",10);
+        longeurCarte = lab.getTabMur().length * LARGEUR_MUR;
+        hauteurCarte = lab.getTabMur()[0].length * HAUTEUR_MUR;
     }
 
     public void render(GameContainer container, Graphics g){
@@ -35,10 +39,17 @@ public class Labyrinthe {
             xActu = 0;
             yActu += HAUTEUR_MUR;
         }
-
     }
 
     public model.Labyrinthe getLab() {
         return lab;
+    }
+
+    public int getLongeurCarte(){
+        return  longeurCarte;
+    }
+
+    public int getHauteurCarte(){
+        return hauteurCarte;
     }
 }

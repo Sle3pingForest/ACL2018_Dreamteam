@@ -27,11 +27,28 @@ public class Jeu extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
+        int cameraX = (int)(container.getWidth() / 2 - lesHeros.get(0).getX());
+        int cameraY = (int)(container.getHeight() / 2 - lesHeros.get(0).getY());
+        if(cameraX < -laby.getLongeurCarte()+container.getWidth()){
+            cameraX = -laby.getLongeurCarte()+container.getWidth();
+        }
+        if(cameraY  < -laby.getHauteurCarte() + container.getHeight() ){
+            cameraY = -laby.getHauteurCarte()+ container.getHeight();
+        }
+        if(cameraX > 0){
+            cameraX = 0;
+        }
+        if(cameraY > 0){
+            cameraY = 0;
+        }
+
+        g.translate(cameraX, cameraY);
+
         laby.render(container,g);
         for(Heros h : lesHeros){
             h.render(container,g);
         }
-    }
+         }
 
     public void keyPressed(int key, char c) {
         if(key == Input.KEY_ESCAPE){
