@@ -20,23 +20,31 @@ public class Labyrinthe {
         hauteurCarte = lab.getTabMur()[0].length * HAUTEUR_MUR;
     }
 
-    public void render(GameContainer container, Graphics g){
+    public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){
         Mur[][] mur = lab.getTabMur();
         int hauteur = mur[0].length;
         int largeur = mur.length;
 
-        int xActu = 0;
-        int yActu = 0;
 
-        for(int i = 0 ; i < hauteur ;i++){
-            for(int j = 0 ; j < largeur ; j++){
+        int largeurMin = xMin/LARGEUR_MUR;
+        int largeurMax = xMax/LARGEUR_MUR;
+
+        int hauteurMin = yMin/HAUTEUR_MUR;
+        int hauteurMax = yMax/HAUTEUR_MUR;
+
+
+        int xActu = largeurMin*LARGEUR_MUR;
+        int yActu = hauteurMin*HAUTEUR_MUR;
+
+        for(int i = hauteurMin ; i < hauteur && i <= hauteurMax ;i++){
+            for(int j = largeurMin ; j < largeur && j <= largeurMax ; j++){
                 g.drawImage(ElementDecor.getChemin(),xActu,yActu);
                 if(mur[j][i]!= null){
                     g.drawImage(ElementDecor.getMur(),xActu,yActu);
                 }
                 xActu += LARGEUR_MUR;
             }
-            xActu = 0;
+            xActu = largeurMin*LARGEUR_MUR;
             yActu += HAUTEUR_MUR;
         }
     }
