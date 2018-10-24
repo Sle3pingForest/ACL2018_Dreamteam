@@ -79,6 +79,6 @@ public class Jeu extends BasicGame {
 
 
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), 1920, 1080, true).start();
+        new AppGameContainer(new Jeu(), 1920, 1080, false).start();
     }
 }
