@@ -1,7 +1,8 @@
 package vues;
 
-import org.newdawn.slick.*;
+import model.mur.Mur;
 
+import org.newdawn.slick.*;
 public class Heros {
 
     public final static int VERT = 0;
@@ -31,17 +32,19 @@ public class Heros {
     private final static int AVANCER_HAUT = 6;
     private final static int AVANCER_GAUCHE = 7;
 
+    private final static int LARGEUR_SPRITE = 30;
 
 
 
 
-    private final static  float VITESSE = 10;
+    private final static  float VITESSE = 1;
 
     private float x ,y;
     private int vertical = 0;
     private int horizontal = 0;
     private Animation[] animations = new Animation[20];
     private int directionActu = BAS;
+    private model.personnages.Heros heros;
 
     public Heros(int choix,int x , int y) throws SlickException {
         this.x = x;
@@ -175,25 +178,25 @@ public class Heros {
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
         Animation animation = new Animation();
         Image img = spriteSheet.getSprite(3, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(4, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(5, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(6, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(7, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(8, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(9, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(10, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(11, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         img = spriteSheet.getSprite(12, 51);
-        animation.addFrame(img, 50);
+        animation.addFrame(img, 100);
         this.animations[AVANCER_GAUCHE] = animation;
     }
 
@@ -373,14 +376,137 @@ public class Heros {
     }
 
 
-    public void update(GameContainer container, int delta){
+    public void update(GameContainer container, int delta) throws SlickException{
         float vitesseActu = delta*VITESSE*0.07f;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
-        x = futureX;
-        y = futureY;
+        if(vertical == -1){
+	        if(!collisionHaut( futureX, futureY)){
+		        y = futureY;
+	        }
+        }
+        if(vertical == 1){
+	        if(!collisionBas( futureX, futureY)){
+		        y = futureY;
+	        }
+        }
+        
+        if(horizontal == -1){
+	        if(!collisionGauche( futureX, futureY)){
+		        x = futureX;
+	        }
+        }
+        if(horizontal == 1){
+	        if(!collisionDroite( futureX, futureY)){
+		        x = futureX;
+	        }
+        }
+        
+
+       
     }
+    
+    private boolean collisionHaut(float futureX,float futureY) throws SlickException {
+    	
+		Labyrinthe lab =  Labyrinthe.getInstance();
+		Mur[][] mur = lab.getLab().getTabMur();
+		
+		int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
+		
+		if(horizontal == -1){
+			xCaseFuture = (int)((futureX+6-2)/Labyrinthe.LARGEUR_MUR);
+		}
+		if(horizontal == 1){
+			xCaseFuture = (int)((futureX+6+2)/Labyrinthe.LARGEUR_MUR);
+		}
+		
+		if(mur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		xCaseFuture = (int)((futureX-6 + LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
+		
+		if(mur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		
+		
+    	return false;
+    }
+    
+    private boolean collisionBas(float futureX,float futureY) throws SlickException {
+    	
+		Labyrinthe lab =  Labyrinthe.getInstance();
+		Mur[][] mur = lab.getLab().getTabMur();
+		
+		int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY-6)/Labyrinthe.HAUTEUR_MUR)+1;
+		
+		if(horizontal == -1){
+			xCaseFuture = (int)((futureX+6+2)/Labyrinthe.LARGEUR_MUR);
+		}
+		if(horizontal == 1){
+			xCaseFuture = (int)((futureX+6-2)/Labyrinthe.LARGEUR_MUR);
+		}
+		
+		if(mur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		xCaseFuture = (int)((futureX-6 + LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
+		
+		if(mur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		
+		
+    	return false;
+    }
+    
+    private boolean collisionGauche(float futureX,float futureY) throws SlickException {
+    	
+		Labyrinthe lab =  Labyrinthe.getInstance();
+		Mur[][] mur = lab.getLab().getTabMur();
+		
+		int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
+		
+		if(vertical == -1){
+			 xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+			 yCaseFuture = (int)((futureY+2+19)/Labyrinthe.HAUTEUR_MUR);
+		}
+		
+		if(mur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+    	return false;
+    }
+
+	private boolean collisionDroite(float futureX,float futureY) throws SlickException {
+	
+	Labyrinthe lab =  Labyrinthe.getInstance();
+	Mur[][] mur = lab.getLab().getTabMur();
+	
+	int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+	int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
+	
+	if(vertical == -1){
+		 xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
+		 yCaseFuture = (int)((futureY+2+19)/Labyrinthe.HAUTEUR_MUR);
+	}
+	if(mur[xCaseFuture][yCaseFuture] != null){
+		return true;
+	}
+	xCaseFuture = (int)((futureX-6 + LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
+	
+	if(mur[xCaseFuture][yCaseFuture] != null){
+		return true;
+	}
+	
+	
+	return false;
+}
+    
 
     public int getHorizontal() {
         return horizontal;

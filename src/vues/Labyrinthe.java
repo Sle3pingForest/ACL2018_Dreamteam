@@ -12,8 +12,16 @@ public class Labyrinthe {
     private model.Labyrinthe lab;
     private int longeurCarte;
     private int hauteurCarte;
+    
+    private static Labyrinthe instance = null;
+	public static Labyrinthe getInstance() throws SlickException {
+		if (instance == null) {
+			instance = new Labyrinthe();
+		}
+		return instance;
+	}
 
-    public Labyrinthe() throws SlickException {
+    private Labyrinthe() throws SlickException {
         ElementDecor.mettreForet();
         lab = new model.Labyrinthe("murLvl1.txt","link",10);
         longeurCarte = lab.getTabMur().length * LARGEUR_MUR;

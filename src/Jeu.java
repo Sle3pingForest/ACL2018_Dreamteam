@@ -1,5 +1,4 @@
 import org.newdawn.slick.*;
-import org.newdawn.slick.Graphics;
 import vues.Heros;
 import vues.Labyrinthe;
 
@@ -10,10 +9,18 @@ import java.util.ArrayList;
 public class Jeu extends BasicGame {
 
     private GameContainer container;
-    private Labyrinthe laby;
+    private static Labyrinthe laby;
     private ArrayList<Heros> lesHeros;
+    
+    private static Jeu instance = null;
+	public static Jeu getInstance() {
+		if (instance == null) {
+			instance = new Jeu();
+		}
+		return instance;
+	}
 
-    public Jeu() {
+    private Jeu() {
         super("Link thes Labyrinthe's Master");
         lesHeros = new ArrayList<Heros>();
     }
@@ -21,8 +28,8 @@ public class Jeu extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        laby = new Labyrinthe();
-        lesHeros.add(new Heros(Heros.ROUGE,300,350));
+        laby = Labyrinthe.getInstance();
+        lesHeros.add(new Heros(Heros.BLEU,300,350));
     }
 
     @Override
@@ -71,6 +78,11 @@ public class Jeu extends BasicGame {
             case Input.KEY_RIGHT: lesHeros.get(0).arretDroite();  break;
         }
     }
+    
+    public void collisionHaut() {
+    
+    	
+    }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
@@ -79,6 +91,10 @@ public class Jeu extends BasicGame {
 
 
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), 1920, 1080, false).start();
+        new AppGameContainer(new Jeu(), 1680, 1050, true).start();
+    }
+    
+    public static Labyrinthe getLaby() {
+    	return laby;
     }
 }
