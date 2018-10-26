@@ -1,0 +1,1 @@
+java -Djava.library.path=lib/natives -jar Jeu_ACL_v1.1.jar
