@@ -1,0 +1,44 @@
+@startuml
+class Jeu
+package "model" {
+
+class Labyrinthe 
+package "mur" {
+class Mur
+}
+package "objet" {
+class Objet
+Objet <|-- Tresor
+Objet <|-- Piege
+}
+package "personnages" {
+Labyrinthe "1" --* "*" Personnages
+Personnages <|-- Heros
+class Heros
+
+package "Monstre" {
+  
+Personnages <|-- Monstre
+Monstre <|-- Orc
+Monstre <|-- Dragon
+}
+}
+
+}
+
+
+Labyrinthe "1" --* "*"  Mur
+Labyrinthe "1" --* "*" Objet 
+Jeu --> "1" Labyrinthe
+
+Class Personnages {
++void goGauche()
++void goDroite()
++void goHaut()
++void goBas()
+}
+Class Labyrinthe {
+}
+Class Jeu {
+}
+@enduml
