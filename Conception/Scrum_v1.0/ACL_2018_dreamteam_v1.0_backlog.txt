@@ -1,0 +1,3 @@
+Dans cette première version, nous avons implémenté dans le modèle les classes permettant de créer un labyrinthe ainsi
+que la création des personnages c'est à dire le héros et les différents monstres qui seront présents. De plus,
+les déplacements de ces personnages a également été mis en place dans le modèle.
