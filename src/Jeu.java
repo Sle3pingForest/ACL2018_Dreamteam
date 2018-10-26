@@ -1,9 +1,11 @@
 import model.personnages.Heros;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.Graphics;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /* C'est la class principal de notre jeu
@@ -14,6 +16,10 @@ public class Jeu extends BasicGame {
     private static VueLabyrinthe laby;
     private ArrayList<VueHeros> lesHerosVue;
     private ArrayList<Heros> lesHeros;
+
+    private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static int width = (int) screenSize.getWidth();
+    private static int height = (int) screenSize.getHeight();
     
     private static Jeu instance = null;
 	public static Jeu getInstance() {
@@ -92,7 +98,7 @@ public class Jeu extends BasicGame {
 
 
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), 1680, 1050, false).start();
+        new AppGameContainer(new Jeu(), width, height, false).start();
     }
     
     public static VueLabyrinthe getLaby() {
