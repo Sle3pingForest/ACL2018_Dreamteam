@@ -8,13 +8,7 @@ public abstract class Monstre extends Personnage {
 		super(x,y);
 	}
 	
-	public int getX(){
-		return this.x;
-	}
-	
-	public int getY(){
-		return this.y;
-	}
+
 
 
 }

@@ -140,8 +140,8 @@ public class Labyrinthe {
 
     //GESTION DEPLACEMENT HEROS et Monstre
     public void deplacerHerosHaut(){
-        int y = heros.getY();
-        int x = heros.getX();
+        int y = (int)heros.getY();
+        int x = (int)heros.getX();
 
         if(y > 0 && tabMur[x][y-1] == null){
             heros.goHaut();
@@ -149,8 +149,8 @@ public class Labyrinthe {
     }
 
     public void deplacerHerosBas(){
-        int y = heros.getY();
-        int x = heros.getX();
+        int y = (int)heros.getY();
+        int x = (int)heros.getX();
 
         if(y < hauteur-1 && tabMur[x][y+1] == null){
             heros.goBas();
@@ -158,8 +158,8 @@ public class Labyrinthe {
     }
 
     public void deplacerHerosDroite(){
-        int y = heros.getY();
-        int x = heros.getX();
+        int y = (int)heros.getY();
+        int x = (int)heros.getX();
 
         if(x < longueur-1 && tabMur[x +1][y] == null){
             heros.goDroite();
@@ -167,8 +167,8 @@ public class Labyrinthe {
     }
 
     public void deplacerHerosGauche(){
-        int y = heros.getY();
-        int x = heros.getX();
+        int y = (int)heros.getY();
+        int x = (int)heros.getX();
 
         if(x > 0 && tabMur[x-1][y] == null){
             heros.goGauche();
@@ -177,8 +177,8 @@ public class Labyrinthe {
 
     public void deplacerMonstres(){
         for(Monstre monstre :listeMonstres){
-            int x = monstre.getX();
-            int y =  monstre.getY();
+            int x = (int)monstre.getX();
+            int y =  (int)monstre.getY();
             Random r = new Random();
             int direction =  r.nextInt(5);
 
@@ -208,8 +208,8 @@ public class Labyrinthe {
 
     //AFFICHAGE
     public void afficher(){
-        int x =  heros.getX();
-        int y = heros.getY();
+        int x =  (int)heros.getX();
+        int y = (int)heros.getY();
         for(int i = 0 ; i < this.hauteur;i++){
             for( int j = 0; j < this.longueur ; j++){
                 if(i == y && j == x ){
@@ -303,8 +303,8 @@ public class Labyrinthe {
     }
 
     public int[][] tabCheminMonstre() {
-        int x = heros.getX();
-        int y = heros.getY();
+        int x = (int)heros.getX();
+        int y = (int)heros.getY();
         int[][] tab = new int[longueur][hauteur];
         boolean trouve = false;
 
@@ -394,13 +394,13 @@ public class Labyrinthe {
 
     // Calcul du chemin de depart (monstre) vers larrivee (heros)
     public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-        int x = m.getX();
-        int y = m.getY();
+        int x = (int)m.getX();
+        int y = (int)m.getY();
         ArrayList<String> tab = new ArrayList<>();
         int min = Integer.MAX_VALUE;
         String s = "";
 
-        int xh = heros.getX(), yh = heros.getY();
+        int xh = (int)heros.getX(), yh = (int)heros.getY();
         if (x == xh && y == yh) {
             tab.add("");
         }

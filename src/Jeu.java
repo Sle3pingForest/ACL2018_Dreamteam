@@ -1,6 +1,8 @@
+import model.personnages.Heros;
+
 import org.newdawn.slick.*;
-import vues.Heros;
-import vues.Labyrinthe;
+import vues.VueHeros;
+import vues.VueLabyrinthe;
 
 import java.util.ArrayList;
 
@@ -9,7 +11,8 @@ import java.util.ArrayList;
 public class Jeu extends BasicGame {
 
     private GameContainer container;
-    private static Labyrinthe laby;
+    private static VueLabyrinthe laby;
+    private ArrayList<VueHeros> lesHerosVue;
     private ArrayList<Heros> lesHeros;
     
     private static Jeu instance = null;
@@ -23,13 +26,14 @@ public class Jeu extends BasicGame {
     private Jeu() {
         super("Link thes Labyrinthe's Master");
         lesHeros = new ArrayList<Heros>();
+        lesHerosVue = new ArrayList<VueHeros>();
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        laby = Labyrinthe.getInstance();
-        lesHeros.add(new Heros(Heros.BLEU,300,350));
+        laby = VueLabyrinthe.getInstance();
+        lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
     }
 
     @Override
@@ -53,10 +57,10 @@ public class Jeu extends BasicGame {
 
 
         laby.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        for(Heros h : lesHeros){
+        for(VueHeros h : lesHerosVue){
             h.render(container,g);
         }
-         }
+    }
 
     public void keyPressed(int key, char c) {
         if(key == Input.KEY_ESCAPE){
@@ -86,15 +90,15 @@ public class Jeu extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        lesHeros.get(0).update(container,delta);
+        lesHerosVue.get(0).update(container,delta);
     }
 
 
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), 1680, 1050, true).start();
+        new AppGameContainer(new Jeu(), 1680, 1050, false).start();
     }
     
-    public static Labyrinthe getLaby() {
+    public static VueLabyrinthe getLaby() {
     	return laby;
     }
 }

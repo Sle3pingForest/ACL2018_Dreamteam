@@ -1,7 +1,11 @@
 package model.personnages;
 
 public abstract class Personnage {
-	protected int x, y;
+	
+    protected float x ,y;
+    protected int vertical = 0;
+    protected int horizontal = 0;
+    
 	protected int pointVie;
 	protected int defense, attaque, vitesse;
 	public Personnage(int x, int y) {
@@ -29,13 +33,20 @@ public abstract class Personnage {
         y++;
     }
     
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
+    
+    public int getVertical(){
+    	return vertical;
+    }
 	
+    public int getHorizontal(){
+    	return horizontal;
+    }
 
 }
