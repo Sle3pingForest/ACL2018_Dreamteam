@@ -1,2 +1,2 @@
-Coller cette ligne dans les VM arguments:
--Djava.library.path=lib/natives
+-terminal 
+-bash start.bat ou .\start.sh
