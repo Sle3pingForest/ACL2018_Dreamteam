@@ -1,0 +1,14 @@
+Fonctionnalités:
+
+- Creation Objet + sprite	(Corentin)
+- Ajout inventaire heros	(Corentin)
+- Deplacement monstre + sprite	(Nam)
+- Gestion attaque + animation	(Nam)
+- Gestion sortie Labyrinthe	(Thibault)
+- Amelioration gestion collision	(Andre)
+- Generation Labyrinthe aléatoire (Valentin)
+- Gestion fin du jeu		  (Valentin)
+- AJout du son			(Valentin)
+- Gestion Save/load	(Andre)
+- Ajout Controller	(Thibault)
+
