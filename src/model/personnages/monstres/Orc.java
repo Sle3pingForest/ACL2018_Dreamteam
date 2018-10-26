@@ -8,7 +8,4 @@ public class Orc extends Monstre{
 		this.pointVie = 3;
 	}
 	
-	
-	
-	
 }

@@ -18,7 +18,7 @@ import model.personnages.monstres.Orc;
 
 
 public class Labyrinthe {
-    private String[] tabNomMonstre ={"Orc","Dragon"};
+    private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.DRAGON};
     private int longueur , hauteur;
     private Mur[][] tabMur ;
     private Personnage heros;
