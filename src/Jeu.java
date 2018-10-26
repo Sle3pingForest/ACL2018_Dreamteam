@@ -24,7 +24,7 @@ public class Jeu extends BasicGame {
 	}
 
     private Jeu() {
-        super("Link thes Labyrinthe's Master");
+        super("Link the Labyrinthe's Master");
         lesHeros = new ArrayList<Heros>();
         lesHerosVue = new ArrayList<VueHeros>();
     }
@@ -92,7 +92,7 @@ public class Jeu extends BasicGame {
 
 
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), 1680, 1050, false).start();
+        new AppGameContainer(new Jeu(), 1680, 1050, true).start();
     }
     
     public static VueLabyrinthe getLaby() {
