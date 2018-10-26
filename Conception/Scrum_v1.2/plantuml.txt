@@ -6,11 +6,6 @@ class Labyrinthe
 package "mur" {
 class Mur
 }
-package "objet" {
-class Objet
-Objet <|-- Tresor
-Objet <|-- Piege
-}
 package "personnages" {
 Labyrinthe "1" --* "*" Personnages
 Personnages <|-- Heros
