@@ -33,6 +33,7 @@ public class Jeu extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         this.container = container;
         laby = VueLabyrinthe.getInstance();
+        lesHeros.add(new Heros(300,280,"link"));
         lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
     }
 
@@ -82,15 +83,11 @@ public class Jeu extends BasicGame {
             case Input.KEY_RIGHT: lesHeros.get(0).arretDroite();  break;
         }
     }
-    
-    public void collisionHaut() {
-    
-    	
-    }
+
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        lesHerosVue.get(0).update(container,delta);
+        lesHeros.get(0).update(container,delta);
     }
 
 
