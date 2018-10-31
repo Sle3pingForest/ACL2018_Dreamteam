@@ -7,8 +7,8 @@ import java.io.Serializable;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import vues.aVueHeros;
-import vues.aVueLabyrinthe;
+import vues.VueHeros;
+import vues.VueLabyrinthe;
 
 public class Heros extends Personnage {
 
@@ -205,23 +205,23 @@ public void update(GameContainer container, int delta) throws SlickException{
     
     private boolean collisionHaut(float futureX,float futureY) throws SlickException {
     	
-		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
+		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
 		
 		if(horizontal == -1){
-			xCaseFuture = (int)((futureX+6-2)/aVueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6-2)/VueLabyrinthe.LARGEUR_MUR);
 		}
 		if(horizontal == 1){
-			xCaseFuture = (int)((futureX+6+2)/aVueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6+2)/VueLabyrinthe.LARGEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
@@ -234,23 +234,23 @@ public void update(GameContainer container, int delta) throws SlickException{
     private boolean collisionBas(float futureX,float futureY) throws SlickException {
     	
     	
-		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
+		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY-6)/aVueLabyrinthe.HAUTEUR_MUR)+1;
+		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY-6)/VueLabyrinthe.HAUTEUR_MUR)+1;
 		
 		if(horizontal == -1){
-			xCaseFuture = (int)((futureX+6+2)/aVueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6+2)/VueLabyrinthe.LARGEUR_MUR);
 		}
 		if(horizontal == 1){
-			xCaseFuture = (int)((futureX+6-2)/aVueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6-2)/VueLabyrinthe.LARGEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
@@ -262,15 +262,15 @@ public void update(GameContainer container, int delta) throws SlickException{
     
     private boolean collisionGauche(float futureX,float futureY) throws SlickException {
     	
-		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
+		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
 		
 		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/aVueLabyrinthe.HAUTEUR_MUR);
+			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
@@ -282,20 +282,20 @@ public void update(GameContainer container, int delta) throws SlickException{
 	private boolean collisionDroite(float futureX,float futureY) throws SlickException {
 		
 		
-		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
+		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
 		
 		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/aVueLabyrinthe.HAUTEUR_MUR);
+			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
+			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
 		}
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
