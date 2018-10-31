@@ -2,20 +2,22 @@ import model.personnages.Heros;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
-import vues.VueHeros;
-import vues.VueLabyrinthe;
+import vues.aVueHeros;
+import vues.aVueLabyrinthe;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /* C'est la class principal de notre jeu
 * Elle sair de boucle principal mais aussi de Controlleur pour les touche */
 public class Jeu extends BasicGame {
 
     private GameContainer container;
-    private static VueLabyrinthe laby;
-    private ArrayList<VueHeros> lesHerosVue;
+    private static aVueLabyrinthe laby;
+    private ArrayList<aVueHeros> lesHerosVue;
     private ArrayList<Heros> lesHeros;
+    private DAOFactory d;
 
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static int width = (int) screenSize.getWidth();
@@ -32,18 +34,34 @@ public class Jeu extends BasicGame {
     private Jeu() {
         super("Link the Labyrinthe's Master");
         lesHeros = new ArrayList<Heros>();
-        lesHerosVue = new ArrayList<VueHeros>();
+        lesHerosVue = new ArrayList<aVueHeros>();
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        laby = VueLabyrinthe.getInstance();
+        laby = aVueLabyrinthe.getInstance();
         lesHeros.add(new Heros(300,280,"link"));
-        lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
+        lesHerosVue.add(new aVueHeros(aVueHeros.BLEU,lesHeros.get(0)));// car un joueur
     }
+    
+    
+    public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
+    	laby = aVueLabyrinthe.getInstance();
+		lesHeros.clear();
+		lesHeros = lesHeros2;
+		lesHerosVue.clear();
+		System.out.println(lesHeros);
+		lesHerosVue.add(new aVueHeros(aVueHeros.BLEU,lesHeros.get(0)));// car un joueur
+    	/*System.out.println(h.getX());
+    	
+    	lesHeros.get(0).setX(h.getX());
+    	lesHeros.get(0).setY(h.getY());*/
+    	
+	}
+    
 
-    @Override
+	@Override
     public void render(GameContainer container, Graphics g) throws SlickException {
         int cameraX = (int)(container.getWidth() / 2 - lesHeros.get(0).getX());
         int cameraY = (int)(container.getHeight() / 2 - lesHeros.get(0).getY());
@@ -64,7 +82,7 @@ public class Jeu extends BasicGame {
 
 
         laby.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        for(VueHeros h : lesHerosVue){
+        for(aVueHeros h : lesHerosVue){
             h.render(container,g);
         }
     }
@@ -78,6 +96,20 @@ public class Jeu extends BasicGame {
             case Input.KEY_LEFT: lesHeros.get(0).goGauche();   break;
             case Input.KEY_DOWN: lesHeros.get(0).goBas();   break;
             case Input.KEY_RIGHT: lesHeros.get(0).goDroite();  break;
+            case Input.KEY_0:	try {
+				save();
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            	break;
+            case Input.KEY_1: try {
+				this.charger();
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            	break;
         }
     }
 
@@ -101,7 +133,74 @@ public class Jeu extends BasicGame {
         new AppGameContainer(new Jeu(), width, height, true).start();
     }
     
-    public static VueLabyrinthe getLaby() {
+    public void save() throws SlickException {
+    	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().save(this);
+    }
+    
+    
+    public void charger() throws SlickException {
+    	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().load(this);
+    }
+    
+    public static aVueLabyrinthe getLaby() {
     	return laby;
     }
+    
+    public GameContainer getContainer() {
+  		return container;
+  	}
+
+  	public ArrayList<aVueHeros> getLesHerosVue() {
+  		return lesHerosVue;
+  	}
+
+  	public ArrayList<Heros> getLesHeros() {
+  		return lesHeros;
+  	}
+
+  	public static Dimension getScreenSize() {
+  		return screenSize;
+  	}
+
+  	public static int getWidth() {
+  		return width;
+  	}
+
+  	public static int getHeight() {
+  		return height;
+  	}
+
+	public void setContainer(GameContainer container) {
+		this.container = container;
+	}
+
+	public static void setLaby(aVueLabyrinthe laby) {
+		Jeu.laby = laby;
+	}
+
+	public void setLesHerosVue(ArrayList<aVueHeros> lesHerosVue) {
+		this.lesHerosVue = lesHerosVue;
+	}
+
+	public void setLesHeros(ArrayList<Heros> lesHeros) {
+		this.lesHeros = lesHeros;
+	}
+
+	public static void setScreenSize(Dimension screenSize) {
+		Jeu.screenSize = screenSize;
+	}
+
+	public static void setWidth(int width) {
+		Jeu.width = width;
+	}
+
+	public static void setHeight(int height) {
+		Jeu.height = height;
+	}
+
+	public static void setInstance(Jeu instance) {
+		Jeu.instance = instance;
+	}
+
+	
 }

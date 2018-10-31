@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -17,7 +18,7 @@ import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Orc;
 
 
-public class Labyrinthe {
+public class Labyrinthe implements Serializable{
     private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.DRAGON};
     private int longueur , hauteur;
     private Mur[][] tabMur ;

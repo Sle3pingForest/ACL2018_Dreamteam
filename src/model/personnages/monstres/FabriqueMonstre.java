@@ -1,6 +1,8 @@
 package model.personnages.monstres;
 
-public class FabriqueMonstre {
+import java.io.Serializable;
+
+public class FabriqueMonstre implements Serializable{
 
 	//Les Type
 	public final static int ORC = 0;

@@ -1,6 +1,8 @@
 package model.mur;
 
-public class Mur {
+import java.io.Serializable;
+
+public class Mur implements Serializable{
 
     private int posX,posY;
 

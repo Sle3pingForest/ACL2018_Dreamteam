@@ -1,8 +1,17 @@
 package model.personnages;
 
-public abstract class Personnage {
+import java.io.Serializable;
+
+public abstract class Personnage implements Serializable{
 	
-    protected float x ,y;
+    public void setX(float x) {
+		this.x = x;
+	}
+	public void setY(float y) {
+		this.y = y;
+	}
+
+	protected float x ,y;
     protected int vertical = 0;
     protected int horizontal = 0;
     

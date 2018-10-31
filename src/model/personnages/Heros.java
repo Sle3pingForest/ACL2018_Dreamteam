@@ -2,11 +2,13 @@ package model.personnages;
 
 import model.mur.Mur;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import vues.VueHeros;
-import vues.VueLabyrinthe;
+import vues.aVueHeros;
+import vues.aVueLabyrinthe;
 
 public class Heros extends Personnage {
 
@@ -17,7 +19,8 @@ public class Heros extends Personnage {
 
     //Position static
     public final static int BAS = 0;
-    public final static int DROITE = 1;
+
+	public final static int DROITE = 1;
     public final static int HAUT = 2;
     public final static int GAUCHE = 3;
 
@@ -28,7 +31,10 @@ public class Heros extends Personnage {
     public final static int AVANCER_GAUCHE = 7;
 
     
-    public final static  float VITESSE = 3;
+    public final static  float VITESSE = 10;
+    
+    // sert a enlever les collisions pour tester plus facilement
+    private boolean check = false;
     
     private int directionActu = BAS;
 
@@ -46,6 +52,11 @@ public class Heros extends Personnage {
 
         return donnee;
     }
+    
+
+    public String getNom() {
+		return nom;
+	}
     
     
     public void goDroite(){
@@ -162,51 +173,55 @@ public void update(GameContainer container, int delta) throws SlickException{
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
-        if(vertical == -1){
-	        if(!collisionHaut( futureX, futureY)){
-		        y = futureY;
+        if (check) {
+	        if(vertical == -1){
+		        if(!collisionHaut( futureX, futureY)){
+			        y = futureY;
+		        }
 	        }
-        }
-        if(vertical == 1){
-	        if(!collisionBas( futureX, futureY)){
-		        y = futureY;
+	        if(vertical == 1){
+		        if(!collisionBas( futureX, futureY)){
+			        y = futureY;
+		        }
 	        }
-        }
-        
-        if(horizontal == -1){
-	        if(!collisionGauche( futureX, futureY)){
-		        x = futureX;
+	        
+	        if(horizontal == -1){
+		        if(!collisionGauche( futureX, futureY)){
+			        x = futureX;
+		        }
 	        }
-        }
-        if(horizontal == 1){
-	        if(!collisionDroite( futureX, futureY)){
-		        x = futureX;
+	        if(horizontal == 1){
+		        if(!collisionDroite( futureX, futureY)){
+			        x = futureX;
+		        }
 	        }
+        } else {
+        	x = futureX;
+        	y = futureY;
         }
-        
 
        
     }
     
     private boolean collisionHaut(float futureX,float futureY) throws SlickException {
     	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
+		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
 		
 		if(horizontal == -1){
-			xCaseFuture = (int)((futureX+6-2)/VueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6-2)/aVueLabyrinthe.LARGEUR_MUR);
 		}
 		if(horizontal == 1){
-			xCaseFuture = (int)((futureX+6+2)/VueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6+2)/aVueLabyrinthe.LARGEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
@@ -219,23 +234,23 @@ public void update(GameContainer container, int delta) throws SlickException{
     private boolean collisionBas(float futureX,float futureY) throws SlickException {
     	
     	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
+		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY-6)/VueLabyrinthe.HAUTEUR_MUR)+1;
+		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY-6)/aVueLabyrinthe.HAUTEUR_MUR)+1;
 		
 		if(horizontal == -1){
-			xCaseFuture = (int)((futureX+6+2)/VueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6+2)/aVueLabyrinthe.LARGEUR_MUR);
 		}
 		if(horizontal == 1){
-			xCaseFuture = (int)((futureX+6-2)/VueLabyrinthe.LARGEUR_MUR);
+			xCaseFuture = (int)((futureX+6-2)/aVueLabyrinthe.LARGEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
@@ -247,15 +262,15 @@ public void update(GameContainer container, int delta) throws SlickException{
     
     private boolean collisionGauche(float futureX,float futureY) throws SlickException {
     	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
+		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
 		
 		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
+			 xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+			 yCaseFuture = (int)((futureY+2+19)/aVueLabyrinthe.HAUTEUR_MUR);
 		}
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
@@ -267,20 +282,20 @@ public void update(GameContainer container, int delta) throws SlickException{
 	private boolean collisionDroite(float futureX,float futureY) throws SlickException {
 		
 		
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
+		aVueLabyrinthe lab =  aVueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
 		
-		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
+		int xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/aVueLabyrinthe.HAUTEUR_MUR);
 		
 		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
+			 xCaseFuture = (int)((futureX+6)/aVueLabyrinthe.LARGEUR_MUR);
+			 yCaseFuture = (int)((futureY+2+19)/aVueLabyrinthe.HAUTEUR_MUR);
 		}
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
+		xCaseFuture = (int)((futureX-6 + aVueHeros.LARGEUR_SPRITE)/aVueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
