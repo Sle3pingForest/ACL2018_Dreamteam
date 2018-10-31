@@ -1,11 +1,14 @@
 package vues;
 
 import model.mur.Mur;
+
+import java.io.Serializable;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-public class VueLabyrinthe {
+public class VueLabyrinthe implements Serializable{
 
     public final static int HAUTEUR_MUR = 31;
     public final static int LARGEUR_MUR = 32;

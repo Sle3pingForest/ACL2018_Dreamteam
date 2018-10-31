@@ -2,8 +2,8 @@ import model.personnages.Heros;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
-import vues.aVueHeros;
-import vues.aVueLabyrinthe;
+import vues.VueHeros;
+import vues.VueLabyrinthe;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.Collections;
 public class Jeu extends BasicGame {
 
     private GameContainer container;
-    private static aVueLabyrinthe laby;
-    private ArrayList<aVueHeros> lesHerosVue;
+    private static VueLabyrinthe laby;
+    private ArrayList<VueHeros> lesHerosVue;
     private ArrayList<Heros> lesHeros;
     private DAOFactory d;
 
@@ -34,25 +34,25 @@ public class Jeu extends BasicGame {
     private Jeu() {
         super("Link the Labyrinthe's Master");
         lesHeros = new ArrayList<Heros>();
-        lesHerosVue = new ArrayList<aVueHeros>();
+        lesHerosVue = new ArrayList<VueHeros>();
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        laby = aVueLabyrinthe.getInstance();
+        laby = VueLabyrinthe.getInstance();
         lesHeros.add(new Heros(300,280,"link"));
-        lesHerosVue.add(new aVueHeros(aVueHeros.BLEU,lesHeros.get(0)));// car un joueur
+        lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
     }
     
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
-    	laby = aVueLabyrinthe.getInstance();
+    	laby = VueLabyrinthe.getInstance();
 		lesHeros.clear();
 		lesHeros = lesHeros2;
 		lesHerosVue.clear();
 		System.out.println(lesHeros);
-		lesHerosVue.add(new aVueHeros(aVueHeros.BLEU,lesHeros.get(0)));// car un joueur
+		lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
     	/*System.out.println(h.getX());
     	
     	lesHeros.get(0).setX(h.getX());
@@ -82,7 +82,7 @@ public class Jeu extends BasicGame {
 
 
         laby.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        for(aVueHeros h : lesHerosVue){
+        for(VueHeros h : lesHerosVue){
             h.render(container,g);
         }
     }
@@ -142,7 +142,7 @@ public class Jeu extends BasicGame {
     	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().load(this);
     }
     
-    public static aVueLabyrinthe getLaby() {
+    public static VueLabyrinthe getLaby() {
     	return laby;
     }
     
@@ -150,7 +150,7 @@ public class Jeu extends BasicGame {
   		return container;
   	}
 
-  	public ArrayList<aVueHeros> getLesHerosVue() {
+  	public ArrayList<VueHeros> getLesHerosVue() {
   		return lesHerosVue;
   	}
 
@@ -174,11 +174,11 @@ public class Jeu extends BasicGame {
 		this.container = container;
 	}
 
-	public static void setLaby(aVueLabyrinthe laby) {
+	public static void setLaby(VueLabyrinthe laby) {
 		Jeu.laby = laby;
 	}
 
-	public void setLesHerosVue(ArrayList<aVueHeros> lesHerosVue) {
+	public void setLesHerosVue(ArrayList<VueHeros> lesHerosVue) {
 		this.lesHerosVue = lesHerosVue;
 	}
 
