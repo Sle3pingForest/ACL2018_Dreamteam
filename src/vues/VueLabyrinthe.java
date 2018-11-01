@@ -1,9 +1,12 @@
 package vues;
 
+import model.Labyrinthe;
 import model.mur.Mur;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import model.personnages.Heros;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -12,11 +15,13 @@ public class VueLabyrinthe implements Serializable{
 
     public final static int HAUTEUR_MUR = 31;
     public final static int LARGEUR_MUR = 32;
-    private model.Labyrinthe lab;
+    private Labyrinthe lab;
+    private ArrayList<VueHeros> lesHerosVue;
     private int longeurCarte;
     private int hauteurCarte;
     
     private static VueLabyrinthe instance = null;
+
 	public static VueLabyrinthe getInstance() throws SlickException {
 		if (instance == null) {
 			instance = new VueLabyrinthe();
@@ -26,9 +31,19 @@ public class VueLabyrinthe implements Serializable{
 
     private VueLabyrinthe() throws SlickException {
         VueElementDecor.mettreForet();
-        lab = new model.Labyrinthe("murLvl1.txt","link",10);
+        //lab = new model.Labyrinthe("murLvl1.txt","link",10);
+        lesHerosVue = new ArrayList<VueHeros>();
+
+    }
+
+    public void setLab(Labyrinthe lab) throws SlickException {
+	    this.lab = lab;
         longeurCarte = lab.getTabMur().length * LARGEUR_MUR;
         hauteurCarte = lab.getTabMur()[0].length * HAUTEUR_MUR;
+        ArrayList<Heros> lesHeros = lab.getLesHeros();
+        for(int i = 0 ; i < lesHeros.size() ; i++){
+            lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(i)));
+        }
     }
 
     public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){
@@ -57,6 +72,10 @@ public class VueLabyrinthe implements Serializable{
             }
             xActu = largeurMin*LARGEUR_MUR;
             yActu += HAUTEUR_MUR;
+        }
+
+        for(VueHeros h : lesHerosVue){
+            h.render(container,g);
         }
     }
 

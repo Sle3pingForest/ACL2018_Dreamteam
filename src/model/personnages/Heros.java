@@ -31,15 +31,15 @@ public class Heros extends Personnage {
     public final static int AVANCER_GAUCHE = 7;
 
     
-    public final static  float VITESSE = 10;
+    public final static  float VITESSE = 0.2f;
     
     // sert a enlever les collisions pour tester plus facilement
-    private boolean check = false;
+    private boolean check = true;
     
     private int directionActu = BAS;
 
 
-    public Heros(int x, int y, String nom){
+    public Heros(float x, float y, String nom){
     	super(x,y);
     	this.pointVie = 5;
     	this.nom = nom;
@@ -169,7 +169,7 @@ public class Heros extends Personnage {
 public void update(GameContainer container, int delta) throws SlickException{
     	
     	
-        float vitesseActu = delta*Heros.VITESSE*0.07f;
+        float vitesseActu = delta*Heros.VITESSE;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
@@ -303,5 +303,5 @@ public void update(GameContainer container, int delta) throws SlickException{
 		
 		
 		return false;
-}
+    }
 }

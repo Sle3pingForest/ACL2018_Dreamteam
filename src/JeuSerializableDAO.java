@@ -10,8 +10,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 import model.personnages.Heros;
-import vues.aVueHeros;
-import vues.aVueLabyrinthe;
+import vues.VueHeros;
+import vues.VueLabyrinthe;
 
 public class JeuSerializableDAO implements JeuDAO{
 
@@ -30,13 +30,13 @@ public class JeuSerializableDAO implements JeuDAO{
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("zeldiablo.sav"));
 			//oos.writeObject(MoteurGraphique.getJ());
 			//oos.writeObject(j.getContainer());
-			oos.writeObject(j.getLesHeros());
+			//oos.writeObject(j.getLesHeros());
 			//oos.writeObject(j.getLesHerosVue());
 			//oos.writeObject(j.getLaby());
 			oos.close();
 			System.out.println("SAVE");
 		} catch (FileNotFoundException e1) {
-			System.out.println("Fichier non trouvé");
+			System.out.println("Fichier non trouvï¿½");
 		} catch (IOException e1) {
 			System.out.println("erreur IO");
 		}

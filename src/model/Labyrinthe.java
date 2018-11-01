@@ -11,30 +11,127 @@ import java.util.Random;
 
 import model.mur.Mur;
 import model.personnages.Heros;
-import model.personnages.Personnage;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Orc;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+import vues.VueLabyrinthe;
 
 
 public class Labyrinthe implements Serializable{
     private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.DRAGON};
     private int longueur , hauteur;
     private Mur[][] tabMur ;
-    private Personnage heros;
     private ArrayList<Monstre> listeMonstres;
     private FabriqueMonstre creationMonstres;
     public static boolean MORT_HEROS = false;
+    private ArrayList<Heros> lesHeros;
+
+
+    private Random random = new Random();
 
 
     public Labyrinthe(String fichierName, String nom, int nombre){
-        this.heros =  new Heros(0,0, nom);
         this.creationMonstres = new FabriqueMonstre();
         this.listeMonstres = new ArrayList<>();
         constructionLabyrinthe(fichierName);
         creationMonstres(nombre);
+        lesHeros = new ArrayList<Heros>();
+    }
 
+    public Labyrinthe(int longeur ,int hauteur){
+        this.longueur = longeur;
+        this.hauteur = hauteur;
+        lesHeros = new ArrayList<Heros>();
+
+        tabMur = new Mur[longeur][hauteur];
+
+        /**** On rempli tout le laby  de mur ****/
+        for(int i = 0; i < hauteur ;i++){
+            for(int j = 0 ; j < longeur ; j++){
+                tabMur[j][i] =  new Mur(j,i);
+            }
+        }
+
+        /**** Et maintenant on creuse ****/
+        creuse();
+    }
+
+    private void creuse(){
+
+        int rand;
+        Mur murActu;
+        /***** On defini le  nombre de mur a cassé le "3"  est purement arbitraire a voir  peut etre une variable a changer *****/
+        int nbCaseACreuser = longueur*hauteur/3;
+        int nbAEncoreCreuser = nbCaseACreuser;
+
+        /***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
+        int xDebut = random.nextInt(longueur-2)+1;
+        int yDebut = random.nextInt(hauteur-2)+1;
+
+        lesHeros.add(new Heros(xDebut* VueLabyrinthe.LARGEUR_MUR,yDebut*VueLabyrinthe.HAUTEUR_MUR, "Link"));
+
+
+        ArrayList<Mur> chemin = new ArrayList<Mur>();
+        chemin.add(tabMur[xDebut][yDebut]);
+        tabMur[xDebut][yDebut] = null;
+
+        while(!chemin.isEmpty()) {
+
+            murActu = chemin.get(0);
+            chemin.remove(0);
+            //System.out.println(nbCaseACreuser+" : "+murActu);
+
+            xDebut = murActu.getPosX();
+            yDebut = murActu.getPosY();
+
+            /**** creuser a gauche ****/
+            if(xDebut > 1 && tabMur[xDebut-1][yDebut] != null) {
+                rand = random.nextInt(nbCaseACreuser);
+                if(rand <= nbAEncoreCreuser){
+                    chemin.add(tabMur[xDebut-1][yDebut]);
+                    tabMur[xDebut-1][yDebut] = null;
+                    nbAEncoreCreuser--;
+                }
+            }
+
+            /**** creuser a droite ****/
+            if(xDebut < longueur-2 && tabMur[xDebut+1][yDebut] != null) {
+                rand = random.nextInt(nbCaseACreuser);
+                if(rand <= nbAEncoreCreuser){
+                    chemin.add(tabMur[xDebut+1][yDebut]);
+                    tabMur[xDebut+1][yDebut] = null;
+                    nbAEncoreCreuser--;
+                }
+            }
+
+            /**** creuser en haut ****/
+            if(yDebut > 1 && tabMur[xDebut][yDebut-1] != null) {
+                rand = random.nextInt(nbCaseACreuser);
+                if(rand <= nbAEncoreCreuser){
+                    chemin.add(tabMur[xDebut][yDebut-1]);
+                    tabMur[xDebut][yDebut-1] = null;
+                    nbAEncoreCreuser--;
+                }
+            }
+
+            /**** creuser en bas ****/
+            if(yDebut < hauteur-2 && tabMur[xDebut][yDebut+1] != null) {
+                rand = random.nextInt(nbCaseACreuser);
+                if(rand <= nbAEncoreCreuser){
+                    chemin.add(tabMur[xDebut][yDebut+1]);
+                    tabMur[xDebut][yDebut+1] = null;
+                    nbAEncoreCreuser--;
+                }
+            }
+
+        }
+    }
+
+    public void update(GameContainer container, int delta) throws SlickException {
+        lesHeros.get(0).update(container,delta);
     }
 
     public Mur[][] getTabMur(){
@@ -50,7 +147,7 @@ public class Labyrinthe implements Serializable{
             int posY = (int)(Math.random() * (hauteur));
             boolean correct = false;
             while(!correct){
-                if(tabMur[posX][posY] == null && posX != this.heros.getX() && posY != this.heros.getY()){
+                if(tabMur[posX][posY] == null && posX != lesHeros.get(0).getX() && posY != lesHeros.get(0).getY()){
                     correct = true;
                     listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
 
@@ -140,43 +237,39 @@ public class Labyrinthe implements Serializable{
     /*********** fin de construction**************/
 
     //GESTION DEPLACEMENT HEROS et Monstre
-    public void deplacerHerosHaut(){
-        int y = (int)heros.getY();
-        int x = (int)heros.getX();
+   public void goGauche(){
+       lesHeros.get(0).goGauche();
+   }
 
-        if(y > 0 && tabMur[x][y-1] == null){
-            heros.goHaut();
-        }
+   public void goDroite(){
+       lesHeros.get(0).goDroite();
+   }
+
+   public void goBas(){
+       lesHeros.get(0).goBas();
+   }
+
+   public void goHaut(){
+       lesHeros.get(0).goHaut();
+   }
+
+   public void arretBas(){
+       lesHeros.get(0).arretBas();
+   }
+
+    public void arretDroite(){
+        lesHeros.get(0).arretDroite();
+    }
+    public void arretHaut(){
+        lesHeros.get(0).arretHaut();
     }
 
-    public void deplacerHerosBas(){
-        int y = (int)heros.getY();
-        int x = (int)heros.getX();
-
-        if(y < hauteur-1 && tabMur[x][y+1] == null){
-            heros.goBas();
-        }
+    public void arretGauche(){
+        lesHeros.get(0).arretGauche();
     }
 
-    public void deplacerHerosDroite(){
-        int y = (int)heros.getY();
-        int x = (int)heros.getX();
 
-        if(x < longueur-1 && tabMur[x +1][y] == null){
-            heros.goDroite();
-        }
-    }
-
-    public void deplacerHerosGauche(){
-        int y = (int)heros.getY();
-        int x = (int)heros.getX();
-
-        if(x > 0 && tabMur[x-1][y] == null){
-            heros.goGauche();
-        }
-    }
-
-    public void deplacerMonstres(){
+   /* public void deplacerMonstres(){
         for(Monstre monstre :listeMonstres){
             int x = (int)monstre.getX();
             int y =  (int)monstre.getY();
@@ -197,11 +290,11 @@ public class Labyrinthe implements Serializable{
                 monstre.goBas();
             }
         }
-    }
+    }*/
 
     public void collison(){
         for(Monstre monstre: listeMonstres){
-            if(this.heros.getX() == monstre.getX() && this.heros.getY() == monstre.getY()){
+            if(lesHeros.get(0).getX() == monstre.getX() && lesHeros.get(0).getY() == monstre.getY()){
                 MORT_HEROS = true;
             }
         }
@@ -209,8 +302,8 @@ public class Labyrinthe implements Serializable{
 
     //AFFICHAGE
     public void afficher(){
-        int x =  (int)heros.getX();
-        int y = (int)heros.getY();
+        int x =  (int)lesHeros.get(0).getX();
+        int y = (int)lesHeros.get(0).getY();
         for(int i = 0 ; i < this.hauteur;i++){
             for( int j = 0; j < this.longueur ; j++){
                 if(i == y && j == x ){
@@ -245,12 +338,12 @@ public class Labyrinthe implements Serializable{
     }
 
     //GETTER ET SETTER
-    public Personnage getHeros() {
-        return heros;
+    public Heros getHeros(int i) {
+        return lesHeros.get(i);
     }
 
-    public void setHeros(Heros heros) {
-        this.heros = heros;
+    public void setHeros(Heros heros,int i) {
+        lesHeros.set(i,heros);
     }
 
     public ArrayList<Monstre> getListeMonstres() {
@@ -268,7 +361,7 @@ public class Labyrinthe implements Serializable{
         ArrayList<String> chemin = new ArrayList<>();
         chemin.add(t);
 
-        if (x == heros.getX() && y == heros.getY()) {
+        if (x == lesHeros.get(0).getX() && y == lesHeros.get(0).getY()) {
             return chemin;
         } else {
 
@@ -299,13 +392,13 @@ public class Labyrinthe implements Serializable{
 
     public void depMonstre(int[][] tab) {
         for (Monstre m: listeMonstres) {
-            deplacementIntelligentMonstre(m, tab);
+      //      deplacementIntelligentMonstre(m, tab);
         }
     }
 
     public int[][] tabCheminMonstre() {
-        int x = (int)heros.getX();
-        int y = (int)heros.getY();
+        int x = (int)lesHeros.get(0).getX();
+        int y = (int)lesHeros.get(0).getY();
         int[][] tab = new int[longueur][hauteur];
         boolean trouve = false;
 
@@ -331,7 +424,7 @@ public class Labyrinthe implements Serializable{
 
     // fait bouger le monstre vers le heros de facon "intelligente" chemin le plus court
     // calcul les chemins du heros vers les monstres
-    public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
+    /*public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
 
         ArrayList<String> dep = calculChemin(tab, m);
         for (String ss : dep ) System.out.print(ss + "  " );
@@ -354,7 +447,7 @@ public class Labyrinthe implements Serializable{
             default:
                 break;
         }
-    }
+    }*/
 
 
     // cherche un chemin du monstre vers le heros en valuant les cases
@@ -401,7 +494,7 @@ public class Labyrinthe implements Serializable{
         int min = Integer.MAX_VALUE;
         String s = "";
 
-        int xh = (int)heros.getX(), yh = (int)heros.getY();
+        int xh = (int)lesHeros.get(0).getX(), yh = (int)lesHeros.get(0).getY();
         if (x == xh && y == yh) {
             tab.add("");
         }
@@ -476,6 +569,9 @@ public class Labyrinthe implements Serializable{
 	}
 */
 
+    public ArrayList<Heros> getLesHeros(){
+        return  lesHeros;
+    }
 
 
 

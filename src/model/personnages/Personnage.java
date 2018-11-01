@@ -17,7 +17,7 @@ public abstract class Personnage implements Serializable{
     
 	protected int pointVie;
 	protected int defense, attaque, vitesse;
-	public Personnage(int x, int y) {
+	public Personnage(float x, float y) {
 		this.pointVie = 1; 
 		this.attaque = 1;
 		this.defense = 0;
@@ -26,21 +26,6 @@ public abstract class Personnage implements Serializable{
 		this.vitesse = 1;
 		
 	}
-    public void goGauche(){
-        x--;
-    }
-
-    public void goDroite(){
-        x++;
-    }
-
-    public void goHaut(){
-        y--;
-    }
-
-    public void goBas(){
-        y++;
-    }
     
     public float getX() {
         return x;
