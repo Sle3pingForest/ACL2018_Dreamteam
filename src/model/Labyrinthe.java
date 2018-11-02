@@ -61,7 +61,8 @@ public class Labyrinthe implements Serializable{
 
     private void creuse(){
 
-        int rand;
+        int rand,choix;
+        ArrayList<Integer> listChoix = new ArrayList<Integer>();
         Mur murActu;
         /***** On defini le  nombre de mur a cassé le "3"  est purement arbitraire a voir  peut etre une variable a changer *****/
         int nbCaseACreuser = longueur*hauteur/3;
@@ -87,54 +88,73 @@ public class Labyrinthe implements Serializable{
             xDebut = murActu.getPosX();
             yDebut = murActu.getPosY();
 
-            /**** creuser a gauche ****/
-            if(xDebut > 1 && tabMur[xDebut-1][yDebut] != null) {
-                if(peutEtreCreuser(tabMur[xDebut-1][yDebut])) {
-                    rand = random.nextInt(nbCaseACreuser);
-                    if (rand <= nbAEncoreCreuser) {
-                        chemin.add(tabMur[xDebut - 1][yDebut]);
-                        tabMur[xDebut - 1][yDebut] = null;
-                        nbAEncoreCreuser--;
-                    }
+            listChoix.add(0);
+            listChoix.add(1);
+            listChoix.add(2);
+            listChoix.add(3);
+
+            while(!listChoix.isEmpty()) {
+                rand = random.nextInt(listChoix.size());
+                choix = listChoix.get(rand);
+                listChoix.remove(rand);
+
+                switch(choix) {
+                    case 0:
+                        /**** creuser a gauche ****/
+                        if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut - 1][yDebut]);
+                                    tabMur[xDebut - 1][yDebut] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
+                    case 1:
+                        /**** creuser a droite ****/
+                        if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut + 1][yDebut]);
+                                    tabMur[xDebut + 1][yDebut] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        /**** creuser en haut ****/
+                        if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut][yDebut - 1]);
+                                    tabMur[xDebut][yDebut - 1] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
+
+                        case 3:
+                        /**** creuser en bas ****/
+                        if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut][yDebut + 1]);
+                                    tabMur[xDebut][yDebut + 1] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
                 }
             }
-
-            /**** creuser a droite ****/
-            if(xDebut < longueur-2 && tabMur[xDebut+1][yDebut] != null) {
-                if(peutEtreCreuser(tabMur[xDebut+1][yDebut])) {
-                    rand = random.nextInt(nbCaseACreuser);
-                    if (rand <= nbAEncoreCreuser) {
-                        chemin.add(tabMur[xDebut + 1][yDebut]);
-                        tabMur[xDebut + 1][yDebut] = null;
-                        nbAEncoreCreuser--;
-                    }
-                }
-            }
-
-            /**** creuser en haut ****/
-            if(yDebut > 1 && tabMur[xDebut][yDebut-1] != null) {
-                if(peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
-                    rand = random.nextInt(nbCaseACreuser);
-                    if (rand <= nbAEncoreCreuser) {
-                        chemin.add(tabMur[xDebut][yDebut - 1]);
-                        tabMur[xDebut][yDebut - 1] = null;
-                        nbAEncoreCreuser--;
-                    }
-                }
-            }
-
-            /**** creuser en bas ****/
-            if(yDebut < hauteur-2 && tabMur[xDebut][yDebut+1] != null) {
-                if(peutEtreCreuser(tabMur[xDebut][yDebut+1])) {
-                    rand = random.nextInt(nbCaseACreuser);
-                    if (rand <= nbAEncoreCreuser) {
-                        chemin.add(tabMur[xDebut][yDebut + 1]);
-                        tabMur[xDebut][yDebut + 1] = null;
-                        nbAEncoreCreuser--;
-                    }
-                }
-            }
-
         }
     }
 
