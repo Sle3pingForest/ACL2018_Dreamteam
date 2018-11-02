@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import model.Item.Item;
+import model.Item.Tresor;
 import model.mur.Mur;
 import model.personnages.Heros;
 import model.personnages.monstres.Dragon;
@@ -22,13 +24,15 @@ import vues.VueLabyrinthe;
 
 public class Labyrinthe implements Serializable{
     private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.DRAGON};
+    private Item [][]lesObjets;
     private int longueur , hauteur;
     private Mur[][] tabMur ;
     private ArrayList<Monstre> listeMonstres;
     private FabriqueMonstre creationMonstres;
     public static boolean MORT_HEROS = false;
     private ArrayList<Heros> lesHeros;
-    private float multiplicateurProba = 3;//Il pourrait varier aleatoirement
+    private float multiplicateurProba = 1.2f;//Il pourrait varier aleatoirement
+    private boolean tresorTrouver = false;
 
     private Random random = new Random();
 
@@ -45,7 +49,7 @@ public class Labyrinthe implements Serializable{
         this.longueur = longeur;
         this.hauteur = hauteur;
         lesHeros = new ArrayList<Heros>();
-
+        lesObjets = new Item[longeur][hauteur];
         tabMur = new Mur[longeur][hauteur];
 
         /**** On rempli tout le laby  de mur ****/
@@ -63,9 +67,9 @@ public class Labyrinthe implements Serializable{
 
         int rand,choix;
         ArrayList<Integer> listChoix = new ArrayList<Integer>();
-        Mur murActu;
-        /***** On defini le  nombre de mur a cassé le "3"  est purement arbitraire a voir  peut etre une variable a changer *****/
-        int nbCaseACreuser = longueur*hauteur/3;
+        Mur murActu = null;
+        /***** On defini le  nombre de mur a cassé le "2"  est purement arbitraire a voir  peut etre une variable a changer *****/
+        int nbCaseACreuser = (int)(longueur*hauteur/1.5f);
         int nbAEncoreCreuser = nbCaseACreuser;
 
         /***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
@@ -81,8 +85,9 @@ public class Labyrinthe implements Serializable{
 
         while(!chemin.isEmpty()) {
 
-            murActu = chemin.get(0);
-            chemin.remove(0);
+            rand = random.nextInt(chemin.size());
+            murActu = chemin.get(rand);
+            chemin.remove(rand);
             //System.out.println(nbCaseACreuser+" : "+murActu);
 
             xDebut = murActu.getPosX();
@@ -156,6 +161,7 @@ public class Labyrinthe implements Serializable{
                 }
             }
         }
+        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* VueLabyrinthe.LARGEUR_MUR,murActu.getPosY()*VueLabyrinthe.HAUTEUR_MUR,null);
     }
 
     /**** On verifie si on peut creuser le mur ****/
@@ -186,6 +192,9 @@ public class Labyrinthe implements Serializable{
 
     public void update(GameContainer container, int delta) throws SlickException {
         lesHeros.get(0).update(container,delta);
+        if(lesHeros.get(0).getTresorDeMap() != null){
+            tresorTrouver = true;
+        }
     }
 
     public Mur[][] getTabMur(){
@@ -627,7 +636,11 @@ public class Labyrinthe implements Serializable{
         return  lesHeros;
     }
 
+    public Item[][] getLesObjets(){
+        return lesObjets;
+    }
 
-
-
+    public boolean isTresorTrouver() {
+        return tresorTrouver;
+    }
 }

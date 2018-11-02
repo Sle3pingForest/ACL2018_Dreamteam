@@ -1,5 +1,7 @@
 package vues;
 
+import model.Item.Item;
+import model.Item.Tresor;
 import model.Labyrinthe;
 import model.mur.Mur;
 
@@ -10,6 +12,8 @@ import model.personnages.Heros;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import vues.VueItem.VueItem;
+import vues.VueItem.VueTresor;
 
 public class VueLabyrinthe implements Serializable{
 
@@ -17,6 +21,7 @@ public class VueLabyrinthe implements Serializable{
     public final static int LARGEUR_MUR = 32;
     private Labyrinthe lab;
     private ArrayList<VueHeros> lesHerosVue;
+    private ArrayList<VueItem> lesObjetsVue;
     private int longeurCarte;
     private int hauteurCarte;
     
@@ -33,6 +38,7 @@ public class VueLabyrinthe implements Serializable{
         VueElementDecor.mettreForet();
         //lab = new model.Labyrinthe("murLvl1.txt","link",10);
         lesHerosVue = new ArrayList<VueHeros>();
+        lesObjetsVue = new ArrayList<VueItem>();
 
     }
 
@@ -43,6 +49,21 @@ public class VueLabyrinthe implements Serializable{
         ArrayList<Heros> lesHeros = lab.getLesHeros();
         for(int i = 0 ; i < lesHeros.size() ; i++){
             lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(i)));
+        }
+        Item[][]lesObjets = lab.getLesObjets();
+        for(int i = 0 ; i < lesObjets.length ; i++){
+            for(int j = 0 ; j < lesObjets[i].length ; j++) {
+                Item itemActu = lesObjets[i][j];
+                if(itemActu != null){
+                    switch (itemActu.getClass().getName()) {
+                        case "model.Item.Tresor":
+
+                            lesObjetsVue.add(new VueTresor((Tresor) itemActu));
+                            break;
+                    }
+                }
+            }
+
         }
     }
 
@@ -76,6 +97,10 @@ public class VueLabyrinthe implements Serializable{
 
         for(VueHeros h : lesHerosVue){
             h.render(container,g);
+        }
+
+        for(VueItem i : lesObjetsVue){
+            i.render(container, g);
         }
     }
 

@@ -1,8 +1,11 @@
 package model.personnages;
 
+import model.Item.Item;
+import model.Item.Tresor;
 import model.mur.Mur;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -34,9 +37,11 @@ public class Heros extends Personnage {
     public final static  float VITESSE = 0.2f;
     
     // sert a enlever les collisions pour tester plus facilement
-    private boolean check = false;
+    private boolean check = true;
     
     private int directionActu = BAS;
+    private Tresor tresorDeMap = null;
+    private ArrayList<Item> inventaire;
 
 
     public Heros(float x, float y, String nom){
@@ -45,6 +50,7 @@ public class Heros extends Personnage {
     	this.nom = nom;
     	this.attaque = 2;
     	this.defense = 0;
+    	inventaire = new ArrayList<Item>();
     }
 
     public String toString(){
@@ -166,7 +172,7 @@ public class Heros extends Personnage {
     	return directionActu;
     }
     
-public void update(GameContainer container, int delta) throws SlickException{
+    public void update(GameContainer container, int delta) throws SlickException{
     	
     	VueLabyrinthe vueLab = VueLabyrinthe.getInstance();
         float vitesseActu = delta*Heros.VITESSE;
@@ -209,6 +215,7 @@ public void update(GameContainer container, int delta) throws SlickException{
     	
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
+        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
@@ -223,11 +230,19 @@ public void update(GameContainer container, int delta) throws SlickException{
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+		if(lesItem[xCaseFuture][yCaseFuture] != null){
+		    lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		
 		
     	return false;
@@ -238,6 +253,7 @@ public void update(GameContainer container, int delta) throws SlickException{
     	
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
+        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY-6)/VueLabyrinthe.HAUTEUR_MUR)+1;
@@ -252,11 +268,19 @@ public void update(GameContainer container, int delta) throws SlickException{
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		
 		
     	return false;
@@ -266,6 +290,7 @@ public void update(GameContainer container, int delta) throws SlickException{
     	
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
+        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
@@ -278,6 +303,10 @@ public void update(GameContainer container, int delta) throws SlickException{
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
     	return false;
     }
 
@@ -286,6 +315,7 @@ public void update(GameContainer container, int delta) throws SlickException{
 		
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
+        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
@@ -297,13 +327,33 @@ public void update(GameContainer container, int delta) throws SlickException{
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
+        if(lesItem[xCaseFuture][yCaseFuture] != null){
+            lesItem[xCaseFuture][yCaseFuture].ramasser();
+            ajouterAInventaire(lesItem[xCaseFuture][yCaseFuture]);
+        }
 		
 		
 		return false;
+    }
+
+    public Tresor getTresorDeMap(){
+        return  tresorDeMap;
+    }
+
+    private void ajouterAInventaire(Item i){
+        if(!i.getClass().getName().equals("model.Item.Tresor")) {
+            inventaire.add(i);
+        }else{
+            tresorDeMap = (Tresor)i;
+        }
     }
 }
