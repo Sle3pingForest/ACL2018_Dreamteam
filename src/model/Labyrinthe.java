@@ -89,45 +89,79 @@ public class Labyrinthe implements Serializable{
 
             /**** creuser a gauche ****/
             if(xDebut > 1 && tabMur[xDebut-1][yDebut] != null) {
-                rand = random.nextInt(nbCaseACreuser);
-                if(rand <= nbAEncoreCreuser){
-                    chemin.add(tabMur[xDebut-1][yDebut]);
-                    tabMur[xDebut-1][yDebut] = null;
-                    nbAEncoreCreuser--;
+                if(peutEtreCreuser(tabMur[xDebut-1][yDebut])) {
+                    rand = random.nextInt(nbCaseACreuser);
+                    if (rand <= nbAEncoreCreuser) {
+                        chemin.add(tabMur[xDebut - 1][yDebut]);
+                        tabMur[xDebut - 1][yDebut] = null;
+                        nbAEncoreCreuser--;
+                    }
                 }
             }
 
             /**** creuser a droite ****/
             if(xDebut < longueur-2 && tabMur[xDebut+1][yDebut] != null) {
-                rand = random.nextInt(nbCaseACreuser);
-                if(rand <= nbAEncoreCreuser){
-                    chemin.add(tabMur[xDebut+1][yDebut]);
-                    tabMur[xDebut+1][yDebut] = null;
-                    nbAEncoreCreuser--;
+                if(peutEtreCreuser(tabMur[xDebut+1][yDebut])) {
+                    rand = random.nextInt(nbCaseACreuser);
+                    if (rand <= nbAEncoreCreuser) {
+                        chemin.add(tabMur[xDebut + 1][yDebut]);
+                        tabMur[xDebut + 1][yDebut] = null;
+                        nbAEncoreCreuser--;
+                    }
                 }
             }
 
             /**** creuser en haut ****/
             if(yDebut > 1 && tabMur[xDebut][yDebut-1] != null) {
-                rand = random.nextInt(nbCaseACreuser);
-                if(rand <= nbAEncoreCreuser){
-                    chemin.add(tabMur[xDebut][yDebut-1]);
-                    tabMur[xDebut][yDebut-1] = null;
-                    nbAEncoreCreuser--;
+                if(peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
+                    rand = random.nextInt(nbCaseACreuser);
+                    if (rand <= nbAEncoreCreuser) {
+                        chemin.add(tabMur[xDebut][yDebut - 1]);
+                        tabMur[xDebut][yDebut - 1] = null;
+                        nbAEncoreCreuser--;
+                    }
                 }
             }
 
             /**** creuser en bas ****/
             if(yDebut < hauteur-2 && tabMur[xDebut][yDebut+1] != null) {
-                rand = random.nextInt(nbCaseACreuser);
-                if(rand <= nbAEncoreCreuser){
-                    chemin.add(tabMur[xDebut][yDebut+1]);
-                    tabMur[xDebut][yDebut+1] = null;
-                    nbAEncoreCreuser--;
+                if(peutEtreCreuser(tabMur[xDebut][yDebut+1])) {
+                    rand = random.nextInt(nbCaseACreuser);
+                    if (rand <= nbAEncoreCreuser) {
+                        chemin.add(tabMur[xDebut][yDebut + 1]);
+                        tabMur[xDebut][yDebut + 1] = null;
+                        nbAEncoreCreuser--;
+                    }
                 }
             }
 
         }
+    }
+
+    /**** On verifie si on peut creuser le mur ****/
+    private boolean peutEtreCreuser(Mur mur){
+        int x = mur.getPosX();
+        int y = mur.getPosY();
+
+        if(tabMur[x+1][y] == null ){
+            if(tabMur[x][y+1] == null){
+                return false;
+            }
+            if(tabMur[x][y-1] == null){
+                return false;
+            }
+        }
+
+        if(tabMur[x-1][y] == null ){
+            if(tabMur[x][y+1] == null){
+                return false;
+            }
+            if(tabMur[x][y-1] == null){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void update(GameContainer container, int delta) throws SlickException {
