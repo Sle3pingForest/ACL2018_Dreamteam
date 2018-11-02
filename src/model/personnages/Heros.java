@@ -34,7 +34,7 @@ public class Heros extends Personnage {
     public final static  float VITESSE = 0.2f;
     
     // sert a enlever les collisions pour tester plus facilement
-    private boolean check = true;
+    private boolean check = false;
     
     private int directionActu = BAS;
 
@@ -168,36 +168,38 @@ public class Heros extends Personnage {
     
 public void update(GameContainer container, int delta) throws SlickException{
     	
-    	
+    	VueLabyrinthe vueLab = VueLabyrinthe.getInstance();
         float vitesseActu = delta*Heros.VITESSE;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
-        if (check) {
-	        if(vertical == -1){
-		        if(!collisionHaut( futureX, futureY)){
-			        y = futureY;
-		        }
-	        }
-	        if(vertical == 1){
-		        if(!collisionBas( futureX, futureY)){
-			        y = futureY;
-		        }
-	        }
-	        
-	        if(horizontal == -1){
-		        if(!collisionGauche( futureX, futureY)){
-			        x = futureX;
-		        }
-	        }
-	        if(horizontal == 1){
-		        if(!collisionDroite( futureX, futureY)){
-			        x = futureX;
-		        }
-	        }
-        } else {
-        	x = futureX;
-        	y = futureY;
+        if(futureX > 0 && futureX < vueLab.getLongeurCarte() - VueLabyrinthe.LARGEUR_MUR && futureY > 0 && futureY < vueLab.getHauteurCarte()-VueLabyrinthe.HAUTEUR_MUR){
+            if (check) {
+                if(vertical == -1){
+                    if(!collisionHaut( futureX, futureY)){
+                        y = futureY;
+                    }
+                }
+                if(vertical == 1){
+                    if(!collisionBas( futureX, futureY)){
+                        y = futureY;
+                    }
+                }
+
+                if(horizontal == -1){
+                    if(!collisionGauche( futureX, futureY)){
+                        x = futureX;
+                    }
+                }
+                if(horizontal == 1){
+                    if(!collisionDroite( futureX, futureY)){
+                        x = futureX;
+                    }
+                }
+            } else {
+                x = futureX;
+                y = futureY;
+            }
         }
 
        

@@ -90,4 +90,5 @@ public class VueLabyrinthe implements Serializable{
     public int getHauteurCarte(){
         return hauteurCarte;
     }
+
 }

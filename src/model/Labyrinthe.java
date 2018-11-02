@@ -28,7 +28,7 @@ public class Labyrinthe implements Serializable{
     private FabriqueMonstre creationMonstres;
     public static boolean MORT_HEROS = false;
     private ArrayList<Heros> lesHeros;
-
+    private float multiplicateurProba = 3;//Il pourrait varier aleatoirement
 
     private Random random = new Random();
 
@@ -103,8 +103,8 @@ public class Labyrinthe implements Serializable{
                         /**** creuser a gauche ****/
                         if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
                             if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
-                                rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= nbAEncoreCreuser) {
+                                rand = random.nextInt(3*nbCaseACreuser);
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
                                     chemin.add(tabMur[xDebut - 1][yDebut]);
                                     tabMur[xDebut - 1][yDebut] = null;
                                     nbAEncoreCreuser--;
@@ -117,7 +117,7 @@ public class Labyrinthe implements Serializable{
                         if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
                             if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
                                 rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= nbAEncoreCreuser) {
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
                                     chemin.add(tabMur[xDebut + 1][yDebut]);
                                     tabMur[xDebut + 1][yDebut] = null;
                                     nbAEncoreCreuser--;
@@ -131,7 +131,7 @@ public class Labyrinthe implements Serializable{
                         if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
                             if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
                                 rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= nbAEncoreCreuser) {
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
                                     chemin.add(tabMur[xDebut][yDebut - 1]);
                                     tabMur[xDebut][yDebut - 1] = null;
                                     nbAEncoreCreuser--;
@@ -145,7 +145,7 @@ public class Labyrinthe implements Serializable{
                         if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
                             if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
                                 rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= nbAEncoreCreuser) {
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
                                     chemin.add(tabMur[xDebut][yDebut + 1]);
                                     tabMur[xDebut][yDebut + 1] = null;
                                     nbAEncoreCreuser--;
@@ -626,6 +626,7 @@ public class Labyrinthe implements Serializable{
     public ArrayList<Heros> getLesHeros(){
         return  lesHeros;
     }
+
 
 
 
