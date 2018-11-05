@@ -3,6 +3,7 @@ package vues;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 
+/**** n'oublier pas de rajouter les bibliotheque jogg-0.0.7.jar  et jorbis-0.0.15.jar a votre projet pour que ca marche ****/
 public class Song {
 
     /**** Ici on gere la musique de font ****/
