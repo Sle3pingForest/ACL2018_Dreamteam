@@ -3,6 +3,7 @@ import model.personnages.Heros;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
+import vues.Song;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
 
@@ -42,6 +43,8 @@ public class Jeu extends BasicGame {
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
+        Song.chargerForet();
+        Song.jouerBackground();
     }
     
     
@@ -56,6 +59,7 @@ public class Jeu extends BasicGame {
     	
     	lesHeros.get(0).setX(h.getX());
     	lesHeros.get(0).setY(h.getY());*/
+
     	
 	}
     
