@@ -213,7 +213,6 @@ public class Labyrinthe implements Serializable{
                 if(tabMur[posX][posY] == null && posX != lesHeros.get(0).getX() && posY != lesHeros.get(0).getY()){
                     correct = true;
                     listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
-
                 }
                 else{
                     posX = (int)(Math.random() * (longueur));
