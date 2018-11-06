@@ -43,5 +43,17 @@ public abstract class Personnage extends Observable implements Serializable{
     public int getHorizontal(){
     	return horizontal;
     }
+	public int getPointVie() {
+		return pointVie;
+	}
+	public int getDefense() {
+		return defense;
+	}
+	public int getAttaque() {
+		return attaque;
+	}
+	public int getVitesse() {
+		return vitesse;
+	}
 
 }

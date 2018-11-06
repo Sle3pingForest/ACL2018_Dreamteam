@@ -52,8 +52,22 @@ public class Heros extends Personnage {
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
     }
+    
+    public void charge(Heros h) {
+    	this.x = h.getX();
+    	this.y = h.getY();
+    	this.pointVie = h.getPointVie();
+    	this.nom = h.getNom();
+    	this.attaque = h.getAttaque();
+    	this.defense = h.getDefense();
+    	inventaire = h.getInventaire();
+    }
 
-    public String toString(){
+    public ArrayList<Item> getInventaire() {
+		return inventaire;
+	}
+
+	public String toString(){
         String donnee = "Le Heros est en  x :"+x+" , +y : "+y;
 
         return donnee;
