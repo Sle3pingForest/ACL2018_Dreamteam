@@ -50,6 +50,7 @@ public class Jeu extends BasicGame {
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
     	labyVue = VueLabyrinthe.getInstance();
+    	labyModel.getHeros(0).charge(lesHeros2.get(0));
 		//lesHeros.clear();
 		//lesHeros = lesHeros2;
 		//lesHerosVue.clear();
@@ -100,6 +101,7 @@ public class Jeu extends BasicGame {
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
             case Input.KEY_0:	try {
 				save();
+				System.out.println("SAVE");
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,6 +131,7 @@ public class Jeu extends BasicGame {
     public void update(GameContainer container, int delta) throws SlickException {
         labyModel.update(container,delta);
         if(labyModel.isTresorTrouver()){
+        	System.out.println("GRONUL");
             container.exit();
         }
     }
@@ -147,65 +150,10 @@ public class Jeu extends BasicGame {
     	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().load(this);
     }
     
-   /* public static VueLabyrinthe getLaby() {
-    	return laby;
+    public ArrayList<Heros> getLesheros() {
+    	return labyModel.getLesHeros();
     }
-    
-    public GameContainer getContainer() {
-  		return container;
-  	}
-
-  	public ArrayList<VueHeros> getLesHerosVue() {
-  		return lesHerosVue;
-  	}
-
-  	public ArrayList<Heros> getLesHeros() {
-  		return lesHeros;
-  	}
-
-  	public static Dimension getScreenSize() {
-  		return screenSize;
-  	}
-
-  	public static int getWidth() {
-  		return width;
-  	}
-
-  	public static int getHeight() {
-  		return height;
-  	}
-
-	public void setContainer(GameContainer container) {
-		this.container = container;
-	}
-
-	public static void setLaby(VueLabyrinthe laby) {
-		Jeu.laby = laby;
-	}
-
-	public void setLesHerosVue(ArrayList<VueHeros> lesHerosVue) {
-		this.lesHerosVue = lesHerosVue;
-	}
-
-	public void setLesHeros(ArrayList<Heros> lesHeros) {
-		this.lesHeros = lesHeros;
-	}
-
-	public static void setScreenSize(Dimension screenSize) {
-		Jeu.screenSize = screenSize;
-	}
-
-	public static void setWidth(int width) {
-		Jeu.width = width;
-	}
-
-	public static void setHeight(int height) {
-		Jeu.height = height;
-	}
-
-	public static void setInstance(Jeu instance) {
-		Jeu.instance = instance;
-	}*/
+   
 
 	
 }
