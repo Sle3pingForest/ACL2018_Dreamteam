@@ -201,6 +201,10 @@ public class Labyrinthe implements Serializable{
         if(lesHeros.get(0).getTresorDeMap() != null){
             tresorTrouver = true;
         }
+        deplacerMonstres();
+        for (Monstre m : listeMonstres) {
+        	m.update(container, delta);
+        }
     }
 
     public Mur[][] getTabMur(){
@@ -337,10 +341,10 @@ public class Labyrinthe implements Serializable{
     }
 
 
-   /* public void deplacerMonstres(){
+   public void deplacerMonstres(){
         for(Monstre monstre :listeMonstres){
-            int x = (int)monstre.getX();
-            int y =  (int)monstre.getY();
+            int x = (int)monstre.getX() / VueLabyrinthe.LARGEUR_MUR;
+            int y =  (int)monstre.getY() / VueLabyrinthe.HAUTEUR_MUR;
             Random r = new Random();
             int direction =  r.nextInt(5);
 
@@ -358,7 +362,7 @@ public class Labyrinthe implements Serializable{
                 monstre.goBas();
             }
         }
-    }*/
+    }
 
     public void collison(){
         for(Monstre monstre: listeMonstres){
