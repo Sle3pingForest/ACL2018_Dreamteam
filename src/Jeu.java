@@ -8,6 +8,7 @@ import vues.VueHeros;
 import vues.VueLabyrinthe;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 

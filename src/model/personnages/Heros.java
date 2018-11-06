@@ -207,7 +207,6 @@ public class Heros extends Personnage {
                 y = futureY;
             }
         }
-
        
     }
     

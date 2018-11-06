@@ -23,7 +23,7 @@ import vues.VueLabyrinthe;
 
 
 public class Labyrinthe implements Serializable{
-    private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.DRAGON};
+    private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.ORC};
     private Item [][]lesObjets;
     private int longueur , hauteur;
     private Mur[][] tabMur ;
@@ -37,20 +37,25 @@ public class Labyrinthe implements Serializable{
     private Random random = new Random();
 
 
-    public Labyrinthe(String fichierName, String nom, int nombre){
+   /* public Labyrinthe(String fichierName, String nom, int nombre){
         this.creationMonstres = new FabriqueMonstre();
         this.listeMonstres = new ArrayList<>();
         constructionLabyrinthe(fichierName);
         creationMonstres(nombre);
         lesHeros = new ArrayList<Heros>();
-    }
+    }*/
 
     public Labyrinthe(int longeur ,int hauteur){
         this.longueur = longeur;
         this.hauteur = hauteur;
+        this.creationMonstres = new FabriqueMonstre();
         lesHeros = new ArrayList<Heros>();
         lesObjets = new Item[longeur][hauteur];
         tabMur = new Mur[longeur][hauteur];
+        this.listeMonstres = new ArrayList<>();
+        
+
+        
 
         /**** On rempli tout le laby  de mur ****/
         for(int i = 0; i < hauteur ;i++){
@@ -61,6 +66,7 @@ public class Labyrinthe implements Serializable{
 
         /**** Et maintenant on creuse ****/
         creuse();
+       produitMonstres(100);
     }
 
     private void creuse(){
@@ -201,7 +207,7 @@ public class Labyrinthe implements Serializable{
         return  tabMur;
     }
     //Construction Monstres et Labyrinthe
-    private void creationMonstres(int nombreMonstre){
+    private void produitMonstres(int nombreMonstre){
 
         for(int i = 0; i < nombreMonstre; ++i){
             int rng  = (int)(Math.random() * (tabNomMonstre.length)) ;
@@ -212,7 +218,7 @@ public class Labyrinthe implements Serializable{
             while(!correct){
                 if(tabMur[posX][posY] == null && posX != lesHeros.get(0).getX() && posY != lesHeros.get(0).getY()){
                     correct = true;
-                    listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX, posY));
+                    listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX * VueLabyrinthe.LARGEUR_MUR, posY*VueLabyrinthe.HAUTEUR_MUR));
 
                 }
                 else{
