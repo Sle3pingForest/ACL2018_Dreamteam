@@ -9,11 +9,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.personnages.Heros;
+import model.personnages.monstres.Monstre;
+import model.personnages.monstres.Orc;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import vues.VueItem.VueItem;
 import vues.VueItem.VueTresor;
+import vues.VueMonstres.VueMonstres;
+import vues.VueMonstres.VueOrc;
 
 public class VueLabyrinthe implements Serializable{
 
@@ -22,6 +27,7 @@ public class VueLabyrinthe implements Serializable{
     private Labyrinthe lab;
     private ArrayList<VueHeros> lesHerosVue;
     private ArrayList<VueItem> lesObjetsVue;
+    private ArrayList<VueMonstres> lesMonstresVue;
     private int longeurCarte;
     private int hauteurCarte;
     
@@ -39,6 +45,7 @@ public class VueLabyrinthe implements Serializable{
         //lab = new model.Labyrinthe("murLvl1.txt","link",10);
         lesHerosVue = new ArrayList<VueHeros>();
         lesObjetsVue = new ArrayList<VueItem>();
+        lesMonstresVue = new ArrayList<VueMonstres>();
 
     }
 
@@ -49,6 +56,18 @@ public class VueLabyrinthe implements Serializable{
         ArrayList<Heros> lesHeros = lab.getLesHeros();
         for(int i = 0 ; i < lesHeros.size() ; i++){
             lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(i)));
+        }
+        
+        ArrayList<Monstre> lesMonstres = lab.getListeMonstres();
+        for (int k = 0; k < lesMonstres.size() ; k++ ){
+        	if(lesMonstres.get(k).getNom() == "orc"){
+        		lesMonstresVue.add(new VueOrc((Orc)lesMonstres.get(k))) ;
+        	}
+        	if(lesMonstres.get(k).getNom() == "dragon"){
+
+        		//lesMonstresVue.add(new VueDragon((Dragon)lesMonstres.get(k))) ;
+        	}
+			
         }
         Item[][]lesObjets = lab.getLesObjets();
         for(int i = 0 ; i < lesObjets.length ; i++){
@@ -97,6 +116,10 @@ public class VueLabyrinthe implements Serializable{
 
         for(VueHeros h : lesHerosVue){
             h.render(container,g);
+        }
+
+        for(VueMonstres m : lesMonstresVue){
+            m.render(container,g);
         }
 
         for(VueItem i : lesObjetsVue){

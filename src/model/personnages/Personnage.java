@@ -1,8 +1,9 @@
 package model.personnages;
 
 import java.io.Serializable;
+import java.util.Observable;
 
-public abstract class Personnage implements Serializable{
+public abstract class Personnage extends Observable implements Serializable{
 	
     public void setX(float x) {
 		this.x = x;
