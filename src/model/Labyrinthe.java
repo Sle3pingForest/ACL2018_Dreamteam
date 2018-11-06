@@ -33,6 +33,8 @@ public class Labyrinthe implements Serializable{
     private ArrayList<Heros> lesHeros;
     private float multiplicateurProba = 1.2f;//Il pourrait varier aleatoirement
     private boolean tresorTrouver = false;
+    public final static int HAUTEUR_MUR = 31;
+    public final static int LARGEUR_MUR = 32;
 
     private Random random = new Random();
 
@@ -82,7 +84,7 @@ public class Labyrinthe implements Serializable{
         int xDebut = random.nextInt(longueur-2)+1;
         int yDebut = random.nextInt(hauteur-2)+1;
 
-        lesHeros.add(new Heros(xDebut* VueLabyrinthe.LARGEUR_MUR,yDebut*VueLabyrinthe.HAUTEUR_MUR, "Link"));
+        lesHeros.add(new Heros(xDebut* LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
 
 
         ArrayList<Mur> chemin = new ArrayList<Mur>();
@@ -167,7 +169,7 @@ public class Labyrinthe implements Serializable{
                 }
             }
         }
-        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* VueLabyrinthe.LARGEUR_MUR,murActu.getPosY()*VueLabyrinthe.HAUTEUR_MUR,null);
+        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
     }
 
     /**** On verifie si on peut creuser le mur ****/
@@ -222,7 +224,7 @@ public class Labyrinthe implements Serializable{
             while(!correct){
                 if(tabMur[posX][posY] == null && posX != lesHeros.get(0).getX() && posY != lesHeros.get(0).getY()){
                     correct = true;
-                    listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX * VueLabyrinthe.LARGEUR_MUR, posY*VueLabyrinthe.HAUTEUR_MUR));
+                    listeMonstres.add(this.creationMonstres.creerMonstres(tabNomMonstre[rng], posX * LARGEUR_MUR, posY*HAUTEUR_MUR));
                 }
                 else{
                     posX = (int)(Math.random() * (longueur));
@@ -343,8 +345,8 @@ public class Labyrinthe implements Serializable{
 
    public void deplacerMonstres(){
         for(Monstre monstre :listeMonstres){
-            int x = (int)monstre.getX() / VueLabyrinthe.LARGEUR_MUR;
-            int y = (int)monstre.getY() / VueLabyrinthe.HAUTEUR_MUR;
+            int x = (int)monstre.getX() / LARGEUR_MUR;
+            int y = (int)monstre.getY() / HAUTEUR_MUR;
             Random r = new Random();
             int direction =  r.nextInt(5);
 
@@ -624,8 +626,8 @@ public class Labyrinthe implements Serializable{
 	// donc on regarde si une des 4 cases autour du heros est numerote
 	public boolean verifChemin(int[][] tab) {
 		boolean trouve = false;
-		int x = (int)lesHeros.get(0).getX()/VueLabyrinthe.LARGEUR_MUR;
-		int y = (int)lesHeros.get(0).getY()/VueLabyrinthe.HAUTEUR_MUR;
+		int x = (int)lesHeros.get(0).getX()/LARGEUR_MUR;
+		int y = (int)lesHeros.get(0).getY()/HAUTEUR_MUR;
 		if ((x+1) < longueur) {
 			if (tab[x+1][y] != -1 ) trouve = true;
 		}
