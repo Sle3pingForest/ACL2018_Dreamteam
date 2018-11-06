@@ -27,7 +27,7 @@ public abstract class Monstre extends Personnage {
     public final static int AVANCER_GAUCHE_M = 7;
 
     
-    public final static  float VITESSE_M = 0.2f;
+    public final static  float VITESSE_M = 0.05f;
     
     // sert a enlever les collisions pour tester plus facilement
     private boolean check = true;
@@ -152,7 +152,7 @@ public abstract class Monstre extends Personnage {
     public void update(GameContainer container, int delta) throws SlickException{
     	
     	VueLabyrinthe vueLab = VueLabyrinthe.getInstance();
-        float vitesseActu = delta*Heros.VITESSE;
+        float vitesseActu = delta*Monstre.VITESSE_M;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
@@ -192,7 +192,6 @@ public abstract class Monstre extends Personnage {
     	
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
-        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY+19)/VueLabyrinthe.HAUTEUR_MUR);
@@ -207,18 +206,11 @@ public abstract class Monstre extends Personnage {
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesItem[xCaseFuture][yCaseFuture] != null){
-		    lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
-		
 		
     	return false;
     }
@@ -228,7 +220,6 @@ public abstract class Monstre extends Personnage {
     	
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
-        Item[][] lesItem = lab.getLab().getLesObjets();
 		
 		int xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
 		int yCaseFuture = (int)((futureY-6)/VueLabyrinthe.HAUTEUR_MUR)+1;
@@ -243,17 +234,11 @@ public abstract class Monstre extends Personnage {
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
 		
 		
     	return false;
@@ -276,9 +261,6 @@ public abstract class Monstre extends Personnage {
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
     	return false;
     }
 
@@ -299,17 +281,11 @@ public abstract class Monstre extends Personnage {
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
 		xCaseFuture = (int)((futureX-6 + VueHeros.LARGEUR_SPRITE)/VueLabyrinthe.LARGEUR_MUR);
 		
 		if(mur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-        if(lesItem[xCaseFuture][yCaseFuture] != null){
-            lesItem[xCaseFuture][yCaseFuture].ramasser();
-        }
 		
 		
 		return false;
