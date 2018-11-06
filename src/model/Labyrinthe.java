@@ -66,7 +66,7 @@ public class Labyrinthe implements Serializable{
 
         /**** Et maintenant on creuse ****/
         creuse();
-       produitMonstres(100);
+       produitMonstres(50);
     }
 
     private void creuse(){
@@ -200,6 +200,10 @@ public class Labyrinthe implements Serializable{
         lesHeros.get(0).update(container,delta);
         if(lesHeros.get(0).getTresorDeMap() != null){
             tresorTrouver = true;
+        }
+        deplacerMonstres();
+        for(Monstre m : listeMonstres){
+        	m.update(container, delta);
         }
     }
 
@@ -338,10 +342,10 @@ public class Labyrinthe implements Serializable{
     }
 
 
-   /* public void deplacerMonstres(){
+   public void deplacerMonstres(){
         for(Monstre monstre :listeMonstres){
-            int x = (int)monstre.getX();
-            int y =  (int)monstre.getY();
+            int x = (int)monstre.getX() /  VueLabyrinthe.LARGEUR_MUR;
+            int y =  (int)monstre.getY() / VueLabyrinthe.HAUTEUR_MUR;
             Random r = new Random();
             int direction =  r.nextInt(5);
 
@@ -355,11 +359,12 @@ public class Labyrinthe implements Serializable{
             if(direction == 3 && x > 0 && tabMur[x-1][y] == null ){
                 monstre.goGauche();
             }
+            
             if (direction == 4 && y < hauteur-1 && tabMur[x][y+1] == null){
                 monstre.goBas();
             }
         }
-    }*/
+    }
 
     public void collison(){
         for(Monstre monstre: listeMonstres){
@@ -461,7 +466,7 @@ public class Labyrinthe implements Serializable{
 
     public void depMonstre(int[][] tab) {
         for (Monstre m: listeMonstres) {
-      //      deplacementIntelligentMonstre(m, tab);
+        	deplacementIntelligentMonstre(m, tab);
         }
     }
 
@@ -493,7 +498,7 @@ public class Labyrinthe implements Serializable{
 
     // fait bouger le monstre vers le heros de facon "intelligente" chemin le plus court
     // calcul les chemins du heros vers les monstres
-    /*public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
+    public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
 
         ArrayList<String> dep = calculChemin(tab, m);
         for (String ss : dep ) System.out.print(ss + "  " );
@@ -516,7 +521,7 @@ public class Labyrinthe implements Serializable{
             default:
                 break;
         }
-    }*/
+    }
 
 
     // cherche un chemin du monstre vers le heros en valuant les cases
@@ -615,13 +620,13 @@ public class Labyrinthe implements Serializable{
         }
         return tab;
     }
-/*
+
 	//  verifie si un chemin vers le heros a ete trouve
 	// donc on regarde si une des 4 cases autour du heros est numerote
 	public boolean verifChemin(int[][] tab) {
 		boolean trouve = false;
-		int x = heros.getX();
-		int y = heros.getY();
+		int x = (int)lesHeros.get(0).getX()/VueLabyrinthe.LARGEUR_MUR;
+		int y = (int)lesHeros.get(0).getY()/VueLabyrinthe.HAUTEUR_MUR;
 		if ((x+1) < longueur) {
 			if (tab[x+1][y] != -1 ) trouve = true;
 		}
@@ -636,7 +641,7 @@ public class Labyrinthe implements Serializable{
 		}
 		return trouve;
 	}
-*/
+
 
     public ArrayList<Heros> getLesHeros(){
         return  lesHeros;
