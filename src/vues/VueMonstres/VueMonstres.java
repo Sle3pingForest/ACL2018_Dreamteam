@@ -157,8 +157,6 @@ public void update(Observable o, Object arg) {
 public void render(GameContainer container, Graphics g) {
 	float x = m.getX() ;
 	float y = m.getY();
-	
-	System.err.println(animations[m.getDirectionActu()]);
     g.drawAnimation(animations[m.getDirectionActu()],(int)x,(int)y);
 	
 }
