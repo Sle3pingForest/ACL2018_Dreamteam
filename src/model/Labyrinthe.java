@@ -20,6 +20,7 @@ import model.personnages.monstres.Orc;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import vues.VueLabyrinthe;
+import vues.VueMonstres.VueMonstres;
 
 
 public class Labyrinthe implements Serializable{
@@ -244,10 +245,11 @@ public class Labyrinthe implements Serializable{
 		if(lesHeros.get(0).getTresorDeMap() != null){
 			tresorTrouver = true;
 		}
-		deplacerMonstres();
-		for(Monstre m : listeMonstres){
-			m.update(container, delta);
-		}
+		//deplacerMonstres();
+			for(Monstre m : listeMonstres){
+				m.update(container, delta);
+			}
+		
 	}
 
 	public Mur[][] getTabMur(){
@@ -456,8 +458,12 @@ public class Labyrinthe implements Serializable{
 
 	// regarde dans toutes les directions les chemins possible
 	private int direction(Monstre monstre) {
-		int x = (int)(monstre.getX() +6)  / LARGEUR_MUR;
-		int y = (int)(monstre.getY() + 19 ) / HAUTEUR_MUR;
+		
+		float diffX = ( monstre.getLARGEUR_SPRITE() - monstre.getLARGEUR() ) / 2;
+		float diffY = ( monstre.getHAUTEUR() );
+		int x = (int)(monstre.getX() + diffX)  / LARGEUR_MUR;
+		int y = (int)(monstre.getY() + diffY) / HAUTEUR_MUR;
+		
 		ArrayList<Integer> cheminValide = new ArrayList<>();
 		
 		// le monstre ne bouge pas
