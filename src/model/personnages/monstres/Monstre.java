@@ -33,6 +33,16 @@ public abstract class Monstre extends Personnage {
     private boolean check = true;
     
     private int directionActu = BAS_M;
+    private boolean collision = false;
+    
+	public boolean isCollision() {
+		return collision;
+	}
+
+	public void setCollision(boolean collision) {
+		this.collision = collision;
+	}
+
 	public Monstre(int x, int y){
 		super(x,y);
 	}
@@ -43,45 +53,50 @@ public abstract class Monstre extends Personnage {
 	
 
     public void goDroite(){
+    	
         horizontal = 1;
         if(vertical != 0) {
             if (directionActu != AVANCER_HAUT_M && directionActu != AVANCER_BAS_M) {
                 directionActu = AVANCER_DROITE_M;
             }
         }else{
-            directionActu = AVANCER_DROITE_M;
+        	directionActu = AVANCER_DROITE_M;
         }
     }
     
     public void goGauche(){
-        horizontal = -1;
+    	
+    	
+          horizontal = -1;
         if(vertical != 0) {
             if (directionActu != AVANCER_HAUT_M && directionActu != AVANCER_BAS_M) {
                 directionActu = AVANCER_GAUCHE_M;
             }
         }else{
-            directionActu = AVANCER_GAUCHE_M;
-        }
+        	directionActu = AVANCER_GAUCHE_M;
+        } 
     }
     public void goBas(){
+    	
+    	
         vertical = 1;
         if(horizontal != 0) {
             if (directionActu != AVANCER_GAUCHE_M && directionActu != AVANCER_DROITE_M) {
                 directionActu = AVANCER_BAS_M;
             }
         }else{
-            directionActu = AVANCER_BAS_M;
+        	 directionActu = AVANCER_BAS_M;
         }
     }
     public void goHaut(){
-
+    	
         vertical = -1;
         if(horizontal != 0) {
             if (directionActu != AVANCER_GAUCHE_M && directionActu != AVANCER_DROITE_M) {
                 directionActu = AVANCER_HAUT_M;
             }
         }else{
-            directionActu = AVANCER_HAUT_M;
+        	directionActu = AVANCER_HAUT_M;
         }
     }
 
@@ -290,5 +305,9 @@ public abstract class Monstre extends Personnage {
 		
 		return false;
     }
+
+	public void setDirectionActu(int directionActu) {
+		this.directionActu = directionActu;
+	}
 	
 }
