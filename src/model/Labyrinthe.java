@@ -561,13 +561,13 @@ public class Labyrinthe implements Serializable{
 
     // Calcul du chemin de depart (monstre) vers larrivee (heros)
     public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-        int x = (int)m.getX();
-        int y = (int)m.getY();
+        int x = (int)m.getX() /VueLabyrinthe.LARGEUR_MUR;
+        int y = (int)m.getY() /VueLabyrinthe.LARGEUR_MUR;
         ArrayList<String> tab = new ArrayList<>();
         int min = Integer.MAX_VALUE;
         String s = "";
 
-        int xh = (int)lesHeros.get(0).getX(), yh = (int)lesHeros.get(0).getY();
+        int xh = (int)lesHeros.get(0).getX() /VueLabyrinthe.LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /VueLabyrinthe.LARGEUR_MUR;
         if (x == xh && y == yh) {
             tab.add("");
         }
