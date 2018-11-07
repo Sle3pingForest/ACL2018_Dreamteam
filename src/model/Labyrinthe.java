@@ -35,6 +35,7 @@ public class Labyrinthe implements Serializable{
 	private boolean tresorTrouver = false;
 	public final static int HAUTEUR_MUR = 31;
 	public final static int LARGEUR_MUR = 32;
+    private final static int TAILLE_MAX_COULOIR = 6;
 
 	private Random random = new Random();
 
@@ -71,132 +72,172 @@ public class Labyrinthe implements Serializable{
 		produitMonstres(50);
 	}
 
-	private void creuse(){
+    private void creuse(){
 
-		int rand,choix;
-		ArrayList<Integer> listChoix = new ArrayList<Integer>();
-		Mur murActu = null;
-		/***** On defini le  nombre de mur a cassé le "2"  est purement arbitraire a voir  peut etre une variable a changer *****/
-		int nbCaseACreuser = (int)(longueur*hauteur/1.5f);
-		int nbAEncoreCreuser = nbCaseACreuser;
+        int rand,choix;
+        ArrayList<Integer> listChoix = new ArrayList<Integer>();
+        Mur murActu = null;
+        int nbCaseACreuser = (int)(longueur*hauteur);
+        int nbAEncoreCreuser = nbCaseACreuser;
 
-		/***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
-		int xDebut = random.nextInt(longueur-2)+1;
-		int yDebut = random.nextInt(hauteur-2)+1;
+        /***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
+        int xDebut = random.nextInt(longueur-2)+1;
+        int yDebut = random.nextInt(hauteur-2)+1;
 
-		lesHeros.add(new Heros(xDebut* LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
+        lesHeros.add(new Heros(xDebut* VueLabyrinthe.LARGEUR_MUR,yDebut*VueLabyrinthe.HAUTEUR_MUR, "Link"));
 
 
-		ArrayList<Mur> chemin = new ArrayList<Mur>();
-		chemin.add(tabMur[xDebut][yDebut]);
-		tabMur[xDebut][yDebut] = null;
+        ArrayList<Mur> chemin = new ArrayList<Mur>();
+        chemin.add(tabMur[xDebut][yDebut]);
+        tabMur[xDebut][yDebut] = null;
 
-		while(!chemin.isEmpty()) {
+        while(!chemin.isEmpty()) {
 
-			rand = random.nextInt(chemin.size());
-			murActu = chemin.get(rand);
-			chemin.remove(rand);
-			//System.out.println(nbCaseACreuser+" : "+murActu);
+            rand = random.nextInt(chemin.size());
+            murActu = chemin.get(rand);
+            chemin.remove(rand);
+            //System.out.println(nbCaseACreuser+" : "+murActu);
 
-			xDebut = murActu.getPosX();
-			yDebut = murActu.getPosY();
+            xDebut = murActu.getPosX();
+            yDebut = murActu.getPosY();
 
-			listChoix.add(0);
-			listChoix.add(1);
-			listChoix.add(2);
-			listChoix.add(3);
+            listChoix.add(0);
+            listChoix.add(1);
+            listChoix.add(2);
+            listChoix.add(3);
 
-			while(!listChoix.isEmpty()) {
-				rand = random.nextInt(listChoix.size());
-				choix = listChoix.get(rand);
-				listChoix.remove(rand);
+            while(!listChoix.isEmpty()) {
+                rand = random.nextInt(listChoix.size());
+                choix = listChoix.get(rand);
+                listChoix.remove(rand);
 
-				switch(choix) {
-				case 0:
-					/**** creuser a gauche ****/
-					if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
-						if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
-							rand = random.nextInt(3*nbCaseACreuser);
-							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-								chemin.add(tabMur[xDebut - 1][yDebut]);
-								tabMur[xDebut - 1][yDebut] = null;
-								nbAEncoreCreuser--;
-							}
-						}
-					}
-					break;
-				case 1:
-					/**** creuser a droite ****/
-					if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
-						if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
-							rand = random.nextInt(nbCaseACreuser);
-							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-								chemin.add(tabMur[xDebut + 1][yDebut]);
-								tabMur[xDebut + 1][yDebut] = null;
-								nbAEncoreCreuser--;
-							}
-						}
-					}
-					break;
+                switch(choix) {
+                    case 0:
+                        /**** creuser a gauche ****/
+                        if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
+                                rand = random.nextInt(3*nbCaseACreuser);
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut - 1][yDebut]);
+                                    tabMur[xDebut - 1][yDebut] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
+                    case 1:
+                        /**** creuser a droite ****/
+                        if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut + 1][yDebut]);
+                                    tabMur[xDebut + 1][yDebut] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
 
-				case 2:
-					/**** creuser en haut ****/
-					if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
-						if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
-							rand = random.nextInt(nbCaseACreuser);
-							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-								chemin.add(tabMur[xDebut][yDebut - 1]);
-								tabMur[xDebut][yDebut - 1] = null;
-								nbAEncoreCreuser--;
-							}
-						}
-					}
-					break;
+                    case 2:
+                        /**** creuser en haut ****/
+                        if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut][yDebut - 1]);
+                                    tabMur[xDebut][yDebut - 1] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
 
-				case 3:
-					/**** creuser en bas ****/
-					if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
-						if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
-							rand = random.nextInt(nbCaseACreuser);
-							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-								chemin.add(tabMur[xDebut][yDebut + 1]);
-								tabMur[xDebut][yDebut + 1] = null;
-								nbAEncoreCreuser--;
-							}
-						}
-					}
-					break;
-				}
-			}
-		}
-		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
-	}
+                    case 3:
+                        /**** creuser en bas ****/
+                        if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
+                            if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
+                                rand = random.nextInt(nbCaseACreuser);
+                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+                                    chemin.add(tabMur[xDebut][yDebut + 1]);
+                                    tabMur[xDebut][yDebut + 1] = null;
+                                    nbAEncoreCreuser--;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* VueLabyrinthe.LARGEUR_MUR,murActu.getPosY()*VueLabyrinthe.HAUTEUR_MUR,null);
+    }
 
-	/**** On verifie si on peut creuser le mur ****/
-	private boolean peutEtreCreuser(Mur mur){
-		int x = mur.getPosX();
-		int y = mur.getPosY();
+    /**** On verifie si on peut creuser le mur ****/
+    private boolean peutEtreCreuser(Mur mur){
+        int x = mur.getPosX();
+        int y = mur.getPosY();
 
-		if(tabMur[x+1][y] == null ){
-			if(tabMur[x][y+1] == null){
-				return false;
-			}
-			if(tabMur[x][y-1] == null){
-				return false;
-			}
-		}
+        /***** La on verifie que creuser ici ne fait un chemin a 2 voix *****/
+        if(tabMur[x+1][y] == null ){
+            if(tabMur[x][y+1] == null){
+                return false;
+            }
+            if(tabMur[x][y-1] == null){
+                return false;
+            }
+        }
 
-		if(tabMur[x-1][y] == null ){
-			if(tabMur[x][y+1] == null){
-				return false;
-			}
-			if(tabMur[x][y-1] == null){
-				return false;
-			}
-		}
+        if(tabMur[x-1][y] == null ){
+            if(tabMur[x][y+1] == null){
+                return false;
+            }
+            if(tabMur[x][y-1] == null){
+                return false;
+            }
+        }
+        /***** Ici on verifie que creuser a cette endroi ne cree pas un couloir trop grand ****/
 
-		return true;
-	}
+        /**** couloir horizontal ***/
+        int tailleCouloire = 1;
+        int i = x-1;
+        while(i > 0 && tabMur[i][y] == null){
+            tailleCouloire++;
+            if(tailleCouloire > TAILLE_MAX_COULOIR){
+                return  false;
+            }
+            i--;
+        }
+        i = x+1;
+        while(i < longueur-1 && tabMur[i][y] == null){
+            tailleCouloire++;
+            if(tailleCouloire > TAILLE_MAX_COULOIR){
+                return  false;
+            }
+            i++;
+        }
+
+        /**** couloir vertical ***/
+
+        tailleCouloire = 1;
+        i = y-1;
+        while(i > 0 && tabMur[x][i] == null){
+            tailleCouloire++;
+            if(tailleCouloire > TAILLE_MAX_COULOIR){
+                return  false;
+            }
+            i--;
+        }
+        i = y+1;
+        while(i < longueur-1 && tabMur[x][i] == null){
+            tailleCouloire++;
+            if(tailleCouloire > TAILLE_MAX_COULOIR){
+                return  false;
+            }
+            i++;
+        }
+
+        return true;
+    }
 
 	public void update(GameContainer container, int delta) throws SlickException {
 		lesHeros.get(0).update(container,delta);
