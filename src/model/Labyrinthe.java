@@ -383,51 +383,61 @@ public class Labyrinthe implements Serializable{
 		lesHeros.get(0).arretGauche();
 	}
 
-	public final static int BAS_M = 0;
-
-	public final static int DROITE_M = 1;
-	public final static int HAUT_M = 2;
-	public final static int GAUCHE_M = 3;
-
-	// Avancer
-	public final static int AVANCER_BAS_M = 4;
-	public final static int AVANCER_DROITE_M = 5;
-	public final static int AVANCER_HAUT_M = 6;
-	public final static int AVANCER_GAUCHE_M = 7;
 
 	public void deplacerMonstres(){
 		for(Monstre monstre :listeMonstres){
 
-			int x = (int)monstre.getX()/ LARGEUR_MUR;
-			int y = (int)(monstre.getY()) / HAUTEUR_MUR;
+			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
+			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
 			int direction = 0;
+			
+			// regarde si le monstre est en deplacement
 			boolean check = false;
 
 			int direcActu = monstre.getDirectionActu();
 
-			if (direcActu == 0 || direcActu == 4) {
+			// si le monstre est deja en deplacement, continue 
+			// vers la meme direction si il n y a pas de mur
+			if (direcActu == 4) {
 				//bas
-				if(y+1 < hauteur-1 && tabMur[x][y+1] == null) direction = 4;
-				else check = true;
+				if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
+					direction = 4; 
+					check = true;
+				}
+				else check = false;
 			}
-			else if (direcActu == 1 || direcActu == 5) {
+			else if (direcActu == 5) {
 				//droite
-				if(x+1 < longueur-1 && tabMur[x+1][y] == null) direction = 1;
-				else check = true;
+				if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
+					direction = 1;
+					check = true;
+				}
+				else check = false;
 			}
-			else if (direcActu == 2 || direcActu == 6) {
+			else if (direcActu == 6) {
 				// haut
-				if(y-1 > 0 && tabMur[x][y-1] == null) direction = 2;
-				else check = true;
+				if(y-1 > 0 && tabMur[x][y-1] == null) {
+					direction = 2;
+					check = true;
+				}
+				else check = false;
 			} 
-			else if (direcActu == 3 || direcActu == 7) {
+			else if (direcActu == 7) {
 				// gauche
-				if (x-1 > 0 && tabMur[x-1][y] == null) direction = 3;
-				else check = true;
+				if (x-1 > 0 && tabMur[x-1][y] == null) {
+					direction = 3;
+					check = true;
+				}
+				else check = false;
 			}
-
-			if (check) direction = direction(monstre);
-
+			
+			// si le monstre est static 
+			if (!check) direction = direction(monstre);
+			
+			int dirActu = monstre.getDirectionActu();
+			if (direction == 0 && dirActu > 3) {
+				monstre.setDirectionActu(dirActu - 4);
+			}
 			if(direction == 1){
 				monstre.goDroite();
 			}
@@ -438,35 +448,42 @@ public class Labyrinthe implements Serializable{
 			if(direction == 3){
 				monstre.goGauche();
 			}
-
 			if (direction == 4){
 				monstre.goBas();
 			}
 		}
 	}
 
+	// regarde dans toutes les directions les chemins possible
 	private int direction(Monstre monstre) {
-		int x = (int)monstre.getX()/ LARGEUR_MUR;
-		int y = (int)(monstre.getY()) / HAUTEUR_MUR;
+		int x = (int)(monstre.getX() +6)  / LARGEUR_MUR;
+		int y = (int)(monstre.getY() + 19 ) / HAUTEUR_MUR;
 		ArrayList<Integer> cheminValide = new ArrayList<>();
+		
+		// le monstre ne bouge pas
+		cheminValide.add(0);
+		
 		if( x+1 < longueur-1 && tabMur[x+1][y] == null){
+			// droite
 			cheminValide.add(1);
 		}
 		if(y-1 > 0 && tabMur[x][y-1] == null ){
+			// haut
 			cheminValide.add(2);
 		}
 		if(x-1 > 0 && tabMur[x-1][y] == null ){
+			// gauche
 			cheminValide.add(3);
 		}
 		if(y+1 < hauteur-1 && tabMur[x][y+1] == null){
+			// bas
 			cheminValide.add(4);
 		}
 
-			Random r = new Random();
-			int rd =  r.nextInt(cheminValide.size());
-			int direction = cheminValide.get(rd);
+		Random r = new Random();
+		int rd =  r.nextInt(cheminValide.size());
+		int direction = cheminValide.get(rd);
 		
-
 		return direction;
 	}
 
