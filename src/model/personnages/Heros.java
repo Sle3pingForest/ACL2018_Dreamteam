@@ -18,6 +18,8 @@ public class Heros extends Personnage {
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
 
+    protected int tailleInventaire = 10;
+
 
     public Heros(float x, float y, String nom){
     	super(x,y);
@@ -52,22 +54,26 @@ public class Heros extends Personnage {
     public String getNom() {
 		return nom;
 	}
-    
-    
 
+
+    public int getTailleInventaire() {
+        return tailleInventaire;
+    }
+
+    public void setTailleInventaire(int tailleInventaire) {
+        this.tailleInventaire = tailleInventaire;
+    }
     
     public int getDirectionActu(){
     	return directionActu;
     }
     
-
-
     public Tresor getTresorDeMap(){
         return  tresorDeMap;
     }
 
     public void ajouterAInventaire(Item i){
-        if(!i.getClass().getName().equals("model.Item.Tresor")) {
+        if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
             inventaire.add(i);
         }else{
             tresorDeMap = (Tresor)i;
