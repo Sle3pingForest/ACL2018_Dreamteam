@@ -324,7 +324,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setY(futureY);
 					}else
 					{
-						monstre.directionAleatoire();
+						//monstre.directionAleatoire();
+						direction(monstre, delta);
 					}
 				}
 				if(vertical == 1){
@@ -332,7 +333,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setY(futureY);
 					}else
 					{
-						monstre.directionAleatoire();
+						//monstre.directionAleatoire();
+						direction(monstre, delta);
 					}
 				}
 
@@ -341,7 +343,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setX(futureX);
 					}else
 					{
-						monstre.directionAleatoire();
+						//monstre.directionAleatoire();
+						direction(monstre, delta);
 					}
 				}
 				if(horizontal == 1){
@@ -349,7 +352,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setX(futureX);
 					}else
 					{
-						monstre.directionAleatoire();
+						//monstre.directionAleatoire();
+						direction(monstre, delta);
 					}
 				}
 			} else {
@@ -670,7 +674,7 @@ public class Labyrinthe implements Serializable{
 			}
 			
 			// si le monstre est static 
-			if (!check) direction = direction(monstre);
+			//if (!check) direction = direction(monstre);
 			
 			int dirActu = monstre.getDirectionActu();
 			if (direction == 0 && dirActu > 3) {
@@ -693,41 +697,70 @@ public class Labyrinthe implements Serializable{
 	}
 
 	// regarde dans toutes les directions les chemins possible
-	private int direction(Monstre monstre) {
+	private void direction(Monstre monstre, int delta) throws SlickException {
+		monstre.setVertical(0);
+		monstre.setHorizontal(0);
+		float vitesseActu = delta*Monstre.VITESSE;
 		
-		float diffX = 0;
-		float diffY = ( Personnage.LARGEUR_SPRITE);
-		int x = (int)(monstre.getX() + diffX)  / LARGEUR_MUR;
-		int y = (int)(monstre.getY() + diffY) / HAUTEUR_MUR;
+		float x = monstre.getX();
+		float y = monstre.getY();
+		int horizontal = monstre.getHorizontal();
+		int vertical = monstre.getVertical();
+
+		float futureX = x;
+		float futureY = y;
 		
 		ArrayList<Integer> cheminValide = new ArrayList<>();
 		
-		// le monstre ne bouge pas
-		cheminValide.add(0);
-		
-		if( x+1 < longueur-1 && tabMur[x+1][y] == null){
-			// droite
+		futureX = x;
+		futureY = y - vitesseActu;
+		if( !collisionHaut(monstre, futureX, futureY) ){
+			cheminValide.add(0);
+		}
+
+		futureX = x + vitesseActu;
+		futureY = y;
+		if( !collisionDroite(monstre, futureX, futureY) ){
 			cheminValide.add(1);
 		}
-		if(y-1 > 0 && tabMur[x][y-1] == null ){
-			// haut
-			cheminValide.add(2);
-		}
-		if(x-1 > 0 && tabMur[x-1][y] == null ){
-			// gauche
+
+		futureX = x - vitesseActu;
+		futureY = y;
+		if( !collisionGauche(monstre, futureX, futureY) ){
 			cheminValide.add(3);
 		}
-		if(y+1 < hauteur-1 && tabMur[x][y+1] == null){
-			// bas
-			cheminValide.add(4);
+		
+		futureX = x;
+		futureY = y + vitesseActu;
+		if( !collisionBas(monstre, futureX, futureY) ){
+			cheminValide.add(2);
 		}
 
 		Random r = new Random();
 		int rd =  r.nextInt(cheminValide.size());
 		int direction = cheminValide.get(rd);
 		
-		return direction;
+		switch(direction){
+		case 0:
+			monstre.setVertical(-1);
+			monstre.setDirectionActu(Personnage.AVANCER_HAUT);
+			break;
+		case 1:
+			monstre.setHorizontal(1);
+			monstre.setDirectionActu(Personnage.AVANCER_DROITE);
+			break;
+		case 2:
+			monstre.setVertical(1);
+			monstre.setDirectionActu(Personnage.AVANCER_BAS);
+			break;
+		case 3:
+			monstre.setHorizontal(-1);
+			monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
+		}
+		
 	}
+	
+	
 
 	public void collison(){
 		for(Monstre monstre: listeMonstres){
