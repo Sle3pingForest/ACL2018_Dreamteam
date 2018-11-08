@@ -2,23 +2,31 @@ package model.Item;
 
 public abstract class Item {
 
-    private float posX;
-    private float posY;
+    private int posX;
+    private int posY;
 
     private boolean ramasser;
 
-    public Item(float posX,float posY){
+    public Item(int posX,int posY){
         this.posX = posX;
         this.posY = posY;
         ramasser = false;
     }
 
-    public float getPosX() {
+    public int getPosX() {
         return posX;
     }
 
-    public float getPosY() {
+    public int getPosY() {
         return posY;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
     }
 
     public boolean isRamasser() {
