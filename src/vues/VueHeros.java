@@ -19,11 +19,6 @@ public class VueHeros implements Serializable{
     private final static  String CHEMIN_VIOLET = "main/resources/Personnages/Heros/Violet.png";
 
 
-    public final static int LARGEUR_SPRITE = 30;
-
-
-
-
     private Animation[] animations = new Animation[20];
     
     private Heros heros;

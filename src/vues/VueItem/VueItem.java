@@ -1,10 +1,10 @@
 package vues.VueItem;
 
 import model.Item.Item;
+import model.Labyrinthe;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import vues.VueLabyrinthe;
 
 public abstract  class VueItem {
 
@@ -20,6 +20,6 @@ public abstract  class VueItem {
     public void render(GameContainer container, Graphics g) {
         float x = item.getPosX();
         float y = item.getPosY();
-        g.drawAnimation(animations[animationEnCour],(int)(x+(VueLabyrinthe.LARGEUR_MUR-largeur_Sprite)/2),(int)y);
+        g.drawAnimation(animations[animationEnCour],(int)(x+(Labyrinthe.LARGEUR_MUR-largeur_Sprite)/2),(int)y);
     }
 }

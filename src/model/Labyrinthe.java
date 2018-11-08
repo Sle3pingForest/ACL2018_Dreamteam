@@ -13,6 +13,7 @@ import model.Item.Item;
 import model.Item.Tresor;
 import model.mur.Mur;
 import model.personnages.Heros;
+import model.personnages.Personnage;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
@@ -24,6 +25,12 @@ import vues.VueMonstres.VueMonstres;
 
 
 public class Labyrinthe implements Serializable{
+
+	public final static int HAUTEUR_MUR = 31;
+	public final static int LARGEUR_MUR = 32;
+	private int longeurCarte;
+	private int hauteurCarte;
+
 	private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.ORC};
 	private Item [][]lesObjets;
 	private int longueur , hauteur;
@@ -34,9 +41,10 @@ public class Labyrinthe implements Serializable{
 	private ArrayList<Heros> lesHeros;
 	private float multiplicateurProba = 1.2f;//Il pourrait varier aleatoirement
 	private boolean tresorTrouver = false;
-	public final static int HAUTEUR_MUR = 31;
-	public final static int LARGEUR_MUR = 32;
     private final static int TAILLE_MAX_COULOIR = 6;
+
+	// sert a enlever les collisions pour tester plus facilement
+	private boolean check = true;
 
 	private Random random = new Random();
 
@@ -57,6 +65,8 @@ public class Labyrinthe implements Serializable{
 		lesObjets = new Item[longeur][hauteur];
 		tabMur = new Mur[longeur][hauteur];
 		this.listeMonstres = new ArrayList<>();
+		longeurCarte = tabMur.length * LARGEUR_MUR;
+		hauteurCarte = tabMur[0].length * HAUTEUR_MUR;
 
 
 
@@ -85,7 +95,7 @@ public class Labyrinthe implements Serializable{
         int xDebut = random.nextInt(longueur-2)+1;
         int yDebut = random.nextInt(hauteur-2)+1;
 
-        lesHeros.add(new Heros(xDebut* VueLabyrinthe.LARGEUR_MUR,yDebut*VueLabyrinthe.HAUTEUR_MUR, "Link"));
+        lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
 
 
         ArrayList<Mur> chemin = new ArrayList<Mur>();
@@ -170,7 +180,7 @@ public class Labyrinthe implements Serializable{
                 }
             }
         }
-        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* VueLabyrinthe.LARGEUR_MUR,murActu.getPosY()*VueLabyrinthe.HAUTEUR_MUR,null);
+        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
     }
 
     /**** On verifie si on peut creuser le mur ****/
@@ -241,20 +251,246 @@ public class Labyrinthe implements Serializable{
     }
 
 	public void update(GameContainer container, int delta) throws SlickException {
-		lesHeros.get(0).update(container,delta);
+
+    	updateHeros(lesHeros.get(0),delta);
 		if(lesHeros.get(0).getTresorDeMap() != null){
 			tresorTrouver = true;
 		}
 		//deplacerMonstres();
-			for(Monstre m : listeMonstres){
-				m.update(container, delta);
-			}
+		for(Monstre m : listeMonstres){
+			updateMonstre(m, delta);
+		}
 		
+	}
+
+	public void updateHeros(Heros heros, int delta) throws SlickException{
+
+		float vitesseActu = delta*Heros.VITESSE;
+
+		float x = heros.getX();
+		float y = heros.getY();
+		int horizontal = heros.getHorizontal();
+		int vertical = heros.getVertical();
+
+		float futureX = x + horizontal * vitesseActu;
+		float futureY = y + vertical * vitesseActu;
+		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
+			if (check) {
+				if(vertical == -1){
+					if(!collisionHaut(heros, futureX, futureY)){
+						heros.setY(futureY);
+					}
+				}
+				if(vertical == 1){
+					if(!collisionBas( heros,futureX, futureY)){
+						heros.setY(futureY);
+					}
+				}
+
+				if(horizontal == -1){
+					if(!collisionGauche(heros, futureX, futureY)){
+						heros.setX(futureX);
+					}
+				}
+				if(horizontal == 1){
+					if(!collisionDroite(heros, futureX, futureY)){
+						heros.setX(futureX);
+					}
+				}
+			} else {
+				heros.setX(futureX);
+				heros.setY(futureY);
+			}
+		}
+
+	}
+
+
+	public void updateMonstre(Monstre monstre, int delta) throws SlickException{
+
+		float vitesseActu = delta*Monstre.VITESSE_M;
+		float x = monstre.getX();
+		float y = monstre.getY();
+		int horizontal = monstre.getHorizontal();
+		int vertical = monstre.getVertical();
+
+		float futureX = x + horizontal * vitesseActu;
+		float futureY = y + vertical * vitesseActu;
+
+		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
+			if (check) {
+				if(vertical == -1){
+					if(!collisionHaut(monstre, futureX, futureY)){
+						monstre.setY(futureY);
+					}else
+					{
+						monstre.directionAleatoire();
+					}
+				}
+				if(vertical == 1){
+					if(!collisionBas( monstre,futureX, futureY)){
+						monstre.setY(futureY);
+					}else
+					{
+						monstre.directionAleatoire();
+					}
+				}
+
+				if(horizontal == -1){
+					if(!collisionGauche(monstre, futureX, futureY)){
+						monstre.setX(futureX);
+					}else
+					{
+						monstre.directionAleatoire();
+					}
+				}
+				if(horizontal == 1){
+					if(!collisionDroite(monstre, futureX, futureY)){
+						monstre.setX(futureX);
+					}else
+					{
+						monstre.directionAleatoire();
+					}
+				}
+			} else {
+				monstre.setX(futureX);
+				monstre.setY(futureY);
+			}
+		}
+	}
+
+	private boolean collisionHaut(Personnage heros,float futureX,float futureY) throws SlickException {
+
+
+		int horizontal = heros.getHorizontal();
+
+		int xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/HAUTEUR_MUR);
+
+		if(horizontal == -1){
+			xCaseFuture = (int)((futureX+6-2)/LARGEUR_MUR);
+		}
+		if(horizontal == 1){
+			xCaseFuture = (int)((futureX+6+2)/LARGEUR_MUR);
+		}
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+
+
+		return false;
+	}
+
+	private boolean collisionBas(Personnage heros, float futureX, float futureY) throws SlickException {
+
+		int horizontal = heros.getHorizontal();
+
+
+		int xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY-6)/HAUTEUR_MUR)+1;
+
+		if(horizontal == -1){
+			xCaseFuture = (int)((futureX+6+2)/LARGEUR_MUR);
+		}
+		if(horizontal == 1){
+			xCaseFuture = (int)((futureX+6-2)/LARGEUR_MUR);
+		}
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+
+
+		return false;
+	}
+
+	private boolean collisionGauche(Personnage heros,float futureX,float futureY) throws SlickException {
+
+		int vertical = heros.getVertical();
+
+		int xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/HAUTEUR_MUR);
+
+		if(vertical == -1){
+			xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+2+19)/HAUTEUR_MUR);
+		}
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+		return false;
+	}
+
+	private boolean collisionDroite(Personnage heros,float futureX,float futureY) throws SlickException {
+
+
+		int vertical = heros.getVertical();
+
+		int xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+		int yCaseFuture = (int)((futureY+19)/HAUTEUR_MUR);
+
+		if(vertical == -1){
+			xCaseFuture = (int)((futureX+6)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+2+19)/HAUTEUR_MUR);
+		}
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
+
+		if(tabMur[xCaseFuture][yCaseFuture] != null){
+			return true;
+		}
+		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+			lesObjets[xCaseFuture][yCaseFuture].ramasser();
+			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+		}
+
+
+		return false;
 	}
 
 	public Mur[][] getTabMur(){
 		return  tabMur;
 	}
+
+
 	//Construction Monstres et Labyrinthe
 	private void produitMonstres(int nombreMonstre){
 
@@ -459,8 +695,8 @@ public class Labyrinthe implements Serializable{
 	// regarde dans toutes les directions les chemins possible
 	private int direction(Monstre monstre) {
 		
-		float diffX = ( monstre.getLARGEUR_SPRITE() - monstre.getLARGEUR() ) / 2;
-		float diffY = ( monstre.getHAUTEUR() );
+		float diffX = 0;
+		float diffY = ( Personnage.LARGEUR_SPRITE);
 		int x = (int)(monstre.getX() + diffX)  / LARGEUR_MUR;
 		int y = (int)(monstre.getY() + diffY) / HAUTEUR_MUR;
 		
@@ -690,13 +926,13 @@ public class Labyrinthe implements Serializable{
 
     // Calcul du chemin de depart (monstre) vers larrivee (heros)
     public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-        int x = (int)m.getX() /VueLabyrinthe.LARGEUR_MUR;
-        int y = (int)m.getY() /VueLabyrinthe.LARGEUR_MUR;
+        int x = (int)m.getX() /LARGEUR_MUR;
+        int y = (int)m.getY() /LARGEUR_MUR;
         ArrayList<String> tab = new ArrayList<>();
         int min = Integer.MAX_VALUE;
         String s = "";
 
-        int xh = (int)lesHeros.get(0).getX() /VueLabyrinthe.LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /VueLabyrinthe.LARGEUR_MUR;
+        int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
         if (x == xh && y == yh) {
             tab.add("");
         }
@@ -770,6 +1006,13 @@ public class Labyrinthe implements Serializable{
 		return trouve;
 	}
 
+	public int getLongeurCarte(){
+		return  longeurCarte;
+	}
+
+	public int getHauteurCarte(){
+		return hauteurCarte;
+	}
 
 	public ArrayList<Heros> getLesHeros(){
 		return  lesHeros;

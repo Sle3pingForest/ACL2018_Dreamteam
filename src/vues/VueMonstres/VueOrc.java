@@ -3,6 +3,7 @@ package vues.VueMonstres;
 import java.util.Observable;
 
 import model.personnages.Heros;
+import model.personnages.Personnage;
 import model.personnages.monstres.Orc;
 
 import org.newdawn.slick.Animation;
@@ -20,7 +21,7 @@ public class VueOrc extends VueMonstres {
 
 	public VueOrc(Orc orc) throws SlickException{
 		super(orc);  
-		this.chargerAnimation(CHEMIN_ORC, orc.getLARGEUR_SPRITE(), orc.getHAUTEUR_SPRITE());
+		this.chargerAnimation(CHEMIN_ORC, Personnage.LARGEUR_SPRITE, Personnage.LARGEUR_SPRITE);
 	}
 
 

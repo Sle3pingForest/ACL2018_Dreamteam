@@ -71,11 +71,11 @@ public class Jeu extends BasicGame {
 	    Heros h = labyModel.getHeros(0);
         int cameraX = (int)(container.getWidth() / 2 - h.getX());
         int cameraY = (int)(container.getHeight() / 2 - h.getY());
-        if(cameraX < -labyVue.getLongeurCarte()+container.getWidth()){
-            cameraX = -labyVue.getLongeurCarte()+container.getWidth();
+        if(cameraX < -labyModel.getLongeurCarte()+container.getWidth()){
+            cameraX = -labyModel.getLongeurCarte()+container.getWidth();
         }
-        if(cameraY  < -labyVue.getHauteurCarte() + container.getHeight() ){
-            cameraY = -labyVue.getHauteurCarte()+ container.getHeight();
+        if(cameraY  < -labyModel.getHauteurCarte() + container.getHeight() ){
+            cameraY = -labyModel.getHauteurCarte()+ container.getHeight();
         }
         if(cameraX > 0){
             cameraX = 0;

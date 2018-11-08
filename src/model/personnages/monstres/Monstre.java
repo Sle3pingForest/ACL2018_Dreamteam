@@ -19,7 +19,7 @@ public abstract class Monstre extends Personnage {
 
 	protected String nom;
 	//Position static
-	public final static int BAS_M = 0;
+/*	public final static int BAS_M = 0;
 
 	public final static int DROITE_M = 1;
 	public final static int HAUT_M = 2;
@@ -29,7 +29,7 @@ public abstract class Monstre extends Personnage {
 	public final static int AVANCER_BAS_M = 4;
 	public final static int AVANCER_DROITE_M = 5;
 	public final static int AVANCER_HAUT_M = 6;
-	public final static int AVANCER_GAUCHE_M = 7;
+	public final static int AVANCER_GAUCHE_M = 7;*/
 
 
 	public final static  float VITESSE_M = 0.05f;
@@ -40,31 +40,52 @@ public abstract class Monstre extends Personnage {
 	protected  int HAUTEUR = 30;
 	protected  int LARGEUR = 30;
 
+	//private int directionActu = BAS_M;
+	//private boolean collision = false;
 
-
-	// sert a enlever les collisions pour tester plus facilement
-	private boolean check = true;
-
-	private int directionActu = BAS_M;
-	private boolean collision = false;
-
-	public boolean isCollision() {
+	/*public boolean isCollision() {
 		return collision;
 	}
 
 	public void setCollision(boolean collision) {
 		this.collision = collision;
-	}
+	}*/
 
 	public Monstre(int x, int y){
 		super(x,y);
+		vertical = 1;
+		directionActu = Personnage.AVANCER_BAS;
 	}
 
 	public String getNom(){
 		return this.nom;
 	}
 
-	public int getLARGEUR_SPRITE() {
+	public void directionAleatoire(){
+		vertical = 0;
+		horizontal = 0;
+		Random r = new Random();
+		int alea = r.nextInt(4);
+		switch(alea){
+			case 0:
+				vertical = -1;
+				directionActu = Personnage.AVANCER_HAUT;
+				break;
+			case 1:
+				horizontal = 1;
+				directionActu = Personnage.AVANCER_DROITE;
+				break;
+			case 2:
+				directionActu = Personnage.AVANCER_BAS;
+				vertical = 1;
+				break;
+			case 3:
+				directionActu = Personnage.AVANCER_GAUCHE;
+				horizontal = -1;
+		}
+	}
+
+	/*public int getLARGEUR_SPRITE() {
 		return LARGEUR_SPRITE;
 	}
 
@@ -78,10 +99,10 @@ public abstract class Monstre extends Personnage {
 
 	public int getLARGEUR() {
 		return LARGEUR;
-	}
+	}*/
 
 
-	public void goDroite(){
+	/*public void goDroite(){
 
 		horizontal = 1;
 		if(vertical != 0) {
@@ -187,130 +208,11 @@ public abstract class Monstre extends Personnage {
 				directionActu = AVANCER_DROITE_M;
 			}
 		}
-	}
-
-	public int getDirectionActu(){
+	}*/
 
 
 
-
-		return directionActu;
-	}
-
-
-	public void update(GameContainer container, int delta) throws SlickException{
-
-
-		VueLabyrinthe vueLab = VueLabyrinthe.getInstance();
-		float vitesseActu = delta*Monstre.VITESSE_M;
-
-		float futureX = x + horizontal * vitesseActu;
-		float futureY = y + vertical * vitesseActu;
-		if(futureX > 0 && futureX < vueLab.getLongeurCarte() - VueLabyrinthe.LARGEUR_MUR && futureY > 0 && futureY < vueLab.getHauteurCarte()-VueLabyrinthe.HAUTEUR_MUR){
-			if (this.check) {
-
-				int direction = 0;
-				boolean chec = false;
-				// si le monstre est deja en deplacement, continue 
-				// vers la meme direction si il n y a pas de mur
-				if (directionActu == 4) {
-					//bas
-					if(!collisionBas(futureX, futureY)) {
-						direction = 4; 
-						chec = true;
-					}
-					else chec = false;
-				}
-				else if (directionActu == 5) {
-					//droite
-					if(!collisionDroite(futureX, futureY)) {
-						direction = 1;
-						chec = true;
-					}
-					else chec = false;
-				}
-				else if (directionActu == 6) {
-					// haut
-					if(!collisionHaut(futureX, futureY)) {
-						direction = 2;
-						chec = true;
-					}
-					else chec = false;
-				} 
-				else if (directionActu == 7) {
-					// gauche
-					if (!collisionGauche(futureX, futureY)) {
-						direction = 3;
-						chec = true;
-					}
-					else chec = false;
-				}
-
-				// sinon cherche un nouveau chemin
-				if (!chec) {
-					
-					ArrayList<Integer> cheminValide = new ArrayList<>();
-					//cheminValide.add(0);
-					if(!collisionDroite( futureX, futureY)){
-						cheminValide.add(1);
-					}
-					if(!collisionHaut( futureX, futureY)){
-						cheminValide.add(2);
-					}
-					if(!collisionGauche( futureX, futureY)){
-						cheminValide.add(3);
-					}
-					if(!collisionBas( futureX, futureY)){
-						cheminValide.add(4);
-					}
-
-					Random r = new Random();
-					if ( cheminValide.size() > 0) {
-						int rd =  r.nextInt(cheminValide.size());
-						direction = cheminValide.get(rd);
-					}
-				}
-
-				int dirActu = getDirectionActu();
-				if (direction == 0 && dirActu > 3) {
-					setDirectionActu(dirActu - 4);
-				}
-				if(direction == 1 ){
-					goDroite();
-					x = futureX;
-					vertical = 0;
-					//arretDroite();
-				}
-				if(direction == 2 ){
-					goHaut();
-					y = futureY;
-					horizontal = 0;
-					//arretHaut();
-				}
-
-				if(direction == 3 ){
-					goGauche();
-					x = futureX;
-					vertical = 0;
-					//arretGauche();
-				}
-				if (direction == 4 ){
-					goBas();
-					y = futureY;
-					horizontal = 0;
-					//arretBas();
-				}
-				else {
-					x = futureX;
-					y = futureY;
-				}
-			}
-
-
-		}
-	}
-
-	private boolean collisionHaut(float futureX,float futureY) throws SlickException {
+	/*private boolean collisionHaut(float futureX,float futureY) throws SlickException {
 
 		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
 		Mur[][] mur = lab.getLab().getTabMur();
@@ -413,10 +315,8 @@ public abstract class Monstre extends Personnage {
 
 
 		return false;
-	}
+	}*/
 
-	public void setDirectionActu(int directionActu) {
-		this.directionActu = directionActu;
-	}
+
 
 }

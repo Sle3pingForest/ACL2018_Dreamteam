@@ -15,7 +15,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import vues.VueLabyrinthe;
 
-public abstract class VueMonstres implements Observer {
+public abstract class VueMonstres {
 
 	
 
@@ -54,28 +54,28 @@ public abstract class VueMonstres implements Observer {
 		animation.addFrame(spriteSheet.getSprite(2, 4), 200);
 		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		animation.addFrame(spriteSheet.getSprite(0, 4), 200);
-		this.animations[Monstre.BAS_M] = animation;
+		this.animations[Monstre.BAS] = animation;
 	}
 
 	private void chargerStaticGauche(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(0, 3), 200);
-		this.animations[Monstre.GAUCHE_M] = animation;
+		this.animations[Monstre.GAUCHE] = animation;
 	}
 
 	private void chargerStaticHaut(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(0, 2), 200);
-		this.animations[Monstre.HAUT_M] = animation;
+		this.animations[Monstre.HAUT] = animation;
 	}
 
 	private void chargerStaticDroite(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(0, 1), 200);
-		this.animations[Monstre.DROITE_M] = animation;
+		this.animations[Monstre.DROITE] = animation;
 	}
 
 	private void chargerMarcheBas(String chemin, int largeur, int hauteur) throws SlickException{
@@ -92,7 +92,7 @@ public abstract class VueMonstres implements Observer {
 		animation.addFrame(spriteSheet.getSprite(8, 0), 50);
 		animation.addFrame(spriteSheet.getSprite(9, 0), 50);
 		animation.addFrame(spriteSheet.getSprite(10, 0), 50);
-		this.animations[Monstre.AVANCER_BAS_M] = animation;
+		this.animations[Monstre.AVANCER_BAS] = animation;
 	}
 
 	private void chargerMarcheDroite(String chemin, int largeur, int hauteur) throws SlickException{
@@ -109,7 +109,7 @@ public abstract class VueMonstres implements Observer {
 		animation.addFrame(spriteSheet.getSprite(8, 1), 50);
 		animation.addFrame(spriteSheet.getSprite(9, 1), 50);
 		animation.addFrame(spriteSheet.getSprite(10, 1), 50);
-		this.animations[Monstre.AVANCER_DROITE_M] = animation;
+		this.animations[Monstre.AVANCER_DROITE] = animation;
 	}
 
 	private void chargerMarcheGauche(String chemin, int largeur, int hauteur) throws SlickException{
@@ -126,7 +126,7 @@ public abstract class VueMonstres implements Observer {
 		animation.addFrame(spriteSheet.getSprite(8, 3), 50);
 		animation.addFrame(spriteSheet.getSprite(9, 3), 50);
 		animation.addFrame(spriteSheet.getSprite(10, 3), 50);
-		this.animations[Monstre.AVANCER_GAUCHE_M] = animation;
+		this.animations[Monstre.AVANCER_GAUCHE] = animation;
 	}
 
 
@@ -145,16 +145,9 @@ public abstract class VueMonstres implements Observer {
 		animation.addFrame(spriteSheet.getSprite(9, 2), 50);
 		animation.addFrame(spriteSheet.getSprite(10, 2), 50);
 
-		this.animations[Monstre.AVANCER_HAUT_M] = animation;
+		this.animations[Monstre.AVANCER_HAUT] = animation;
 	}
 
-
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public void render(GameContainer container, Graphics g) {
 		float x = m.getX() ;
