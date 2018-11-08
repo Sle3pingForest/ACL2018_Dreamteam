@@ -43,8 +43,6 @@ public class Labyrinthe implements Serializable{
 	private boolean tresorTrouver = false;
     private final static int TAILLE_MAX_COULOIR = 6;
 
-	// sert a enlever les collisions pour tester plus facilement
-	private boolean check = true;
 
 	private Random random = new Random();
 
@@ -275,7 +273,7 @@ public class Labyrinthe implements Serializable{
 		float futureX = x + horizontal * vitesseActu;
 		float futureY = y + vertical * vitesseActu;
 		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
-			if (check) {
+			if (heros.getCollision()) {
 				if(vertical == -1){
 					if(!collisionHaut(heros, futureX, futureY)){
 						heros.setY(futureY);
@@ -318,7 +316,7 @@ public class Labyrinthe implements Serializable{
 		float futureY = y + vertical * vitesseActu;
 
 		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
-			if (check) {
+			if (monstre.getCollision()) {
 				if(vertical == -1){
 					if(!collisionHaut(monstre, futureX, futureY)){
 						monstre.setY(futureY);

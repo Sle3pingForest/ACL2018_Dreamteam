@@ -36,6 +36,9 @@ public abstract class Personnage extends Observable implements Serializable{
 
     protected int directionActu = BAS;
     
+	// sert a enlever les collisions pour tester plus facilement
+	private boolean collision = true;
+    
 	protected int pointVie;
 	protected int defense, attaque, vitesse;
 	public Personnage(float x, float y) {
@@ -199,6 +202,14 @@ public abstract class Personnage extends Observable implements Serializable{
 
 	public void setHorizontal(int horizontal) {
 		this.horizontal = horizontal;
+	}
+	
+	public boolean getCollision(){
+		return collision;
+	}
+	
+	public void setCollision(boolean b){
+		collision = b;
 	}
 
 }
