@@ -41,7 +41,7 @@ public class Labyrinthe implements Serializable{
 	private ArrayList<Heros> lesHeros;
 	private float multiplicateurProba = 1.2f;//Il pourrait varier aleatoirement
 	private boolean tresorTrouver = false;
-    private final static int TAILLE_MAX_COULOIR = 6;
+	private final static int TAILLE_MAX_COULOIR = 6;
 
 
 	private Random random = new Random();
@@ -81,176 +81,176 @@ public class Labyrinthe implements Serializable{
 		produitMonstres(50);
 	}
 
-    private void creuse(){
+	private void creuse(){
 
-        int rand,choix;
-        ArrayList<Integer> listChoix = new ArrayList<Integer>();
-        Mur murActu = null;
-        int nbCaseACreuser = (int)(longueur*hauteur);
-        int nbAEncoreCreuser = nbCaseACreuser;
+		int rand,choix;
+		ArrayList<Integer> listChoix = new ArrayList<Integer>();
+		Mur murActu = null;
+		int nbCaseACreuser = (int)(longueur*hauteur);
+		int nbAEncoreCreuser = nbCaseACreuser;
 
-        /***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
-        int xDebut = random.nextInt(longueur-2)+1;
-        int yDebut = random.nextInt(hauteur-2)+1;
+		/***** On choisi aleatoirement le debut du laby la ou sera notre heros *****/
+		int xDebut = random.nextInt(longueur-2)+1;
+		int yDebut = random.nextInt(hauteur-2)+1;
 
-        lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
+		lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
 
 
-        ArrayList<Mur> chemin = new ArrayList<Mur>();
-        chemin.add(tabMur[xDebut][yDebut]);
-        tabMur[xDebut][yDebut] = null;
+		ArrayList<Mur> chemin = new ArrayList<Mur>();
+		chemin.add(tabMur[xDebut][yDebut]);
+		tabMur[xDebut][yDebut] = null;
 
-        while(!chemin.isEmpty()) {
+		while(!chemin.isEmpty()) {
 
-            rand = random.nextInt(chemin.size());
-            murActu = chemin.get(rand);
-            chemin.remove(rand);
-            //System.out.println(nbCaseACreuser+" : "+murActu);
+			rand = random.nextInt(chemin.size());
+			murActu = chemin.get(rand);
+			chemin.remove(rand);
+			//System.out.println(nbCaseACreuser+" : "+murActu);
 
-            xDebut = murActu.getPosX();
-            yDebut = murActu.getPosY();
+			xDebut = murActu.getPosX();
+			yDebut = murActu.getPosY();
 
-            listChoix.add(0);
-            listChoix.add(1);
-            listChoix.add(2);
-            listChoix.add(3);
+			listChoix.add(0);
+			listChoix.add(1);
+			listChoix.add(2);
+			listChoix.add(3);
 
-            while(!listChoix.isEmpty()) {
-                rand = random.nextInt(listChoix.size());
-                choix = listChoix.get(rand);
-                listChoix.remove(rand);
+			while(!listChoix.isEmpty()) {
+				rand = random.nextInt(listChoix.size());
+				choix = listChoix.get(rand);
+				listChoix.remove(rand);
 
-                switch(choix) {
-                    case 0:
-                        /**** creuser a gauche ****/
-                        if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
-                            if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
-                                rand = random.nextInt(3*nbCaseACreuser);
-                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-                                    chemin.add(tabMur[xDebut - 1][yDebut]);
-                                    tabMur[xDebut - 1][yDebut] = null;
-                                    nbAEncoreCreuser--;
-                                }
-                            }
-                        }
-                        break;
-                    case 1:
-                        /**** creuser a droite ****/
-                        if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
-                            if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
-                                rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-                                    chemin.add(tabMur[xDebut + 1][yDebut]);
-                                    tabMur[xDebut + 1][yDebut] = null;
-                                    nbAEncoreCreuser--;
-                                }
-                            }
-                        }
-                        break;
+				switch(choix) {
+				case 0:
+					/**** creuser a gauche ****/
+					if (xDebut > 1 && tabMur[xDebut - 1][yDebut] != null) {
+						if (peutEtreCreuser(tabMur[xDebut - 1][yDebut])) {
+							rand = random.nextInt(3*nbCaseACreuser);
+							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+								chemin.add(tabMur[xDebut - 1][yDebut]);
+								tabMur[xDebut - 1][yDebut] = null;
+								nbAEncoreCreuser--;
+							}
+						}
+					}
+					break;
+				case 1:
+					/**** creuser a droite ****/
+					if (xDebut < longueur - 2 && tabMur[xDebut + 1][yDebut] != null) {
+						if (peutEtreCreuser(tabMur[xDebut + 1][yDebut])) {
+							rand = random.nextInt(nbCaseACreuser);
+							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+								chemin.add(tabMur[xDebut + 1][yDebut]);
+								tabMur[xDebut + 1][yDebut] = null;
+								nbAEncoreCreuser--;
+							}
+						}
+					}
+					break;
 
-                    case 2:
-                        /**** creuser en haut ****/
-                        if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
-                            if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
-                                rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-                                    chemin.add(tabMur[xDebut][yDebut - 1]);
-                                    tabMur[xDebut][yDebut - 1] = null;
-                                    nbAEncoreCreuser--;
-                                }
-                            }
-                        }
-                        break;
+				case 2:
+					/**** creuser en haut ****/
+					if (yDebut > 1 && tabMur[xDebut][yDebut - 1] != null) {
+						if (peutEtreCreuser(tabMur[xDebut][yDebut - 1])) {
+							rand = random.nextInt(nbCaseACreuser);
+							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+								chemin.add(tabMur[xDebut][yDebut - 1]);
+								tabMur[xDebut][yDebut - 1] = null;
+								nbAEncoreCreuser--;
+							}
+						}
+					}
+					break;
 
-                    case 3:
-                        /**** creuser en bas ****/
-                        if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
-                            if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
-                                rand = random.nextInt(nbCaseACreuser);
-                                if (rand <= multiplicateurProba*nbAEncoreCreuser) {
-                                    chemin.add(tabMur[xDebut][yDebut + 1]);
-                                    tabMur[xDebut][yDebut + 1] = null;
-                                    nbAEncoreCreuser--;
-                                }
-                            }
-                        }
-                        break;
-                }
-            }
-        }
-        lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
-    }
+				case 3:
+					/**** creuser en bas ****/
+					if (yDebut < hauteur - 2 && tabMur[xDebut][yDebut + 1] != null) {
+						if (peutEtreCreuser(tabMur[xDebut][yDebut + 1])) {
+							rand = random.nextInt(nbCaseACreuser);
+							if (rand <= multiplicateurProba*nbAEncoreCreuser) {
+								chemin.add(tabMur[xDebut][yDebut + 1]);
+								tabMur[xDebut][yDebut + 1] = null;
+								nbAEncoreCreuser--;
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
+		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
+	}
 
-    /**** On verifie si on peut creuser le mur ****/
-    private boolean peutEtreCreuser(Mur mur){
-        int x = mur.getPosX();
-        int y = mur.getPosY();
+	/**** On verifie si on peut creuser le mur ****/
+	private boolean peutEtreCreuser(Mur mur){
+		int x = mur.getPosX();
+		int y = mur.getPosY();
 
-        /***** La on verifie que creuser ici ne fait un chemin a 2 voix *****/
-        if(tabMur[x+1][y] == null ){
-            if(tabMur[x][y+1] == null){
-                return false;
-            }
-            if(tabMur[x][y-1] == null){
-                return false;
-            }
-        }
+		/***** La on verifie que creuser ici ne fait un chemin a 2 voix *****/
+		if(tabMur[x+1][y] == null ){
+			if(tabMur[x][y+1] == null){
+				return false;
+			}
+			if(tabMur[x][y-1] == null){
+				return false;
+			}
+		}
 
-        if(tabMur[x-1][y] == null ){
-            if(tabMur[x][y+1] == null){
-                return false;
-            }
-            if(tabMur[x][y-1] == null){
-                return false;
-            }
-        }
-        /***** Ici on verifie que creuser a cette endroi ne cree pas un couloir trop grand ****/
+		if(tabMur[x-1][y] == null ){
+			if(tabMur[x][y+1] == null){
+				return false;
+			}
+			if(tabMur[x][y-1] == null){
+				return false;
+			}
+		}
+		/***** Ici on verifie que creuser a cette endroi ne cree pas un couloir trop grand ****/
 
-        /**** couloir horizontal ***/
-        int tailleCouloire = 1;
-        int i = x-1;
-        while(i > 0 && tabMur[i][y] == null){
-            tailleCouloire++;
-            if(tailleCouloire > TAILLE_MAX_COULOIR){
-                return  false;
-            }
-            i--;
-        }
-        i = x+1;
-        while(i < longueur-1 && tabMur[i][y] == null){
-            tailleCouloire++;
-            if(tailleCouloire > TAILLE_MAX_COULOIR){
-                return  false;
-            }
-            i++;
-        }
+		/**** couloir horizontal ***/
+		int tailleCouloire = 1;
+		int i = x-1;
+		while(i > 0 && tabMur[i][y] == null){
+			tailleCouloire++;
+			if(tailleCouloire > TAILLE_MAX_COULOIR){
+				return  false;
+			}
+			i--;
+		}
+		i = x+1;
+		while(i < longueur-1 && tabMur[i][y] == null){
+			tailleCouloire++;
+			if(tailleCouloire > TAILLE_MAX_COULOIR){
+				return  false;
+			}
+			i++;
+		}
 
-        /**** couloir vertical ***/
+		/**** couloir vertical ***/
 
-        tailleCouloire = 1;
-        i = y-1;
-        while(i > 0 && tabMur[x][i] == null){
-            tailleCouloire++;
-            if(tailleCouloire > TAILLE_MAX_COULOIR){
-                return  false;
-            }
-            i--;
-        }
-        i = y+1;
-        while(i < longueur-1 && tabMur[x][i] == null){
-            tailleCouloire++;
-            if(tailleCouloire > TAILLE_MAX_COULOIR){
-                return  false;
-            }
-            i++;
-        }
+		tailleCouloire = 1;
+		i = y-1;
+		while(i > 0 && tabMur[x][i] == null){
+			tailleCouloire++;
+			if(tailleCouloire > TAILLE_MAX_COULOIR){
+				return  false;
+			}
+			i--;
+		}
+		i = y+1;
+		while(i < longueur-1 && tabMur[x][i] == null){
+			tailleCouloire++;
+			if(tailleCouloire > TAILLE_MAX_COULOIR){
+				return  false;
+			}
+			i++;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	public void update(GameContainer container, int delta) throws SlickException {
 
-    	updateHeros(lesHeros.get(0),delta);
+		updateHeros(lesHeros.get(0),delta);
 		if(lesHeros.get(0).getTresorDeMap() != null){
 			tresorTrouver = true;
 		}
@@ -258,7 +258,7 @@ public class Labyrinthe implements Serializable{
 		for(Monstre m : listeMonstres){
 			updateMonstre(m, delta);
 		}
-		
+
 	}
 
 	public void updateHeros(Heros heros, int delta) throws SlickException{
@@ -317,6 +317,7 @@ public class Labyrinthe implements Serializable{
 
 		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
 			if (monstre.getCollision()) {
+
 				if(vertical == -1){
 					if(!collisionHaut(monstre, futureX, futureY)){
 						monstre.setY(futureY);
@@ -358,6 +359,7 @@ public class Labyrinthe implements Serializable{
 				monstre.setX(futureX);
 				monstre.setY(futureY);
 			}
+
 		}
 	}
 
@@ -629,69 +631,102 @@ public class Labyrinthe implements Serializable{
 
 			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
 			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
-			int direction = 0;
-			
-			// regarde si le monstre est en deplacement
-			boolean check = false;
 
-			int direcActu = monstre.getDirectionActu();
+			ArrayList<Integer> cheminValide = new ArrayList<>();
 
-			// si le monstre est deja en deplacement, continue 
-			// vers la meme direction si il n y a pas de mur
-			if (direcActu == 4) {
-				//bas
-				if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
-					direction = 4; 
-					check = true;
-				}
-				else check = false;
+			if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
+				cheminValide.add(2);
 			}
-			else if (direcActu == 5) {
-				//droite
-				if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
-					direction = 1;
-					check = true;
-				}
-				else check = false;
+			if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
+				cheminValide.add(1);
 			}
-			else if (direcActu == 6) {
-				// haut
-				if(y-1 > 0 && tabMur[x][y-1] == null) {
-					direction = 2;
-					check = true;
-				}
-				else check = false;
-			} 
-			else if (direcActu == 7) {
-				// gauche
-				if (x-1 > 0 && tabMur[x-1][y] == null) {
-					direction = 3;
-					check = true;
-				}
-				else check = false;
+			if(y-1 > 0 && tabMur[x][y-1] == null) {
+				cheminValide.add(0);
 			}
-			
+			if (x-1 > 0 && tabMur[x-1][y] == null) {
+				cheminValide.add(3);
+			}
 			// si le monstre est static 
 			//if (!check) direction = direction(monstre);
-			
-			int dirActu = monstre.getDirectionActu();
-			if (direction == 0 && dirActu > 3) {
-				monstre.setDirectionActu(dirActu - 4);
-			}
-			if(direction == 1){
-				monstre.goDroite();
-			}
-			if(direction == 2){
-				monstre.goHaut();
+
+			Random r = new Random();
+			int rd =  r.nextInt(cheminValide.size());
+			int direction = cheminValide.get(rd);
+
+			switch(direction){
+			case 0:
+				monstre.setVertical(-1);
+				monstre.setDirectionActu(Personnage.AVANCER_HAUT);
+				break;
+			case 1:
+				monstre.setHorizontal(1);
+				monstre.setDirectionActu(Personnage.AVANCER_DROITE);
+				break;
+			case 2:
+				monstre.setVertical(1);
+				monstre.setDirectionActu(Personnage.AVANCER_BAS);
+				break;
+			case 3:
+				monstre.setHorizontal(-1);
+				monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
 			}
 
-			if(direction == 3){
-				monstre.goGauche();
-			}
-			if (direction == 4){
-				monstre.goBas();
-			}
 		}
+	}
+
+
+	public boolean changerDirection(Monstre monstre, int delta) throws SlickException {
+		monstre.setVertical(0);
+		monstre.setHorizontal(0);
+		int x = (int)(monstre.getX() ) / LARGEUR_MUR;
+		int y = (int)(monstre.getY() ) / HAUTEUR_MUR;
+		float vitesseActu = delta*Monstre.VITESSE;
+
+		float fx = monstre.getX();
+		float fy = monstre.getY();
+		int horizontal = monstre.getHorizontal();
+		int vertical = monstre.getVertical();
+
+		float futureX = fx;
+		float futureY = fy;
+
+		boolean changer = false;
+
+		ArrayList<Integer> cheminValide = new ArrayList<>();
+
+		futureX = fx;
+		futureY = fy - vitesseActu;
+		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionHaut(monstre, futureX, futureY) ) {
+			cheminValide.add(0);
+		}
+
+		futureX = fx + vitesseActu;
+		futureY = fy;
+		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionDroite(monstre, futureX, futureY)) {
+			cheminValide.add(1);
+		}
+
+		futureX = fx;
+		futureY = fy + vitesseActu;
+		if(y+1 < hauteur-1 && tabMur[x][y+1] == null && !collisionBas(monstre, futureX, futureY)) {
+			cheminValide.add(2);
+		}
+
+		futureX = fx - vitesseActu;
+		futureY = fy;
+		if (x-1 > 0 && tabMur[x-1][y] == null && !collisionGauche(monstre, futureX, futureY)) {
+			cheminValide.add(3);
+		}
+
+		Random r = new Random();
+		int rd =  r.nextInt(cheminValide.size());
+		int direction = cheminValide.get(rd);
+
+		monstre.direction(direction);
+
+		if (cheminValide.size() > 0) changer = true;
+
+		return changer;
 	}
 
 	// regarde dans toutes les directions les chemins possible
@@ -699,7 +734,7 @@ public class Labyrinthe implements Serializable{
 		monstre.setVertical(0);
 		monstre.setHorizontal(0);
 		float vitesseActu = delta*Monstre.VITESSE;
-		
+
 		float x = monstre.getX();
 		float y = monstre.getY();
 		int horizontal = monstre.getHorizontal();
@@ -707,9 +742,9 @@ public class Labyrinthe implements Serializable{
 
 		float futureX = x;
 		float futureY = y;
-		
+
 		ArrayList<Integer> cheminValide = new ArrayList<>();
-		
+
 		futureX = x;
 		futureY = y - vitesseActu;
 		if( !collisionHaut(monstre, futureX, futureY) ){
@@ -727,7 +762,7 @@ public class Labyrinthe implements Serializable{
 		if( !collisionGauche(monstre, futureX, futureY) ){
 			cheminValide.add(3);
 		}
-		
+
 		futureX = x;
 		futureY = y + vitesseActu;
 		if( !collisionBas(monstre, futureX, futureY) ){
@@ -737,28 +772,10 @@ public class Labyrinthe implements Serializable{
 		Random r = new Random();
 		int rd =  r.nextInt(cheminValide.size());
 		int direction = cheminValide.get(rd);
-		
-		switch(direction){
-		case 0:
-			monstre.setVertical(-1);
-			monstre.setDirectionActu(Personnage.AVANCER_HAUT);
-			break;
-		case 1:
-			monstre.setHorizontal(1);
-			monstre.setDirectionActu(Personnage.AVANCER_DROITE);
-			break;
-		case 2:
-			monstre.setVertical(1);
-			monstre.setDirectionActu(Personnage.AVANCER_BAS);
-			break;
-		case 3:
-			monstre.setHorizontal(-1);
-			monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
-		}
-		
+		monstre.direction(direction);
 	}
-	
-	
+
+
 
 	public void collison(){
 		for(Monstre monstre: listeMonstres){
@@ -955,66 +972,66 @@ public class Labyrinthe implements Serializable{
 
 
 
-    // Calcul du chemin de depart (monstre) vers larrivee (heros)
-    public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-        int x = (int)m.getX() /LARGEUR_MUR;
-        int y = (int)m.getY() /LARGEUR_MUR;
-        ArrayList<String> tab = new ArrayList<>();
-        int min = Integer.MAX_VALUE;
-        String s = "";
+	// Calcul du chemin de depart (monstre) vers larrivee (heros)
+	public ArrayList<String> calculChemin(int[][] t, Monstre m) {
+		int x = (int)m.getX() /LARGEUR_MUR;
+		int y = (int)m.getY() /LARGEUR_MUR;
+		ArrayList<String> tab = new ArrayList<>();
+		int min = Integer.MAX_VALUE;
+		String s = "";
 
-        int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
-        if (x == xh && y == yh) {
-            tab.add("");
-        }
-        // Si le monstre est a 1 case du heros
-        else if (x == xh) {
-            if (y + 1 == yh) s = "s";
-            else s = "z";
-            tab.add(0,s);
-        } else if (y == yh) {
-            if (x + 1 == xh) s = "d";
-            else s = "q";
-            tab.add(0,s);
-        } else {
-            // sinon on lance la boucle  pour chercher le chemin le plus court
-            while (min > 1 && x >= 0 && y >= 0) {
-                // on stocke le chemin du heros vers le monstre
-                // tant quon est pas arrive a la case de deplacement +1 du monstre
-                s = "";
-                int i = -1,j = -1;
-                if ((x+1) < longueur && t[x+1][y] > 0 && min > t[x+1][y] ) {
-                    min = t[x+1][y];
-                    i = x+1;
-                    j = y;
-                    s = "d";
-                }
-                if ( (x-1) >= 0 && t[x-1][y] > 0 && min > t[x-1][y] ) {
-                    min =  t[x-1][y];
-                    i = x-1;
-                    j = y;
-                    s = "q";
-                }
-                if ((y+1) < hauteur && t[x][y+1] > 0 && min > t[x][y+1] ) {
-                    min = t[x][y+1];
-                    i = x;
-                    j = y+1;
-                    s = "s";
-                }
-                if ((y-1) >= 0 && t[x][y-1] > 0 && min > t[x][y-1] ) {
-                    min =  t[x][y-1];
-                    i = x;
-                    j = y-1;
-                    s = "z";
-                }
-                x = i;
-                y = j;
-                System.out.println(t[x][y] + " " +s );
-                tab.add(s);
-            }
-        }
-        return tab;
-    }
+		int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
+		if (x == xh && y == yh) {
+			tab.add("");
+		}
+		// Si le monstre est a 1 case du heros
+		else if (x == xh) {
+			if (y + 1 == yh) s = "s";
+			else s = "z";
+			tab.add(0,s);
+		} else if (y == yh) {
+			if (x + 1 == xh) s = "d";
+			else s = "q";
+			tab.add(0,s);
+		} else {
+			// sinon on lance la boucle  pour chercher le chemin le plus court
+			while (min > 1 && x >= 0 && y >= 0) {
+				// on stocke le chemin du heros vers le monstre
+				// tant quon est pas arrive a la case de deplacement +1 du monstre
+				s = "";
+				int i = -1,j = -1;
+				if ((x+1) < longueur && t[x+1][y] > 0 && min > t[x+1][y] ) {
+					min = t[x+1][y];
+					i = x+1;
+					j = y;
+					s = "d";
+				}
+				if ( (x-1) >= 0 && t[x-1][y] > 0 && min > t[x-1][y] ) {
+					min =  t[x-1][y];
+					i = x-1;
+					j = y;
+					s = "q";
+				}
+				if ((y+1) < hauteur && t[x][y+1] > 0 && min > t[x][y+1] ) {
+					min = t[x][y+1];
+					i = x;
+					j = y+1;
+					s = "s";
+				}
+				if ((y-1) >= 0 && t[x][y-1] > 0 && min > t[x][y-1] ) {
+					min =  t[x][y-1];
+					i = x;
+					j = y-1;
+					s = "z";
+				}
+				x = i;
+				y = j;
+				System.out.println(t[x][y] + " " +s );
+				tab.add(s);
+			}
+		}
+		return tab;
+	}
 
 	//  verifie si un chemin vers le heros a ete trouve
 	// donc on regarde si une des 4 cases autour du heros est numerote
