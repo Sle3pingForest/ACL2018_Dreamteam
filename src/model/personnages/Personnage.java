@@ -193,4 +193,12 @@ public abstract class Personnage extends Observable implements Serializable{
         this.y = y;
     }
 
+	public void setVertical(int vertical) {
+		this.vertical = vertical;
+	}
+
+	public void setHorizontal(int horizontal) {
+		this.horizontal = horizontal;
+	}
+
 }
