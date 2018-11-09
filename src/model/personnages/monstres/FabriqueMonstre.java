@@ -11,7 +11,7 @@ public class FabriqueMonstre implements Serializable{
 	public Monstre creerMonstres(int type, int x, int y) {
 		Monstre m = null;
 		switch(type){
-			case ORC:m = new Orc(x,y);break;
+			case ORC:m = new Soldat(x,y);break;
 			case DRAGON: m = new Dragon(x,y);break;
 		}
 		return m;

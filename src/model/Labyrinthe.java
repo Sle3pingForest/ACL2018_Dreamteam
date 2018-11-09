@@ -17,11 +17,9 @@ import model.personnages.Personnage;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
-import model.personnages.monstres.Orc;
+import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import vues.VueLabyrinthe;
-import vues.VueMonstres.VueMonstres;
 
 
 public class Labyrinthe implements Serializable{
@@ -722,7 +720,7 @@ public class Labyrinthe implements Serializable{
 		int rd =  r.nextInt(cheminValide.size());
 		int direction = cheminValide.get(rd);
 
-		monstre.direction(direction);
+		monstre.setDirectionActu(direction);
 
 		if (cheminValide.size() > 0) changer = true;
 
@@ -772,7 +770,7 @@ public class Labyrinthe implements Serializable{
 		Random r = new Random();
 		int rd =  r.nextInt(cheminValide.size());
 		int direction = cheminValide.get(rd);
-		monstre.direction(direction);
+		monstre.setDirectionActu(direction);
 	}
 
 
@@ -802,7 +800,7 @@ public class Labyrinthe implements Serializable{
 						boolean avoirMonstre = false;
 						for (Monstre m : listeMonstres){
 							if(m.getX() == j && i == m.getY() && !avoirMonstre){
-								if(m instanceof Orc){
+								if(m instanceof Soldat){
 									System.out.print("O");
 								}
 								if(m instanceof Dragon){

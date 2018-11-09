@@ -1,7 +1,7 @@
 package vues.VueMonstres;
 
 import model.personnages.monstres.Monstre;
-import model.personnages.monstres.Orc;
+import model.personnages.monstres.Soldat;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -21,12 +21,12 @@ public class VueSoldat extends VueMonstres {
 
 	// largeur orc 30 / hauteur orc 55
 
-	public VueSoldat(Orc orc) throws SlickException{
-		super(orc);
+	public VueSoldat(Soldat soldat) throws SlickException{
+		super(soldat);
         Random r = new Random();
-        int valeur = 0 + r.nextInt(2 - 0);
+        int valeur =  r.nextInt(2);
         if(valeur == 1){
-            xSprite=3;
+            xSprite = 3;
         }
 		this.chargerAnimation(CHEMIN_Ennemis);
 	}

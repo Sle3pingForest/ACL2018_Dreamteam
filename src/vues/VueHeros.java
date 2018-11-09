@@ -27,16 +27,16 @@ public class VueHeros implements Serializable{
     	this.heros = heros;
         switch(choix){
             case VERT:
-                chargerAnimationVert();
+                chargerAnimation(CHEMIN_VERT);
                 break;
             case ROUGE:
-                chargerAnimationRouge();
+                chargerAnimation(CHEMIN_ROUGE);
                 break;
             case BLEU:
-                chargerAnimationBleu();
+                chargerAnimation(CHEMIN_BLEU);
                 break;
             case VIOLET:
-                chargerAnimationViolet();
+                chargerAnimation(CHEMIN_VIOLET);
                 break;
                 default: break;
 
@@ -194,61 +194,21 @@ public class VueHeros implements Serializable{
         this.animations[Heros.AVANCER_HAUT] = animation;
     }
 
-    private void chargerAnimationVert() throws SlickException {
+    private void chargerAnimation(String chemin) throws SlickException {
         // chargement des animation static
-        chargerStaticBas(CHEMIN_VERT);
-        chargerStaticGauche(CHEMIN_VERT);
-        chargerStaticHaut(CHEMIN_VERT);
-        chargerStaticDroite(CHEMIN_VERT);
+        chargerStaticBas(chemin);
+        chargerStaticGauche(chemin);
+        chargerStaticHaut(chemin);
+        chargerStaticDroite(chemin);
 
         //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_VERT);
-        chargerMarcheDroite(CHEMIN_VERT);
-        chargerMarcheGauche(CHEMIN_VERT);
-        chargerMarcheHaut(CHEMIN_VERT);
+        chargerMarcheBas(chemin);
+        chargerMarcheDroite(chemin);
+        chargerMarcheGauche(chemin);
+        chargerMarcheHaut(chemin);
     }
 
-    private void chargerAnimationRouge() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_ROUGE);
-        chargerStaticGauche(CHEMIN_ROUGE);
-        chargerStaticHaut(CHEMIN_ROUGE);
-        chargerStaticDroite(CHEMIN_ROUGE);
 
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_ROUGE);
-        chargerMarcheDroite(CHEMIN_ROUGE);
-        chargerMarcheGauche(CHEMIN_ROUGE);
-        chargerMarcheHaut(CHEMIN_ROUGE);
-    }
-
-    private void chargerAnimationBleu() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_BLEU);
-        chargerStaticGauche(CHEMIN_BLEU);
-        chargerStaticHaut(CHEMIN_BLEU);
-        chargerStaticDroite(CHEMIN_BLEU);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_BLEU);
-        chargerMarcheDroite(CHEMIN_BLEU);
-        chargerMarcheGauche(CHEMIN_BLEU);
-        chargerMarcheHaut(CHEMIN_BLEU);
-    }    	
-
-    private void chargerAnimationViolet() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_VIOLET);
-        chargerStaticGauche(CHEMIN_VIOLET);
-        chargerStaticHaut(CHEMIN_VIOLET);
-        chargerStaticDroite(CHEMIN_VIOLET);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_VIOLET);
-        chargerMarcheDroite(CHEMIN_VIOLET);
-        chargerMarcheGauche(CHEMIN_VIOLET);
-        chargerMarcheHaut(CHEMIN_VIOLET);
-    }
 
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import model.personnages.Heros;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.Monstre;
-import model.personnages.monstres.Orc;
+import model.personnages.monstres.Soldat;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,7 +20,7 @@ import vues.VueItem.VueItem;
 import vues.VueItem.VueTresor;
 import vues.VueMonstres.VueDragon;
 import vues.VueMonstres.VueMonstres;
-import vues.VueMonstres.VueOrc;
+import vues.VueMonstres.VueSoldat;
 
 public class VueLabyrinthe implements Serializable{
 
@@ -59,7 +59,7 @@ public class VueLabyrinthe implements Serializable{
         ArrayList<Monstre> lesMonstres = lab.getListeMonstres();
         for (int k = 0; k < lesMonstres.size() ; k++ ){
         	if(lesMonstres.get(k).getNom() == "orc"){
-        		lesMonstresVue.add(new VueOrc((Orc)lesMonstres.get(k))) ;
+        		lesMonstresVue.add(new VueSoldat((Soldat)lesMonstres.get(k))) ;
         	}
         	if(lesMonstres.get(k).getNom() == "dragon"){
         		lesMonstresVue.add(new VueDragon((Dragon)lesMonstres.get(k))) ;
