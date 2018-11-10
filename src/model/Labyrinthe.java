@@ -696,6 +696,15 @@ public class Labyrinthe implements Serializable{
 	public void arretGauche(){
 		lesHeros.get(0).arretGauche();
 	}
+	
+	public void attaquer(){
+	   lesHeros.get(0).attaquer();
+
+	}
+	
+	public void attaquerStop(){
+		lesHeros.get(0).attaquerStop();
+	}
 
 
 	/*public void deplacerMonstres(){

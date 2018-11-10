@@ -27,6 +27,10 @@ public abstract class Personnage extends Observable implements Serializable{
     public final static int AVANCER_HAUT = 6;
     public final static int AVANCER_GAUCHE = 7;
 
+    public final static int ATTAQUER_BAS = 8;
+    public final static int ATTAQUER_HAUT = 9;
+    public final static int ATTAQUER_GAUCHE = 10;
+    public final static int ATTAQUER_DROITE = 11;
 
     public final static  float VITESSE = 0.2f;
     public final static int LARGEUR_SPRITE = 30;
@@ -136,6 +140,26 @@ public abstract class Personnage extends Observable implements Serializable{
             }
         }
     }
+    
+    public void attaquer(){
+    	if(directionActu == BAS){
+    		directionActu = ATTAQUER_BAS;
+    	}
+    	else if(directionActu == HAUT){
+    		directionActu = ATTAQUER_HAUT;
+    	}
+    	else if(directionActu == GAUCHE){
+    		directionActu = ATTAQUER_GAUCHE;
+    		
+    	}
+    	else if(directionActu == DROITE){
+    		directionActu = ATTAQUER_DROITE;
+    	}
+    }
+    
+    public void attaquerStop(){
+        directionActu = BAS;
+   }
 
     public void arretHaut(){
 
