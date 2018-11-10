@@ -18,6 +18,7 @@ public class VueHeros implements Serializable{
     private final static  String CHEMIN_VIOLET = "main/resources/Personnages/Heros/Violet.png";
 
 
+
     private Animation[] animations = new Animation[20];
     
     private Heros heros;
@@ -175,7 +176,6 @@ public class VueHeros implements Serializable{
         this.animations[Heros.AVANCER_GAUCHE] = animation;
     }
 
-
     private void chargerMarcheHaut(String chemin)throws SlickException{
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
         Animation animation = new Animation();
@@ -192,7 +192,65 @@ public class VueHeros implements Serializable{
 
         this.animations[Heros.AVANCER_HAUT] = animation;
     }
+    
+    private void attaquerDevantBas(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 12), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 12), 100);
+        animation.addFrame(spriteSheet.getSprite(5,12), 100);
+        animation.addFrame(spriteSheet.getSprite(6,12), 100);
+        animation.addFrame(spriteSheet.getSprite(7,12), 100);
+        animation.addFrame(spriteSheet.getSprite(8,12), 100);
+        animation.addFrame(spriteSheet.getSprite(9,12), 100);
+        this.animations[Heros.ATTAQUER_BAS] = animation;
+    }
 
+    private void attaquerDevantHaut(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 38), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 38), 100);
+        animation.addFrame(spriteSheet.getSprite(5,38), 100);
+        animation.addFrame(spriteSheet.getSprite(6,38), 100);
+        animation.addFrame(spriteSheet.getSprite(7,38), 100);
+        animation.addFrame(spriteSheet.getSprite(8,38), 100);
+        animation.addFrame(spriteSheet.getSprite(9,38), 100);
+        this.animations[Heros.ATTAQUER_HAUT] = animation;
+    }
+    
+    private void attaquerDevantGauche(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 64), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 64), 100);
+        animation.addFrame(spriteSheet.getSprite(5,64), 100);
+        animation.addFrame(spriteSheet.getSprite(6,64), 100);
+        animation.addFrame(spriteSheet.getSprite(7,64), 100);
+        animation.addFrame(spriteSheet.getSprite(8,64), 100);
+        animation.addFrame(spriteSheet.getSprite(9,64), 100);
+        this.animations[Heros.ATTAQUER_GAUCHE] = animation;
+    }
+    
+    private void attaquerDevantDroite(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(4, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(5, 64).getFlippedCopy(true,false), 100);
+       
+        animation.addFrame( spriteSheet.getSprite(6, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(7, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(8, 64).getFlippedCopy(true,false), 100);
+       
+        animation.addFrame( spriteSheet.getSprite(9, 64).getFlippedCopy(true,false), 100);
+        this.animations[Heros.ATTAQUER_DROITE] = animation;
+    }
+    
     private void chargerAnimation(String chemin) throws SlickException {
         // chargement des animation static
         chargerStaticBas(chemin);
@@ -205,9 +263,14 @@ public class VueHeros implements Serializable{
         chargerMarcheDroite(chemin);
         chargerMarcheGauche(chemin);
         chargerMarcheHaut(chemin);
+        
+        attaquerDevantBas(chemin);
+        attaquerDevantHaut(chemin);
+        attaquerDevantGauche(chemin);
+        attaquerDevantDroite(chemin);
     }
 
-
+   
 
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();
