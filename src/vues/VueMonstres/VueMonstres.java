@@ -17,12 +17,12 @@ import vues.VueLabyrinthe;
 
 public abstract class VueMonstres {
 
-	
 
+	
 	protected Animation[] animations = new Animation[20];
 	protected Monstre m;
 
-	public VueMonstres(Monstre m){
+	public VueMonstres(Monstre m) throws SlickException{
 		this.m = m;
 	}
 
@@ -33,5 +33,5 @@ public abstract class VueMonstres {
 		g.drawAnimation(animations[m.getDirectionActu()],(int)x,(int)y);
 
 	}
-
+	
 }

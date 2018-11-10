@@ -32,6 +32,12 @@ public abstract class Personnage extends Observable implements Serializable{
     public final static int ATTAQUER_GAUCHE = 10;
     public final static int ATTAQUER_DROITE = 11;
 
+    public final static int MORT = 12;
+    public final static int MORT_BAS = 13;
+    public final static int MORT_HAUT = 14;
+    public final static int MORT_DROITE = 15;
+    public final static int MORT_GAUCHE = 16;
+
     public final static  float VITESSE = 0.2f;
     public final static int LARGEUR_SPRITE = 30;
 
@@ -157,6 +163,26 @@ public abstract class Personnage extends Observable implements Serializable{
     	}
     }
     
+    public void mort(){
+    
+    	if(directionActu == BAS){
+    		directionActu = MORT_BAS;
+		}
+		else if(directionActu == HAUT){
+			directionActu = MORT_HAUT;
+		}
+		else if(directionActu == GAUCHE){
+			directionActu = MORT_GAUCHE;
+			
+		}
+		else if(directionActu == DROITE){
+			directionActu = MORT_DROITE;
+		}
+		else{
+			directionActu = MORT;
+		}
+    }
+    
     public void attaquerStop(){
         directionActu = BAS;
    }
@@ -237,6 +263,10 @@ public abstract class Personnage extends Observable implements Serializable{
 
     public String getNom(){
         return this.nom;
+    }
+    
+    public void setPointVie(int i){
+    	this.pointVie = this.pointVie-i;
     }
 
 }

@@ -24,7 +24,7 @@ public class Heros extends Personnage {
     	super(x,y);
     	this.pointVie = 5;
     	this.nom = nom;
-    	this.attaque = 2;
+    	this.attaque = 3;
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
     }

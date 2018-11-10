@@ -53,5 +53,15 @@ public abstract class Monstre extends Personnage {
 				horizontal = -1;
 		}
 	}
+	
+	public boolean collisionHeros(Heros heros){
+		if(x == heros.getX() && y == heros.getY()){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
 
 }
