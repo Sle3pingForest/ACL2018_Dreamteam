@@ -221,7 +221,7 @@ public class VueHeros implements Serializable{
     
     private void attaquerDevantGauche(String chemin ) throws SlickException {
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
-       Animation animation = new Animation();
+        Animation animation = new Animation();
         animation.addFrame(spriteSheet.getSprite(3, 64), 100);
         animation.addFrame(spriteSheet.getSprite(4, 64), 100);
         animation.addFrame(spriteSheet.getSprite(5,64), 100);
@@ -234,7 +234,7 @@ public class VueHeros implements Serializable{
     
     private void attaquerDevantDroite(String chemin ) throws SlickException {
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
-       Animation animation = new Animation();
+        Animation animation = new Animation();
         animation.addFrame(spriteSheet.getSprite(3, 64).getFlippedCopy(true,false), 100);
         
         animation.addFrame(spriteSheet.getSprite(4, 64).getFlippedCopy(true,false), 100);
@@ -250,6 +250,63 @@ public class VueHeros implements Serializable{
         animation.addFrame( spriteSheet.getSprite(9, 64).getFlippedCopy(true,false), 100);
         this.animations[Heros.ATTAQUER_DROITE] = animation;
     }
+    
+    
+    private void mortBas(String chemin) throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 4), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 4), 500);
+        animation.addFrame(spriteSheet.getSprite(9, 4), 500);
+        this.animations[Heros.MORT_BAS] = animation;
+    }
+
+    private void mortGauche(String chemin)throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 59), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 59), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 59), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 59), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 59), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 59), 300);
+        animation.addFrame(spriteSheet.getSprite(9, 59), 500);
+        this.animations[Heros.MORT_GAUCHE] = animation;
+    }
+
+   
+    private void mortHaut(String chemin)throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 30), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 30), 500);
+        animation.addFrame(spriteSheet.getSprite(9, 30), 500);
+        this.animations[Heros.MORT_HAUT] = animation;
+    }
+
+
+    private void mortDroite(String chemin)throws SlickException{
+
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(5, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(6, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(7, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(8, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(9, 59).getFlippedCopy(true,false), 100);
+        this.animations[Heros.MORT_DROITE] = animation;
+    }
+
     
     private void chargerAnimation(String chemin) throws SlickException {
         // chargement des animation static
@@ -268,10 +325,14 @@ public class VueHeros implements Serializable{
         attaquerDevantHaut(chemin);
         attaquerDevantGauche(chemin);
         attaquerDevantDroite(chemin);
+        
+        //mortBas(chemin);
+        //mortHaut(chemin);
+        //mortGauche(chemin);
+       // mortDroite(chemin);
+        
     }
-
-   
-
+    
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();
     	float y = heros.getY();

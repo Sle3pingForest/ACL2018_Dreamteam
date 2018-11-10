@@ -7,7 +7,7 @@ public class Soldat extends Monstre{
 	public Soldat(int x, int y) {
 		super(x, y);
 		this.attaque = 1;
-		this.pointVie = 3;
+		this.pointVie = 1;
 		this.nom ="Soldat";
 		LARGEUR_SPRITE = 30;
 		HAUTEUR_SPRITE = 30;
@@ -15,5 +15,7 @@ public class Soldat extends Monstre{
 		LARGEUR = 14;
 		collision = true;
 	}
+	
+	
 	
 }

@@ -76,7 +76,7 @@ public class Labyrinthe implements Serializable{
 
 		/**** Et maintenant on creuse ****/
 		creuse();
-		produitMonstres(50);
+		produitMonstres(5);
 	}
 
 	private void creuse(){
@@ -363,7 +363,7 @@ public class Labyrinthe implements Serializable{
 				monstre.setX(futureX);
 				monstre.setY(futureY);
 			}
-
+			
 		}
 	}
 
@@ -698,9 +698,26 @@ public class Labyrinthe implements Serializable{
 	}
 	
 	public void attaquer(){
-	   lesHeros.get(0).attaquer();
+		lesHeros.get(0).attaquer();
+	   int xH = (int)(lesHeros.get(0).getX()/LARGEUR_MUR);
+	   int yH = (int)(lesHeros.get(0).getY()/HAUTEUR_MUR);
+	   for(Monstre m : listeMonstres){
+		   if(xH == (int)(m.getX()/LARGEUR_MUR) && yH == (int)(m.getY()/HAUTEUR_MUR)){
+			   lesHeros.get(0).setPointVie(m.getAttaque());
+			   m.setPointVie(lesHeros.get(0).getAttaque());
+			   if(m.getPointVie() <= 0){
+				   m.mort(); 
+			   }
+			   System.err.println(lesHeros.get(0).getPointVie());
+		   }
+		   if(lesHeros.get(0).getPointVie() <= 0){
+			   MORT_HEROS = true;
+			   //lesHeros.get(0).mort();
+		   }
+	   }
 
 	}
+	
 	
 	public void attaquerStop(){
 		lesHeros.get(0).attaquerStop();

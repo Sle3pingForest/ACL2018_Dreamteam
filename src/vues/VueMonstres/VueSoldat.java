@@ -15,6 +15,7 @@ public class VueSoldat extends VueMonstres {
 	private final static  String CHEMIN_VERT = "main/resources/Personnages/Monstres/GreenSoldier.png";
 	private final static  String CHEMIN_ROUGE = "main/resources/Personnages/Monstres/RedSoldier.png";
 	private final static  String CHEMIN_BLEU = "main/resources/Personnages/Monstres/BlueSoldier.png";
+	private final static  String CHEMIN_MORT= "main/resources/Personnages/Monstres/death.png";
 
 	private final static int HAUTEUR_SPRITES = 41;
 	private final static int LARGEUR_SPRITES = 32;
@@ -53,6 +54,7 @@ public class VueSoldat extends VueMonstres {
 		chargerMarcheDroite(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
 		chargerMarcheGauche(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
 		chargerMarcheHaut(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
+		mortEffect();
 
 	}
 
@@ -139,6 +141,13 @@ public class VueSoldat extends VueMonstres {
 		img = img.getFlippedCopy(false,true);
 		animation.addFrame(img, 150);
 		this.animations[Monstre.AVANCER_HAUT] = animation;
+	}
+	
+	public void mortEffect() throws SlickException{
+		SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_MORT, 26, 32);
+		Animation animation = new Animation();
+		animation.addFrame(spriteSheet.getSprite(3, 0), 200);
+		this.animations[Monstre.MORT] = animation;
 	}
 
 }
