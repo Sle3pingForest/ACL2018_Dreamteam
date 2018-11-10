@@ -23,10 +23,16 @@ public abstract class Monstre extends Personnage {
 	protected  int HAUTEUR_SPRITE = 30;
 	protected  int HAUTEUR = 30;
 	protected  int LARGEUR = 30;
+	
+	protected float posXPrecedent, posYprecedent;
+
+
 
 
 	public Monstre(int x, int y){
 		super(x,y);
+		posXPrecedent = x;
+		posYprecedent = y;
 		goBas();
 	}
 
@@ -52,6 +58,24 @@ public abstract class Monstre extends Personnage {
 				directionActu = Personnage.AVANCER_GAUCHE;
 				horizontal = -1;
 		}
+	}
+	
+	
+	public float getPosXPrecedent() {
+		return posXPrecedent;
+	}
+
+	public float getPosYprecedent() {
+		return posYprecedent;
+	}
+	
+
+	public void setPosXPrecedent(float posXPrecedent) {
+		this.posXPrecedent = posXPrecedent;
+	}
+
+	public void setPosYprecedent(float prosYprecedent) {
+		this.posYprecedent = prosYprecedent;
 	}
 
 }
