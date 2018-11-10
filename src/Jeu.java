@@ -29,7 +29,7 @@ public class Jeu extends BasicGame {
 	public static Jeu getInstance() {
 		if (instance == null) {
 			instance = new Jeu();
-		}
+		}	
 		return instance;
 	}
 
