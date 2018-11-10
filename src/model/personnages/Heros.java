@@ -1,53 +1,49 @@
 package model.personnages;
 
+import model.Item.Item;
+import model.Item.Tresor;
 import model.mur.Mur;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import vues.VueHeros;
-import vues.VueLabyrinthe;
 
 public class Heros extends Personnage {
 
-    private String nom;
-    
-    //Les Direction
+    private Tresor tresorDeMap = null;
+    private ArrayList<Item> inventaire;
 
 
-    //Position static
-    public final static int BAS = 0;
-
-	public final static int DROITE = 1;
-    public final static int HAUT = 2;
-    public final static int GAUCHE = 3;
-
-    // Avancer
-    public final static int AVANCER_BAS = 4;
-    public final static int AVANCER_DROITE = 5;
-    public final static int AVANCER_HAUT = 6;
-    public final static int AVANCER_GAUCHE = 7;
-
-    
-    public final static  float VITESSE = 5;
-    
-    // sert a enlever les collisions pour tester plus facilement
-    private boolean check = true;
-    
-    private int directionActu = BAS;
+    protected int tailleInventaire = 10;
 
 
-    public Heros(int x, int y, String nom){
+    public Heros(float x, float y, String nom){
     	super(x,y);
     	this.pointVie = 5;
     	this.nom = nom;
     	this.attaque = 2;
     	this.defense = 0;
+    	inventaire = new ArrayList<Item>();
+    }
+    
+    public void charge(Heros h) {
+    	this.x = h.getX();
+    	this.y = h.getY();
+    	this.pointVie = h.getPointVie();
+    	this.nom = h.getNom();
+    	this.attaque = h.getAttaque();
+    	this.defense = h.getDefense();
+    	inventaire = h.getInventaire();
     }
 
-    public String toString(){
+    public ArrayList<Item> getInventaire() {
+		return inventaire;
+	}
+
+	public String toString(){
         String donnee = "Le Heros est en  x :"+x+" , +y : "+y;
 
         return donnee;
@@ -57,262 +53,30 @@ public class Heros extends Personnage {
     public String getNom() {
 		return nom;
 	}
-    
-    
-    public void goDroite(){
-        horizontal = 1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
-                directionActu = AVANCER_DROITE;
-            }
-        }else{
-            directionActu = AVANCER_DROITE;
-        }
-    }
-    
-    public void goGauche(){
-        horizontal = -1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
-                directionActu = AVANCER_GAUCHE;
-            }
-        }else{
-            directionActu = AVANCER_GAUCHE;
-        }
-    }
-    public void goBas(){
-        vertical = 1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
-                directionActu = AVANCER_BAS;
-            }
-        }else{
-            directionActu = AVANCER_BAS;
-        }
-    }
-    public void goHaut(){
 
-        vertical = -1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
-                directionActu = AVANCER_HAUT;
-            }
-        }else{
-            directionActu = AVANCER_HAUT;
-        }
+
+    public int getTailleInventaire() {
+        return tailleInventaire;
     }
 
-    public void arretGauche(){
-
-        if(horizontal == -1) {
-            horizontal = 0;
-
-            if(vertical == 0){
-                directionActu = GAUCHE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
-            }
-        }
-    }
-
-    public  void arretDroite(){
-
-        if(horizontal == 1) {
-            horizontal = 0;
-
-            if(vertical == 0){
-                directionActu = DROITE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
-            }
-        }
-    }
-
-    public void arretBas(){
-
-        if(vertical == 1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = BAS;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
-            }
-        }
-    }
-
-    public void arretHaut(){
-
-        if(vertical == -1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = HAUT;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
-            }
-        }
+    public void setTailleInventaire(int tailleInventaire) {
+        this.tailleInventaire = tailleInventaire;
     }
     
     public int getDirectionActu(){
     	return directionActu;
     }
     
-public void update(GameContainer container, int delta) throws SlickException{
-    	
-    	
-        float vitesseActu = delta*Heros.VITESSE*0.07f;
+    public Tresor getTresorDeMap(){
+        return  tresorDeMap;
+    }
 
-        float futureX = x + horizontal * vitesseActu;
-        float futureY = y + vertical * vitesseActu;
-        if (check) {
-	        if(vertical == -1){
-		        if(!collisionHaut( futureX, futureY)){
-			        y = futureY;
-		        }
-	        }
-	        if(vertical == 1){
-		        if(!collisionBas( futureX, futureY)){
-			        y = futureY;
-		        }
-	        }
-	        
-	        if(horizontal == -1){
-		        if(!collisionGauche( futureX, futureY)){
-			        x = futureX;
-			        System.out.println("GAUCHE");
-		        }
-	        }
-	        if(horizontal == 1){
-		        if(!collisionDroite( futureX, futureY)){
-			        x = futureX;
-			        System.out.println("DROITE");
-		        }
-	        }
-        } else {
-        	x = futureX;
-        	y = futureY;
+
+    public void ajouterAInventaire(Item i){
+        if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
+            inventaire.add(i);
+        }else{
+            tresorDeMap = (Tresor)i;
         }
-
-       
     }
-    
-    private boolean collisionHaut(float futureX,float futureY) throws SlickException {
-    	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
-		Mur[][] mur = lab.getLab().getTabMur();
-		
-		int xCaseFuture = (int)((futureX+ 6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+ 18)/VueLabyrinthe.HAUTEUR_MUR);
-		
-		/*
-		if(horizontal == -1){
-			xCaseFuture = (int)((futureX+6-2)/VueLabyrinthe.LARGEUR_MUR);
-		}
-		if(horizontal == 1){
-			xCaseFuture = (int)((futureX+6+2)/VueLabyrinthe.LARGEUR_MUR);
-		}*/
-		
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		// le sprite de link fait 18px de large
-		// il est plus petit de 6px de chaque coté car une image fait 30px de large
-		xCaseFuture = (int)((futureX + 6 + 18)/VueLabyrinthe.LARGEUR_MUR);
-		
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		
-    	return false;
-    }
-    
-    private boolean collisionBas(float futureX,float futureY) throws SlickException {
-    	
-    	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
-		Mur[][] mur = lab.getLab().getTabMur();
-		
-		int xCaseFuture = (int)((futureX+ 6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+ 24)/VueLabyrinthe.HAUTEUR_MUR);
-		
-		
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		
-		xCaseFuture = (int)((futureX + 6 + 18)/VueLabyrinthe.LARGEUR_MUR);
-		
-		
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		
-    	return false;
-    }
-    
-    private boolean collisionGauche(float futureX,float futureY) throws SlickException {
-    	
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
-		Mur[][] mur = lab.getLab().getTabMur();
-		
-		int xCaseFuture = (int)((futureX+ 6)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+ 18)/VueLabyrinthe.HAUTEUR_MUR);
-		
-		/*
-		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
-		}*/
-		System.out.println("g  " +yCaseFuture + "   " + mur[xCaseFuture][yCaseFuture]);
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		yCaseFuture = (int)((futureY+ 24)/VueLabyrinthe.HAUTEUR_MUR);
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-    	return false;
-    }
-
-	private boolean collisionDroite(float futureX,float futureY) throws SlickException {
-		
-		
-		VueLabyrinthe lab =  VueLabyrinthe.getInstance();
-		Mur[][] mur = lab.getLab().getTabMur();
-		
-		int xCaseFuture = (int)((futureX+ 24)/VueLabyrinthe.LARGEUR_MUR);
-		int yCaseFuture = (int)((futureY+ 18)/VueLabyrinthe.HAUTEUR_MUR);
-		System.out.println("d  " +yCaseFuture + "   " + mur[xCaseFuture][yCaseFuture]);
-		/*
-		if(vertical == -1){
-			 xCaseFuture = (int)((futureX+6)/VueLabyrinthe.LARGEUR_MUR);
-			 yCaseFuture = (int)((futureY+2+19)/VueLabyrinthe.HAUTEUR_MUR);
-		}
-		*/
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		yCaseFuture = (int)((futureY + 24)/VueLabyrinthe.LARGEUR_MUR);
-		if(mur[xCaseFuture][yCaseFuture] != null){
-			return true;
-		}
-		
-		
-		return false;
-}
 }

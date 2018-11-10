@@ -10,5 +10,7 @@
     <orderEntry type="library" name="jinput" level="project" />
     <orderEntry type="library" name="lwjgl" level="project" />
     <orderEntry type="library" name="slick" level="project" />
+    <orderEntry type="library" name="jogg-0.0.7" level="project" />
+    <orderEntry type="library" name="jorbis-0.0.15" level="project" />
   </component>
 </module>

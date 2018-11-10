@@ -28,15 +28,10 @@ public class JeuSerializableDAO implements JeuDAO{
 	public void save(Jeu j) {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("zeldiablo.sav"));
-			//oos.writeObject(MoteurGraphique.getJ());
-			//oos.writeObject(j.getContainer());
-			oos.writeObject(j.getLesHeros());
-			//oos.writeObject(j.getLesHerosVue());
-			//oos.writeObject(j.getLaby());
+			oos.writeObject(j.getLesheros());
 			oos.close();
-			System.out.println("SAVE");
 		} catch (FileNotFoundException e1) {
-			System.out.println("Fichier non trouvé");
+			System.out.println("Fichier non trouvï¿½");
 		} catch (IOException e1) {
 			System.out.println("erreur IO");
 		}
@@ -49,8 +44,8 @@ public class JeuSerializableDAO implements JeuDAO{
 			ArrayList<Heros> a = new ArrayList<>();
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("zeldiablo.sav"));
 			try {
-				//jeu_charge.setContainer((GameContainer) ois.readObject());
 				a = ((ArrayList<Heros>) ois.readObject());
+				//jeu_charge.setContainer((GameContainer) ois.readObject());
 				//jeu_charge.setLesHerosVue( (ArrayList<VueHeros>) ois.readObject());
 				//jeu_charge.setLaby((VueLabyrinthe) ois.readObject());
 				System.out.println("LOAD");

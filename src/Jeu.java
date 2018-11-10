@@ -1,11 +1,14 @@
+import model.Labyrinthe;
 import model.personnages.Heros;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
+import vues.Song;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,9 +17,8 @@ import java.util.Collections;
 public class Jeu extends BasicGame {
 
     private GameContainer container;
-    private static VueLabyrinthe laby;
-    private ArrayList<VueHeros> lesHerosVue;
-    private ArrayList<Heros> lesHeros;
+    private static VueLabyrinthe labyVue;
+    private static Labyrinthe labyModel;
     private DAOFactory d;
 
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -32,44 +34,48 @@ public class Jeu extends BasicGame {
 	}
 
     private Jeu() {
-        super("Link the Labyrinthe's Master");
-        lesHeros = new ArrayList<Heros>();
-        lesHerosVue = new ArrayList<VueHeros>();
+        super("Link The Labyrinthe's Master");
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        laby = VueLabyrinthe.getInstance();
-        lesHeros.add(new Heros(300,280,"link"));
-        lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
+        labyModel =  new Labyrinthe(100,100);
+        labyVue = VueLabyrinthe.getInstance();
+        labyVue.setLab(labyModel);
+        //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
+        Song.chargerForet();
+        Song.jouerBackground();
     }
     
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
-    	laby = VueLabyrinthe.getInstance();
-		lesHeros.clear();
-		lesHeros = lesHeros2;
-		lesHerosVue.clear();
-		System.out.println(lesHeros);
-		lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
+    	labyVue = VueLabyrinthe.getInstance();
+    	labyModel.getHeros(0).charge(lesHeros2.get(0));
+		//lesHeros.clear();
+		//lesHeros = lesHeros2;
+		//lesHerosVue.clear();
+		//System.out.println(lesHeros);
+		//lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
     	/*System.out.println(h.getX());
     	
     	lesHeros.get(0).setX(h.getX());
     	lesHeros.get(0).setY(h.getY());*/
+
     	
 	}
     
 
 	@Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        int cameraX = (int)(container.getWidth() / 2 - lesHeros.get(0).getX());
-        int cameraY = (int)(container.getHeight() / 2 - lesHeros.get(0).getY());
-        if(cameraX < -laby.getLongeurCarte()+container.getWidth()){
-            cameraX = -laby.getLongeurCarte()+container.getWidth();
+	    Heros h = labyModel.getHeros(0);
+        int cameraX = (int)(container.getWidth() / 2 - h.getX());
+        int cameraY = (int)(container.getHeight() / 2 - h.getY());
+        if(cameraX < -labyModel.getLongeurCarte()+container.getWidth()){
+            cameraX = -labyModel.getLongeurCarte()+container.getWidth();
         }
-        if(cameraY  < -laby.getHauteurCarte() + container.getHeight() ){
-            cameraY = -laby.getHauteurCarte()+ container.getHeight();
+        if(cameraY  < -labyModel.getHauteurCarte() + container.getHeight() ){
+            cameraY = -labyModel.getHauteurCarte()+ container.getHeight();
         }
         if(cameraX > 0){
             cameraX = 0;
@@ -81,10 +87,8 @@ public class Jeu extends BasicGame {
         g.translate(cameraX, cameraY);
 
 
-        laby.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        for(VueHeros h : lesHerosVue){
-            h.render(container,g);
-        }
+        labyVue.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
+
     }
 
     public void keyPressed(int key, char c) {
@@ -92,12 +96,13 @@ public class Jeu extends BasicGame {
             container.exit();
         }
         switch (key) {
-            case Input.KEY_UP:  lesHeros.get(0).goHaut();    break;
-            case Input.KEY_LEFT: lesHeros.get(0).goGauche();   break;
-            case Input.KEY_DOWN: lesHeros.get(0).goBas();   break;
-            case Input.KEY_RIGHT: lesHeros.get(0).goDroite();  break;
+            case Input.KEY_UP:  labyModel.goHaut();    break;
+            case Input.KEY_LEFT: labyModel.goGauche();   break;
+            case Input.KEY_DOWN: labyModel.goBas();   break;
+            case Input.KEY_RIGHT: labyModel.goDroite();  break;
             case Input.KEY_0:	try {
 				save();
+				System.out.println("SAVE");
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,17 +120,21 @@ public class Jeu extends BasicGame {
 
     public void keyReleased(int key, char c) {
         switch (key) {
-            case Input.KEY_UP:  lesHeros.get(0).arretHaut();    break;
-            case Input.KEY_LEFT: lesHeros.get(0).arretGauche();   break;
-            case Input.KEY_DOWN: lesHeros.get(0).arretBas();   break;
-            case Input.KEY_RIGHT: lesHeros.get(0).arretDroite();  break;
+            case Input.KEY_UP:  labyModel.arretHaut();    break;
+            case Input.KEY_LEFT: labyModel.arretGauche();   break;
+            case Input.KEY_DOWN: labyModel.arretBas();   break;
+            case Input.KEY_RIGHT: labyModel.arretDroite();  break;
         }
     }
 
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        lesHeros.get(0).update(container,delta);
+        labyModel.update(container,delta);
+        if(labyModel.isTresorTrouver()){
+        	System.out.println("GRONUL");
+            container.exit();
+        }
     }
 
 
@@ -142,65 +151,10 @@ public class Jeu extends BasicGame {
     	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().load(this);
     }
     
-    public static VueLabyrinthe getLaby() {
-    	return laby;
+    public ArrayList<Heros> getLesheros() {
+    	return labyModel.getLesHeros();
     }
-    
-    public GameContainer getContainer() {
-  		return container;
-  	}
-
-  	public ArrayList<VueHeros> getLesHerosVue() {
-  		return lesHerosVue;
-  	}
-
-  	public ArrayList<Heros> getLesHeros() {
-  		return lesHeros;
-  	}
-
-  	public static Dimension getScreenSize() {
-  		return screenSize;
-  	}
-
-  	public static int getWidth() {
-  		return width;
-  	}
-
-  	public static int getHeight() {
-  		return height;
-  	}
-
-	public void setContainer(GameContainer container) {
-		this.container = container;
-	}
-
-	public static void setLaby(VueLabyrinthe laby) {
-		Jeu.laby = laby;
-	}
-
-	public void setLesHerosVue(ArrayList<VueHeros> lesHerosVue) {
-		this.lesHerosVue = lesHerosVue;
-	}
-
-	public void setLesHeros(ArrayList<Heros> lesHeros) {
-		this.lesHeros = lesHeros;
-	}
-
-	public static void setScreenSize(Dimension screenSize) {
-		Jeu.screenSize = screenSize;
-	}
-
-	public static void setWidth(int width) {
-		Jeu.width = width;
-	}
-
-	public static void setHeight(int height) {
-		Jeu.height = height;
-	}
-
-	public static void setInstance(Jeu instance) {
-		Jeu.instance = instance;
-	}
+   
 
 	
 }
