@@ -825,7 +825,6 @@ public class Labyrinthe implements Serializable{
 				monstre.setHorizontal(-1);
 			}
 
-			System.out.println(" direction " +monstre.getDirectionActu() + " oppose " + oppose + "   " + cheminValide + "   choix  "+ direction);
 			monstre.setDirectionActu(direction + 4);
 			changer = true;
 		}
