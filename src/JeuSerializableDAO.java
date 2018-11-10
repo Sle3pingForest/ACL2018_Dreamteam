@@ -10,8 +10,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 import model.personnages.Heros;
-import vues.aVueHeros;
-import vues.aVueLabyrinthe;
+import vues.VueHeros;
+import vues.VueLabyrinthe;
 
 public class JeuSerializableDAO implements JeuDAO{
 
