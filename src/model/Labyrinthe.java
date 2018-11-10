@@ -712,7 +712,7 @@ public class Labyrinthe implements Serializable{
 		   }
 		   if(lesHeros.get(0).getPointVie() <= 0){
 			   MORT_HEROS = true;
-			   lesHeros.get(0).mort();
+			   //lesHeros.get(0).mort();
 		   }
 	   }
 
