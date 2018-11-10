@@ -29,7 +29,7 @@ public class Labyrinthe implements Serializable{
 	private int longeurCarte;
 	private int hauteurCarte;
 
-	private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.ORC};
+	private int[] tabNomMonstre ={FabriqueMonstre.Soldat,FabriqueMonstre.Soldat};
 	private Item [][]lesObjets;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
@@ -321,8 +321,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setY(futureY);
 					}else
 					{
-						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						monstre.directionAleatoire();
+						//direction(monstre, delta);
 					}
 				}
 				if(vertical == 1){
@@ -330,8 +330,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setY(futureY);
 					}else
 					{
-						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						monstre.directionAleatoire();
+						//direction(monstre, delta);
 					}
 				}
 
@@ -340,8 +340,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setX(futureX);
 					}else
 					{
-						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						monstre.directionAleatoire();
+						//direction(monstre, delta);
 					}
 				}
 				if(horizontal == 1){
@@ -349,8 +349,8 @@ public class Labyrinthe implements Serializable{
 						monstre.setX(futureX);
 					}else
 					{
-						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						monstre.directionAleatoire();
+						//direction(monstre, delta);
 					}
 				}
 			} else {
@@ -360,6 +360,74 @@ public class Labyrinthe implements Serializable{
 
 		}
 	}
+
+	private ArrayList<Integer> getDirectionPossible(Monstre m){
+        ArrayList<Integer> lesDirectionPossible =  new ArrayList<Integer>();
+
+        int direction = m.getDirectionActu();
+        int xCase = (int)((m.getX())/LARGEUR_MUR);
+        int yCase = (int)((m.getY())/HAUTEUR_MUR);
+
+        switch (direction){
+            case Personnage.AVANCER_BAS:
+                if(tabMur[xCase][yCase+1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_BAS);
+                }
+                if(tabMur[xCase+1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+                }
+                if(tabMur[xCase-1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+                }
+                if(lesDirectionPossible.isEmpty()){
+                    lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+                }
+                break;
+            case Personnage.AVANCER_DROITE:
+                if(tabMur[xCase+1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+                }
+                if(tabMur[xCase][yCase+1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_BAS);
+                }
+                if(tabMur[xCase][yCase-1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+                }
+                if(lesDirectionPossible.isEmpty()){
+                    lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+                }
+                break;
+            case Personnage.AVANCER_HAUT:
+                if(tabMur[xCase][yCase-1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+                }
+                if(tabMur[xCase+1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+                }
+                if(tabMur[xCase-1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+                }
+                if(lesDirectionPossible.isEmpty()){
+                    lesDirectionPossible.add(Personnage.AVANCER_BAS);
+                }
+                break;
+            case Personnage.AVANCER_GAUCHE:
+                if(tabMur[xCase-1][yCase] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+                }
+                if(tabMur[xCase][yCase+1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_BAS);
+                }
+                if(tabMur[xCase][yCase-1] == null){
+                    lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+                }
+                if(lesDirectionPossible.isEmpty()){
+                    lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+                }
+                break;
+        }
+        return  lesDirectionPossible;
+    }
 
 	private boolean collisionHaut(Personnage heros,float futureX,float futureY) throws SlickException {
 
@@ -624,7 +692,7 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-	public void deplacerMonstres(){
+	/*public void deplacerMonstres(){
 		for(Monstre monstre :listeMonstres){
 
 			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
@@ -670,10 +738,10 @@ public class Labyrinthe implements Serializable{
 			}
 
 		}
-	}
+	}*/
 
 
-	public boolean changerDirection(Monstre monstre, int delta) throws SlickException {
+	/*public boolean changerDirection(Monstre monstre, int delta) throws SlickException {
 		monstre.setVertical(0);
 		monstre.setHorizontal(0);
 		int x = (int)(monstre.getX() ) / LARGEUR_MUR;
@@ -725,10 +793,10 @@ public class Labyrinthe implements Serializable{
 		if (cheminValide.size() > 0) changer = true;
 
 		return changer;
-	}
+	}*/
 
 	// regarde dans toutes les directions les chemins possible
-	private void direction(Monstre monstre, int delta) throws SlickException {
+	/*private void direction(Monstre monstre, int delta) throws SlickException {
 		monstre.setVertical(0);
 		monstre.setHorizontal(0);
 		float vitesseActu = delta*Monstre.VITESSE;
@@ -771,7 +839,7 @@ public class Labyrinthe implements Serializable{
 		int rd =  r.nextInt(cheminValide.size());
 		int direction = cheminValide.get(rd);
 		monstre.setDirectionActu(direction);
-	}
+	}*/
 
 
 

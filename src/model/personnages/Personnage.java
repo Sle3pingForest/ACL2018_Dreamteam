@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Observable;
 
 public abstract class Personnage extends Observable implements Serializable{
-	
 
 
+    protected String nom;
 	protected float x ,y;
     protected int vertical = 0;
     protected int horizontal = 0;
@@ -17,7 +17,6 @@ public abstract class Personnage extends Observable implements Serializable{
 
     //Position static
     public final static int BAS = 0;
-
     public final static int DROITE = 1;
     public final static int HAUT = 2;
     public final static int GAUCHE = 3;
@@ -37,7 +36,7 @@ public abstract class Personnage extends Observable implements Serializable{
     protected int directionActu = BAS;
     
 	// sert a enlever les collisions pour tester plus facilement
-	private boolean collision = true;
+	protected boolean collision = true;
     
 	protected int pointVie;
 	protected int defense, attaque, vitesse;
@@ -211,5 +210,9 @@ public abstract class Personnage extends Observable implements Serializable{
 	public void setCollision(boolean b){
 		collision = b;
 	}
+
+    public String getNom(){
+        return this.nom;
+    }
 
 }

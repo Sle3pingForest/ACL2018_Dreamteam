@@ -17,8 +17,6 @@ import model.personnages.Personnage;
 public abstract class Monstre extends Personnage {
 
 
-	protected String nom;
-
 	public final static  float VITESSE_M = 0.05f;
 
 	protected  int LARGEUR_SPRITE = 30;    
@@ -29,12 +27,7 @@ public abstract class Monstre extends Personnage {
 
 	public Monstre(int x, int y){
 		super(x,y);
-		vertical = 1;
-		directionActu = Personnage.AVANCER_BAS;
-	}
-
-	public String getNom(){
-		return this.nom;
+		goBas();
 	}
 
 	public void directionAleatoire(){

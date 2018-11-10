@@ -8,15 +8,12 @@ public class Soldat extends Monstre{
 		super(x, y);
 		this.attaque = 1;
 		this.pointVie = 3;
-		this.nom ="orc";
-		LARGEUR_SPRITE = 30;    
+		this.nom ="Soldat";
+		LARGEUR_SPRITE = 30;
 		HAUTEUR_SPRITE = 30;
 		HAUTEUR = 27;
 		LARGEUR = 14;
-	}
-	
-	public String getNom(){
-		return this.nom;
+		collision = true;
 	}
 	
 }

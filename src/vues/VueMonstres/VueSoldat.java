@@ -12,11 +12,12 @@ import java.util.Random;
 
 public class VueSoldat extends VueMonstres {
 
-	private final static  String CHEMIN_Ennemis = "main/resources/Personnages/Monstres/ennemis.png";
+	private final static  String CHEMIN_VERT = "main/resources/Personnages/Monstres/GreenSoldier.png";
+	private final static  String CHEMIN_ROUGE = "main/resources/Personnages/Monstres/RedSoldier.png";
+	private final static  String CHEMIN_BLEU = "main/resources/Personnages/Monstres/BlueSoldier.png";
 
-	private final static int HAUTEUR_SPRITES = 39;
-	private final static int LARGEUR_SPRITES = 37;
-    private int xSprite =0;
+	private final static int HAUTEUR_SPRITES = 41;
+	private final static int LARGEUR_SPRITES = 32;
 
 
 	// largeur orc 30 / hauteur orc 55
@@ -24,11 +25,19 @@ public class VueSoldat extends VueMonstres {
 	public VueSoldat(Soldat soldat) throws SlickException{
 		super(soldat);
         Random r = new Random();
-        int valeur =  r.nextInt(2);
-        if(valeur == 1){
-            xSprite = 3;
-        }
-		this.chargerAnimation(CHEMIN_Ennemis);
+        int couleur =  r.nextInt(3);
+		switch(couleur){
+			case 0 :
+				this.chargerAnimation(CHEMIN_BLEU);
+				break;
+			case 1 :
+				this.chargerAnimation(CHEMIN_BLEU);
+				break;
+			case 2 :
+				this.chargerAnimation(CHEMIN_BLEU);
+				break;
+		}
+
 	}
 
 	protected void chargerAnimation(String chemin) throws SlickException{
@@ -51,78 +60,85 @@ public class VueSoldat extends VueMonstres {
 	private void chargerStaticBas(String chemin, int largeur, int hauteur) throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(0+xSprite, 4), 200);
+		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.BAS] = animation;
 	}
 
 	private void chargerStaticGauche(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(1+xSprite, 4), 200);
+		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.GAUCHE] = animation;
 	}
 
 	private void chargerStaticHaut(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(2+xSprite, 4), 200);
+		animation.addFrame(spriteSheet.getSprite(2, 4), 200);
 		this.animations[Monstre.HAUT] = animation;
 	}
 
 	private void chargerStaticDroite(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(1+xSprite, 4), 200);
+		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.DROITE] = animation;
 	}
 
 	private void chargerMarcheBas(String chemin, int largeur, int hauteur) throws SlickException{
         SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(0+xSprite, 4), 100);
-        animation.addFrame(spriteSheet.getSprite(0+xSprite, 5), 100);
-        animation.addFrame(spriteSheet.getSprite(0+xSprite, 6), 100);
-        animation.addFrame(spriteSheet.getSprite(0+xSprite, 7), 100);
+        animation.addFrame(spriteSheet.getSprite(1, 0), 150);
+        animation.addFrame(spriteSheet.getSprite(1, 1), 150);
+        animation.addFrame(spriteSheet.getSprite(1, 2), 150);
+        animation.addFrame(spriteSheet.getSprite(1, 3), 150);
 
 		this.animations[Monstre.AVANCER_BAS] = animation;
 	}
 
 	private void chargerMarcheDroite(String chemin, int largeur, int hauteur) throws SlickException{
-		SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);//+3  car les largeur sur le sprite son pas toute les meme
 		Animation animation = new Animation();
-		Image img = spriteSheet.getSprite(1+xSprite, 4);
+		Image img = spriteSheet.getSprite(0, 0);
 		img = img.getFlippedCopy(true,false);
 		animation.addFrame(img, 100);
-		img = spriteSheet.getSprite(1+xSprite, 5);
+		img = spriteSheet.getSprite(0, 1);
 		img = img.getFlippedCopy(true,false);
 		animation.addFrame(img, 100);
-		img = spriteSheet.getSprite(1+xSprite, 6);
+		img = spriteSheet.getSprite(0, 2);
 		img = img.getFlippedCopy(true,false);
 		animation.addFrame(img, 100);
 		this.animations[Monstre.AVANCER_DROITE] = animation;
 	}
 
 	private void chargerMarcheGauche(String chemin, int largeur, int hauteur) throws SlickException{
-		SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);//+2  car les largeur sur le sprite son pas toute les meme
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(1+xSprite, 4), 100);
-		animation.addFrame(spriteSheet.getSprite(1+xSprite, 5), 100);
-		animation.addFrame(spriteSheet.getSprite(1+xSprite, 6), 100);
+		animation.addFrame(spriteSheet.getSprite(0, 0), 100);
+		animation.addFrame(spriteSheet.getSprite(0, 1), 100);
+		animation.addFrame(spriteSheet.getSprite(0, 2), 100);
 		this.animations[Monstre.AVANCER_GAUCHE] = animation;
 	}
 
 
 	private void chargerMarcheHaut(String chemin, int largeur, int hauteur)throws SlickException{
-		SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
-		animation.addFrame(spriteSheet.getSprite(2+xSprite, 4), 100);
-		animation.addFrame(spriteSheet.getSprite(2+xSprite, 5), 100);
-		animation.addFrame(spriteSheet.getSprite(2+xSprite, 6), 100);
-		animation.addFrame(spriteSheet.getSprite(2+xSprite, 7), 100);
 
+
+		Image img = spriteSheet.getSprite(2, 0);
+		img = img.getFlippedCopy(false,true);
+		animation.addFrame(img, 150);
+		img = spriteSheet.getSprite(2, 1);
+		img = img.getFlippedCopy(false,true);
+		animation.addFrame(img, 150);
+		img = spriteSheet.getSprite(2, 2);
+		img = img.getFlippedCopy(false,true);
+		animation.addFrame(img, 150);
+		img = spriteSheet.getSprite(2, 3);
+		img = img.getFlippedCopy(false,true);
+		animation.addFrame(img, 150);
 		this.animations[Monstre.AVANCER_HAUT] = animation;
 	}
-
-
 
 }

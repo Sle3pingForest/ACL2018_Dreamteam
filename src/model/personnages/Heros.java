@@ -13,8 +13,6 @@ import org.newdawn.slick.SlickException;
 
 public class Heros extends Personnage {
 
-    private String nom;
-
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
 

@@ -1,6 +1,5 @@
 package vues;
 
-import model.mur.Mur;
 import model.personnages.Heros;
 
 import java.io.Serializable;

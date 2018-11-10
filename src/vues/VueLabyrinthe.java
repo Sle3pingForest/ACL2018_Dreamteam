@@ -58,7 +58,7 @@ public class VueLabyrinthe implements Serializable{
         
         ArrayList<Monstre> lesMonstres = lab.getListeMonstres();
         for (int k = 0; k < lesMonstres.size() ; k++ ){
-        	if(lesMonstres.get(k).getNom() == "orc"){
+        	if(lesMonstres.get(k).getNom() == "Soldat"){
         		lesMonstresVue.add(new VueSoldat((Soldat)lesMonstres.get(k))) ;
         	}
         	if(lesMonstres.get(k).getNom() == "dragon"){
