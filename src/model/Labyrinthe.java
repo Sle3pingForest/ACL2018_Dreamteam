@@ -254,7 +254,9 @@ public class Labyrinthe implements Serializable{
 		}
 		//deplacerMonstres();
 		for(Monstre m : listeMonstres){
-			updateMonstre(m, delta);
+			if(m.getPointVie() >0 ){
+				updateMonstre(m, delta);
+			}
 		}
 
 	}
@@ -698,7 +700,7 @@ public class Labyrinthe implements Serializable{
 	}
 	
 	public void attaquer(){
-		lesHeros.get(0).attaquer();
+	lesHeros.get(0).attaquer();
 	   int xH = (int)(lesHeros.get(0).getX()/LARGEUR_MUR);
 	   int yH = (int)(lesHeros.get(0).getY()/HAUTEUR_MUR);
 	   for(Monstre m : listeMonstres){
