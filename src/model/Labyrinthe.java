@@ -44,14 +44,20 @@ public class Labyrinthe implements Serializable{
 
 	private Random random = new Random();
 
-
-	public Labyrinthe(int longeur ,int hauteur){
-		this.longueur = longeur;
+	/**
+	 * Constructeur du labyrinthe
+	 * Construit un labyrinthe de taille longueur*hauteur remplie integralement de mur puis creusé.
+	 * @param longueur
+	 * @param hauteur
+	 * @see #creuse()
+	 */
+	public Labyrinthe(int longueur ,int hauteur){
+		this.longueur = longueur;
 		this.hauteur = hauteur;
 		this.creationMonstres = new FabriqueMonstre();
 		lesHeros = new ArrayList<Heros>();
-		lesObjets = new Item[longeur][hauteur];
-		tabMur = new Mur[longeur][hauteur];
+		lesObjets = new Item[longueur][hauteur];
+		tabMur = new Mur[longueur][hauteur];
 		this.listeMonstres = new ArrayList<>();
 		longeurCarte = tabMur.length * LARGEUR_MUR;
 		hauteurCarte = tabMur[0].length * HAUTEUR_MUR;
@@ -61,7 +67,7 @@ public class Labyrinthe implements Serializable{
 
 		/**** On rempli tout le laby  de mur ****/
 		for(int i = 0; i < hauteur ;i++){
-			for(int j = 0 ; j < longeur ; j++){
+			for(int j = 0 ; j < longueur ; j++){
 				tabMur[j][i] =  new Mur(j,i);
 			}
 		}
@@ -71,6 +77,11 @@ public class Labyrinthe implements Serializable{
 		produitMonstres(50);
 	}
 
+	/**
+	 * Fonction qui creuse la map pour creer un labyrinthe
+	 * le heros est placé aleatoirement et à partir de lui on creuse dans un sens aleatoire en fonction de la fonction peutEtreCreusé()
+	 * @see #peutEtreCreuser(Mur)
+	 */
 	private void creuse(){
 
 		int rand,choix;
@@ -171,7 +182,11 @@ public class Labyrinthe implements Serializable{
 		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
 	}
 
-	/**** On verifie si on peut creuser le mur ****/
+	/**
+	 * Verifie que ce mur est creusable, ni trop grand ni trop large.
+	 * @param mur
+	 * @return boolean
+	 */
 	private boolean peutEtreCreuser(Mur mur){
 		int x = mur.getPosX();
 		int y = mur.getPosY();
@@ -238,6 +253,12 @@ public class Labyrinthe implements Serializable{
 		return true;
 	}
 
+	/**
+	 * fonction de mise a jour du labyrinthe
+	 * @param container
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void update(GameContainer container, int delta) throws SlickException {
 
 		updateHeros(lesHeros.get(0),delta);
@@ -253,6 +274,12 @@ public class Labyrinthe implements Serializable{
 
 	}
 
+	/**
+	 * fonction de mise a jour du Heros
+	 * @param heros
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void updateHeros(Heros heros, int delta) throws SlickException{
 
 		float vitesseActu = delta*Heros.VITESSE;
@@ -296,6 +323,12 @@ public class Labyrinthe implements Serializable{
 	}
 
 
+	/**
+	 * Fonction de mise ajour d'un monstre
+	 * @param monstre
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void updateMonstre(Monstre monstre, int delta) throws SlickException{
 
 
@@ -429,6 +462,14 @@ public class Labyrinthe implements Serializable{
 		return  lesDirectionPossible;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé au dessus de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionHaut(Personnage heros,float futureX,float futureY) throws SlickException {
 
 
@@ -465,6 +506,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé au dessous de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionBas(Personnage heros, float futureX, float futureY) throws SlickException {
 
 		int horizontal = heros.getHorizontal();
@@ -501,6 +550,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé à gauche de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionGauche(Personnage heros,float futureX,float futureY) throws SlickException {
 
 		int vertical = heros.getVertical();
@@ -523,6 +580,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé à droite de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionDroite(Personnage heros,float futureX,float futureY) throws SlickException {
 
 
@@ -556,12 +621,19 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Retourne le tableau des murs.
+	 * @return tabMur le tableu contenant les murs et les passages.
+	 */
 	public Mur[][] getTabMur(){
 		return  tabMur;
 	}
 
 
-	//Construction Monstres et Labyrinthe
+	/**
+	 * Place des monstres dans le labyrinthe.
+	 * @param nombreMonstre nombre de monstres à placer
+	 */
 	private void produitMonstres(int nombreMonstre){
 
 		for(int i = 0; i < nombreMonstre; ++i){
@@ -584,6 +656,10 @@ public class Labyrinthe implements Serializable{
 
 	}
 
+	/**
+	 * Recuperation de la largeur et hauteur du labyrinthe dans ce fichier
+	 * @param fichierName nom du fichier contenant le labyrinthe.
+	 */
 	private void iniLargeurHauteur(String fichierName){
 		//On lis deja une fois le fichier pour connaitre la hauteur  oui c lourd  mais de toute facon no fichier ne feront probablement jamais plus de quelque Ko  donc  cela reste rapide
 		try
@@ -690,7 +766,10 @@ public class Labyrinthe implements Serializable{
 	public void arretGauche(){
 		lesHeros.get(0).arretGauche();
 	}
-	
+
+	/**
+	 * Fonction permettant au heros d'attaquer
+	 */
 	public void attaquer(){
 	lesHeros.get(0).attaquer();
 	   float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
@@ -773,9 +852,13 @@ public class Labyrinthe implements Serializable{
 	}*/
 
 
-	// si collision le monstre choisit une nouvelle direction 
-	// et ne retourne pas en arriere si possible
-	// retourne vrai sil existe une sortie
+	/**
+	 * Fonction qui permet au monstre de changer de direction si collision, pas de demi-tour si possible
+	 * @param monstre
+	 * @param delta
+	 * @return boolean vrai s'il existe une sortie
+	 * @throws SlickException
+	 */
 	public boolean changerDirection(Monstre monstre, int delta) throws SlickException {
 		monstre.setVertical(0);
 		monstre.setHorizontal(0);
@@ -852,6 +935,14 @@ public class Labyrinthe implements Serializable{
 
 	// si le monstre est sur une nouvelle case
 	// regarde dans toutes les directions les chemins possible
+
+	/**
+	 * Appel changerDirection à chaque position du monstre.
+	 * @param monstre
+	 * @param delta
+	 * @throws SlickException
+	 * @see #changerDirection(Monstre, int)
+	 */
 	private void intersection(Monstre monstre, int delta) throws SlickException {
 
 		int xAvant = (int)(monstre.getPosXPrecedent() ) / LARGEUR_MUR;
@@ -866,7 +957,9 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-
+	/**
+	 * Verifie la collision entre les monstres et les heros
+	 */
 	public void collison(){
 		for(Monstre monstre: listeMonstres){
 			if(lesHeros.get(0).getX() == monstre.getX() && lesHeros.get(0).getY() == monstre.getY()){
@@ -875,7 +968,9 @@ public class Labyrinthe implements Serializable{
 		}
 	}
 
-	//AFFICHAGE
+	/**
+	 * Affiche le jeu en version texte.
+	 */
 	public void afficher(){
 		int x =  (int)lesHeros.get(0).getX();
 		int y = (int)lesHeros.get(0).getY();
@@ -997,27 +1092,33 @@ public class Labyrinthe implements Serializable{
 		return tab;
 	}
 
-	// fait bouger le monstre vers le heros de facon "intelligente" chemin le plus court
-	// calcul les chemins du heros vers les monstres
-	public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
 
-		ArrayList<String> dep = calculChemin(tab, m);
+	/**
+	 * A COMPLETER
+	 * Deplace ce monstre vers le heros en prenant le chemin le plus court.
+	 * @param monstre
+	 * @param tab tableau du labyrinthe
+	 * @see #calculChemin(int[][], Monstre)
+	 */
+	public void deplacementIntelligentMonstre(Monstre monstre, int[][] tab) {
+
+		ArrayList<String> dep = calculChemin(tab, monstre);
 		for (String ss : dep ) System.out.print(ss + "  " );
 		System.out.println();
 		// recupere le premier deplacement du monstre
 		String s = dep.get(0);
 		switch(s) {
 		case "s":
-			m.goBas();
+			monstre.goBas();
 			break;
 		case "z":
-			m.goHaut();
+			monstre.goHaut();
 			break;
 		case "q":
-			m.goGauche();
+			monstre.goGauche();
 			break;
 		case "d":
-			m.goDroite();
+			monstre.goDroite();
 			break;
 		default:
 			break;
@@ -1025,8 +1126,14 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-	// cherche un chemin du monstre vers le heros en valuant les cases
-	// la valuation correspond au nombre de deplacement necessaire en partant du heros
+	/**
+	 * A COMPLETER
+	 * Cherche un chemin du monstre vers le heros en valuant les cases
+	 * la valuation correspond au nombre de deplacement necessaire en partant du heros
+	 * @param tab
+	 * @param x
+	 * @param y
+	 */
 	private void remplirTableau(int[][] tab,int x,int y) {
 		boolean faire[] = new boolean[4];
 		// tableau qui indique si la case a deja ete value
@@ -1061,28 +1168,33 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-
-	// Calcul du chemin de depart (monstre) vers larrivee (heros)
-	public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-		int x = (int)m.getX() /LARGEUR_MUR;
-		int y = (int)m.getY() /LARGEUR_MUR;
-		ArrayList<String> tab = new ArrayList<>();
+	/**
+	 * A COMPLETER
+	 * Calcul du chemin le plus cours entre ce monstre et le heros.
+	 * @param t
+	 * @param monstre
+	 * @return liste Liste des directions que ce monstre doit prendre pour aller a la position du heros.
+	 */
+	public ArrayList<String> calculChemin(int[][] t, Monstre monstre) {
+		int x = (int)monstre.getX() /LARGEUR_MUR;
+		int y = (int)monstre.getY() /LARGEUR_MUR;
+		ArrayList<String> liste = new ArrayList<>();
 		int min = Integer.MAX_VALUE;
 		String s = "";
 
 		int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
 		if (x == xh && y == yh) {
-			tab.add("");
+			liste.add("");
 		}
 		// Si le monstre est a 1 case du heros
 		else if (x == xh) {
 			if (y + 1 == yh) s = "s";
 			else s = "z";
-			tab.add(0,s);
+			liste.add(0,s);
 		} else if (y == yh) {
 			if (x + 1 == xh) s = "d";
 			else s = "q";
-			tab.add(0,s);
+			liste.add(0,s);
 		} else {
 			// sinon on lance la boucle  pour chercher le chemin le plus court
 			while (min > 1 && x >= 0 && y >= 0) {
@@ -1117,14 +1229,22 @@ public class Labyrinthe implements Serializable{
 				x = i;
 				y = j;
 				System.out.println(t[x][y] + " " +s );
-				tab.add(s);
+				liste.add(s);
 			}
 		}
-		return tab;
+		return liste;
 	}
 
 	//  verifie si un chemin vers le heros a ete trouve
 	// donc on regarde si une des 4 cases autour du heros est numerote
+
+	/**
+	 * A COMPLETER
+	 * verifie si un chemin vers le heros a ete trouve
+	 * donc on regarde si une des 4 cases autour du heros est numerote
+	 * @param tab
+	 * @return
+	 */
 	public boolean verifChemin(int[][] tab) {
 		boolean trouve = false;
 		int x = (int)lesHeros.get(0).getX()/LARGEUR_MUR;
