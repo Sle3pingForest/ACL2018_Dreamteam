@@ -45,14 +45,6 @@ public class Labyrinthe implements Serializable{
 	private Random random = new Random();
 
 
-	/* public Labyrinthe(String fichierName, String nom, int nombre){
-        this.creationMonstres = new FabriqueMonstre();
-        this.listeMonstres = new ArrayList<>();
-        constructionLabyrinthe(fichierName);
-        creationMonstres(nombre);
-        lesHeros = new ArrayList<Heros>();
-    }*/
-
 	public Labyrinthe(int longeur ,int hauteur){
 		this.longueur = longeur;
 		this.hauteur = hauteur;
@@ -76,7 +68,7 @@ public class Labyrinthe implements Serializable{
 
 		/**** Et maintenant on creuse ****/
 		creuse();
-		produitMonstres(5);
+		produitMonstres(50);
 	}
 
 	private void creuse(){
@@ -701,20 +693,26 @@ public class Labyrinthe implements Serializable{
 	
 	public void attaquer(){
 	lesHeros.get(0).attaquer();
-	   int xH = (int)(lesHeros.get(0).getX()/LARGEUR_MUR);
-	   int yH = (int)(lesHeros.get(0).getY()/HAUTEUR_MUR);
+	   float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
+	   float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
 	   for(Monstre m : listeMonstres){
-		   if(xH == (int)(m.getX()/LARGEUR_MUR) && yH == (int)(m.getY()/HAUTEUR_MUR)){
+		   float xM = m.getX()/LARGEUR_MUR;
+		   float yM = m.getY()/HAUTEUR_MUR;
+		   boolean estToucher = false;
+		   if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
+			   estToucher = true;
+		   }
+		   
+		   if(estToucher){
 			   lesHeros.get(0).setPointVie(m.getAttaque());
 			   m.setPointVie(lesHeros.get(0).getAttaque());
 			   if(m.getPointVie() <= 0){
-				   m.mort(); 
+				   m.mortMonstres(); 
 			   }
-			   System.err.println(lesHeros.get(0).getPointVie());
 		   }
 		   if(lesHeros.get(0).getPointVie() <= 0){
 			   MORT_HEROS = true;
-			   //lesHeros.get(0).mort();
+			   lesHeros.get(0).mort();
 		   }
 	   }
 

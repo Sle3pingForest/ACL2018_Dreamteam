@@ -268,13 +268,13 @@ public class VueHeros implements Serializable{
     private void mortGauche(String chemin)throws SlickException{
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
         Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 59), 500);
-        animation.addFrame(spriteSheet.getSprite(4, 59), 300);
-        animation.addFrame(spriteSheet.getSprite(5, 59), 300);
-        animation.addFrame(spriteSheet.getSprite(6, 59), 300);
-        animation.addFrame(spriteSheet.getSprite(7, 59), 300);
-        animation.addFrame(spriteSheet.getSprite(8, 59), 300);
-        animation.addFrame(spriteSheet.getSprite(9, 59), 500);
+        animation.addFrame(spriteSheet.getSprite(3, 55), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(9, 55), 500);
         this.animations[Heros.MORT_GAUCHE] = animation;
     }
 
@@ -297,13 +297,13 @@ public class VueHeros implements Serializable{
 
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
         Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(4, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(5, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(6, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(7, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(8, 59).getFlippedCopy(true,false), 100);
-        animation.addFrame(spriteSheet.getSprite(9, 59).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(3, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(5, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(6, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(7, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(8, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(9, 55).getFlippedCopy(true,false), 100);
         this.animations[Heros.MORT_DROITE] = animation;
     }
 
@@ -326,10 +326,10 @@ public class VueHeros implements Serializable{
         attaquerDevantGauche(chemin);
         attaquerDevantDroite(chemin);
         
-        //mortBas(chemin);
-        //mortHaut(chemin);
-        //mortGauche(chemin);
-       // mortDroite(chemin);
+        mortBas(chemin);
+        mortHaut(chemin);
+        mortGauche(chemin);
+        mortDroite(chemin);
         
     }
     

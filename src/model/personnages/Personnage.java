@@ -165,22 +165,23 @@ public abstract class Personnage extends Observable implements Serializable{
     
     public void mort(){
     
-    	if(directionActu == BAS){
+    	if(directionActu == ATTAQUER_BAS){
     		directionActu = MORT_BAS;
 		}
-		else if(directionActu == HAUT){
+    	else if(directionActu == ATTAQUER_HAUT){
 			directionActu = MORT_HAUT;
 		}
-		else if(directionActu == GAUCHE){
+		else if(directionActu == ATTAQUER_GAUCHE){
 			directionActu = MORT_GAUCHE;
 			
 		}
-		else if(directionActu == DROITE){
+		else if(directionActu == ATTAQUER_DROITE){
 			directionActu = MORT_DROITE;
 		}
-		else{
-			directionActu = MORT;
-		}
+    }
+    
+    public void mortMonstres(){
+		directionActu = MORT;
     }
     
     public void attaquerStop(){
@@ -266,7 +267,12 @@ public abstract class Personnage extends Observable implements Serializable{
     }
     
     public void setPointVie(int i){
-    	this.pointVie = this.pointVie-i;
+    	if(i >= defense){
+        	this.pointVie = this.pointVie- (i - defense);
+    	}
+    	else{
+    		this.pointVie = this.pointVie;
+    	}
     }
 
 }
