@@ -29,7 +29,7 @@ public class Jeu extends BasicGame {
 	public static Jeu getInstance() {
 		if (instance == null) {
 			instance = new Jeu();
-		}
+		}	
 		return instance;
 	}
 
@@ -100,6 +100,7 @@ public class Jeu extends BasicGame {
             case Input.KEY_LEFT: labyModel.goGauche();   break;
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
+            case Input.KEY_SPACE: labyModel.attaquer() ; break;
             case Input.KEY_0:	try {
 				save();
 				System.out.println("SAVE");
@@ -124,6 +125,7 @@ public class Jeu extends BasicGame {
             case Input.KEY_LEFT: labyModel.arretGauche();   break;
             case Input.KEY_DOWN: labyModel.arretBas();   break;
             case Input.KEY_RIGHT: labyModel.arretDroite();  break;
+           // case Input.KEY_SPACE: labyModel.attaquerStop();   break;
         }
     }
 

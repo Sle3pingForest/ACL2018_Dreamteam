@@ -12,7 +12,7 @@ public class VueDragon extends VueMonstres {
 
 	public VueDragon(Dragon dragon) throws SlickException{
 		super(dragon);  
-		this.chargerAnimation(CHEMIN_DRAGON, Personnage.LARGEUR_SPRITE, Personnage.LARGEUR_SPRITE);
+		//this.chargerAnimation(CHEMIN_DRAGON, Personnage.LARGEUR_SPRITE, Personnage.LARGEUR_SPRITE);
 	}
 
 }

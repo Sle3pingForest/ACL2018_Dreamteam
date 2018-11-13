@@ -1,6 +1,5 @@
 package vues;
 
-import model.mur.Mur;
 import model.personnages.Heros;
 
 import java.io.Serializable;
@@ -19,6 +18,7 @@ public class VueHeros implements Serializable{
     private final static  String CHEMIN_VIOLET = "main/resources/Personnages/Heros/Violet.png";
 
 
+
     private Animation[] animations = new Animation[20];
     
     private Heros heros;
@@ -27,16 +27,16 @@ public class VueHeros implements Serializable{
     	this.heros = heros;
         switch(choix){
             case VERT:
-                chargerAnimationVert();
+                chargerAnimation(CHEMIN_VERT);
                 break;
             case ROUGE:
-                chargerAnimationRouge();
+                chargerAnimation(CHEMIN_ROUGE);
                 break;
             case BLEU:
-                chargerAnimationBleu();
+                chargerAnimation(CHEMIN_BLEU);
                 break;
             case VIOLET:
-                chargerAnimationViolet();
+                chargerAnimation(CHEMIN_VIOLET);
                 break;
                 default: break;
 
@@ -176,7 +176,6 @@ public class VueHeros implements Serializable{
         this.animations[Heros.AVANCER_GAUCHE] = animation;
     }
 
-
     private void chargerMarcheHaut(String chemin)throws SlickException{
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
         Animation animation = new Animation();
@@ -193,63 +192,147 @@ public class VueHeros implements Serializable{
 
         this.animations[Heros.AVANCER_HAUT] = animation;
     }
-
-    private void chargerAnimationVert() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_VERT);
-        chargerStaticGauche(CHEMIN_VERT);
-        chargerStaticHaut(CHEMIN_VERT);
-        chargerStaticDroite(CHEMIN_VERT);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_VERT);
-        chargerMarcheDroite(CHEMIN_VERT);
-        chargerMarcheGauche(CHEMIN_VERT);
-        chargerMarcheHaut(CHEMIN_VERT);
+    
+    private void attaquerDevantBas(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 12), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 12), 100);
+        animation.addFrame(spriteSheet.getSprite(5,12), 100);
+        animation.addFrame(spriteSheet.getSprite(6,12), 100);
+        animation.addFrame(spriteSheet.getSprite(7,12), 100);
+        animation.addFrame(spriteSheet.getSprite(8,12), 100);
+        animation.addFrame(spriteSheet.getSprite(9,12), 100);
+        this.animations[Heros.ATTAQUER_BAS] = animation;
     }
 
-    private void chargerAnimationRouge() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_ROUGE);
-        chargerStaticGauche(CHEMIN_ROUGE);
-        chargerStaticHaut(CHEMIN_ROUGE);
-        chargerStaticDroite(CHEMIN_ROUGE);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_ROUGE);
-        chargerMarcheDroite(CHEMIN_ROUGE);
-        chargerMarcheGauche(CHEMIN_ROUGE);
-        chargerMarcheHaut(CHEMIN_ROUGE);
+    private void attaquerDevantHaut(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+       Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 38), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 38), 100);
+        animation.addFrame(spriteSheet.getSprite(5,38), 100);
+        animation.addFrame(spriteSheet.getSprite(6,38), 100);
+        animation.addFrame(spriteSheet.getSprite(7,38), 100);
+        animation.addFrame(spriteSheet.getSprite(8,38), 100);
+        animation.addFrame(spriteSheet.getSprite(9,38), 100);
+        this.animations[Heros.ATTAQUER_HAUT] = animation;
+    }
+    
+    private void attaquerDevantGauche(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 64), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 64), 100);
+        animation.addFrame(spriteSheet.getSprite(5,64), 100);
+        animation.addFrame(spriteSheet.getSprite(6,64), 100);
+        animation.addFrame(spriteSheet.getSprite(7,64), 100);
+        animation.addFrame(spriteSheet.getSprite(8,64), 100);
+        animation.addFrame(spriteSheet.getSprite(9,64), 100);
+        this.animations[Heros.ATTAQUER_GAUCHE] = animation;
+    }
+    
+    private void attaquerDevantDroite(String chemin ) throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(4, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(5, 64).getFlippedCopy(true,false), 100);
+       
+        animation.addFrame( spriteSheet.getSprite(6, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(7, 64).getFlippedCopy(true,false), 100);
+        
+        animation.addFrame(spriteSheet.getSprite(8, 64).getFlippedCopy(true,false), 100);
+       
+        animation.addFrame( spriteSheet.getSprite(9, 64).getFlippedCopy(true,false), 100);
+        this.animations[Heros.ATTAQUER_DROITE] = animation;
+    }
+    
+    
+    private void mortBas(String chemin) throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 4), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 4), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 4), 500);
+        animation.addFrame(spriteSheet.getSprite(9, 4), 500);
+        this.animations[Heros.MORT_BAS] = animation;
     }
 
-    private void chargerAnimationBleu() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_BLEU);
-        chargerStaticGauche(CHEMIN_BLEU);
-        chargerStaticHaut(CHEMIN_BLEU);
-        chargerStaticDroite(CHEMIN_BLEU);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_BLEU);
-        chargerMarcheDroite(CHEMIN_BLEU);
-        chargerMarcheGauche(CHEMIN_BLEU);
-        chargerMarcheHaut(CHEMIN_BLEU);
-    }    	
-
-    private void chargerAnimationViolet() throws SlickException {
-        // chargement des animation static
-        chargerStaticBas(CHEMIN_VIOLET);
-        chargerStaticGauche(CHEMIN_VIOLET);
-        chargerStaticHaut(CHEMIN_VIOLET);
-        chargerStaticDroite(CHEMIN_VIOLET);
-
-        //chargement des animation de mouvement
-        chargerMarcheBas(CHEMIN_VIOLET);
-        chargerMarcheDroite(CHEMIN_VIOLET);
-        chargerMarcheGauche(CHEMIN_VIOLET);
-        chargerMarcheHaut(CHEMIN_VIOLET);
+    private void mortGauche(String chemin)throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 55), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 55), 300);
+        animation.addFrame(spriteSheet.getSprite(9, 55), 500);
+        this.animations[Heros.MORT_GAUCHE] = animation;
     }
 
+   
+    private void mortHaut(String chemin)throws SlickException{
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 30), 500);
+        animation.addFrame(spriteSheet.getSprite(4, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(5, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(6, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(7, 30), 300);
+        animation.addFrame(spriteSheet.getSprite(8, 30), 500);
+        animation.addFrame(spriteSheet.getSprite(9, 30), 500);
+        this.animations[Heros.MORT_HAUT] = animation;
+    }
+
+
+    private void mortDroite(String chemin)throws SlickException{
+
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 30, 30);
+        Animation animation = new Animation();
+        animation.addFrame(spriteSheet.getSprite(3, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(5, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(6, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(7, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(8, 55).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(9, 55).getFlippedCopy(true,false), 100);
+        this.animations[Heros.MORT_DROITE] = animation;
+    }
+
+    
+    private void chargerAnimation(String chemin) throws SlickException {
+        // chargement des animation static
+        chargerStaticBas(chemin);
+        chargerStaticGauche(chemin);
+        chargerStaticHaut(chemin);
+        chargerStaticDroite(chemin);
+
+        //chargement des animation de mouvement
+        chargerMarcheBas(chemin);
+        chargerMarcheDroite(chemin);
+        chargerMarcheGauche(chemin);
+        chargerMarcheHaut(chemin);
+        
+        attaquerDevantBas(chemin);
+        attaquerDevantHaut(chemin);
+        attaquerDevantGauche(chemin);
+        attaquerDevantDroite(chemin);
+        
+        mortBas(chemin);
+        mortHaut(chemin);
+        mortGauche(chemin);
+        mortDroite(chemin);
+        
+    }
+    
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();
     	float y = heros.getY();

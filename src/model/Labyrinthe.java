@@ -17,11 +17,9 @@ import model.personnages.Personnage;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.FabriqueMonstre;
 import model.personnages.monstres.Monstre;
-import model.personnages.monstres.Orc;
+import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import vues.VueLabyrinthe;
-import vues.VueMonstres.VueMonstres;
 
 
 public class Labyrinthe implements Serializable{
@@ -31,7 +29,7 @@ public class Labyrinthe implements Serializable{
 	private int longeurCarte;
 	private int hauteurCarte;
 
-	private int[] tabNomMonstre ={FabriqueMonstre.ORC,FabriqueMonstre.ORC};
+	private int[] tabNomMonstre ={FabriqueMonstre.Soldat,FabriqueMonstre.Soldat};
 	private Item [][]lesObjets;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
@@ -46,22 +44,20 @@ public class Labyrinthe implements Serializable{
 
 	private Random random = new Random();
 
-
-	/* public Labyrinthe(String fichierName, String nom, int nombre){
-        this.creationMonstres = new FabriqueMonstre();
-        this.listeMonstres = new ArrayList<>();
-        constructionLabyrinthe(fichierName);
-        creationMonstres(nombre);
-        lesHeros = new ArrayList<Heros>();
-    }*/
-
-	public Labyrinthe(int longeur ,int hauteur){
-		this.longueur = longeur;
+	/**
+	 * Constructeur du labyrinthe
+	 * Construit un labyrinthe de taille longueur*hauteur remplie integralement de mur puis creusé.
+	 * @param longueur
+	 * @param hauteur
+	 * @see #creuse()
+	 */
+	public Labyrinthe(int longueur ,int hauteur){
+		this.longueur = longueur;
 		this.hauteur = hauteur;
 		this.creationMonstres = new FabriqueMonstre();
 		lesHeros = new ArrayList<Heros>();
-		lesObjets = new Item[longeur][hauteur];
-		tabMur = new Mur[longeur][hauteur];
+		lesObjets = new Item[longueur][hauteur];
+		tabMur = new Mur[longueur][hauteur];
 		this.listeMonstres = new ArrayList<>();
 		longeurCarte = tabMur.length * LARGEUR_MUR;
 		hauteurCarte = tabMur[0].length * HAUTEUR_MUR;
@@ -71,7 +67,7 @@ public class Labyrinthe implements Serializable{
 
 		/**** On rempli tout le laby  de mur ****/
 		for(int i = 0; i < hauteur ;i++){
-			for(int j = 0 ; j < longeur ; j++){
+			for(int j = 0 ; j < longueur ; j++){
 				tabMur[j][i] =  new Mur(j,i);
 			}
 		}
@@ -81,6 +77,11 @@ public class Labyrinthe implements Serializable{
 		produitMonstres(50);
 	}
 
+	/**
+	 * Fonction qui creuse la map pour creer un labyrinthe
+	 * le heros est placé aleatoirement et à partir de lui on creuse dans un sens aleatoire en fonction de la fonction peutEtreCreusé()
+	 * @see #peutEtreCreuser(Mur)
+	 */
 	private void creuse(){
 
 		int rand,choix;
@@ -181,7 +182,11 @@ public class Labyrinthe implements Serializable{
 		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
 	}
 
-	/**** On verifie si on peut creuser le mur ****/
+	/**
+	 * Verifie que ce mur est creusable, ni trop grand ni trop large.
+	 * @param mur
+	 * @return boolean
+	 */
 	private boolean peutEtreCreuser(Mur mur){
 		int x = mur.getPosX();
 		int y = mur.getPosY();
@@ -248,6 +253,12 @@ public class Labyrinthe implements Serializable{
 		return true;
 	}
 
+	/**
+	 * fonction de mise a jour du labyrinthe
+	 * @param container
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void update(GameContainer container, int delta) throws SlickException {
 
 		updateHeros(lesHeros.get(0),delta);
@@ -256,11 +267,19 @@ public class Labyrinthe implements Serializable{
 		}
 		//deplacerMonstres();
 		for(Monstre m : listeMonstres){
-			updateMonstre(m, delta);
+			if(m.getPointVie() >0 ){
+				updateMonstre(m, delta);
+			}
 		}
 
 	}
 
+	/**
+	 * fonction de mise a jour du Heros
+	 * @param heros
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void updateHeros(Heros heros, int delta) throws SlickException{
 
 		float vitesseActu = delta*Heros.VITESSE;
@@ -304,7 +323,15 @@ public class Labyrinthe implements Serializable{
 	}
 
 
+	/**
+	 * Fonction de mise ajour d'un monstre
+	 * @param monstre
+	 * @param delta
+	 * @throws SlickException
+	 */
 	public void updateMonstre(Monstre monstre, int delta) throws SlickException{
+
+
 
 		float vitesseActu = delta*Monstre.VITESSE_M;
 		float x = monstre.getX();
@@ -317,52 +344,132 @@ public class Labyrinthe implements Serializable{
 
 		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){
 			if (monstre.getCollision()) {
-
+				intersection(monstre,delta);
 				if(vertical == -1){
 					if(!collisionHaut(monstre, futureX, futureY)){
+						monstre.setPosYprecedent(y);
 						monstre.setY(futureY);
 					}else
 					{
 						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						changerDirection(monstre, delta);
 					}
 				}
 				if(vertical == 1){
 					if(!collisionBas( monstre,futureX, futureY)){
+						monstre.setPosYprecedent(y);
 						monstre.setY(futureY);
 					}else
 					{
 						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						changerDirection(monstre, delta);
 					}
 				}
 
 				if(horizontal == -1){
 					if(!collisionGauche(monstre, futureX, futureY)){
+						monstre.setPosXPrecedent(x);
 						monstre.setX(futureX);
 					}else
 					{
 						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						changerDirection(monstre, delta);
 					}
 				}
 				if(horizontal == 1){
 					if(!collisionDroite(monstre, futureX, futureY)){
+						monstre.setPosXPrecedent(x);
 						monstre.setX(futureX);
 					}else
 					{
 						//monstre.directionAleatoire();
-						direction(monstre, delta);
+						changerDirection(monstre, delta);
 					}
 				}
 			} else {
 				monstre.setX(futureX);
 				monstre.setY(futureY);
 			}
-
+			
 		}
 	}
 
+	private ArrayList<Integer> getDirectionPossible(Monstre m){
+		ArrayList<Integer> lesDirectionPossible =  new ArrayList<Integer>();
+
+		int direction = m.getDirectionActu();
+		int xCase = (int)((m.getX())/LARGEUR_MUR);
+		int yCase = (int)((m.getY())/HAUTEUR_MUR);
+
+		switch (direction){
+		case Personnage.AVANCER_BAS:
+			if(tabMur[xCase][yCase+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			if(tabMur[xCase+1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCase-1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			break;
+		case Personnage.AVANCER_DROITE:
+			if(tabMur[xCase+1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCase][yCase+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			if(tabMur[xCase][yCase-1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			break;
+		case Personnage.AVANCER_HAUT:
+			if(tabMur[xCase][yCase-1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			if(tabMur[xCase+1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCase-1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			break;
+		case Personnage.AVANCER_GAUCHE:
+			if(tabMur[xCase-1][yCase] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			if(tabMur[xCase][yCase+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			if(tabMur[xCase][yCase-1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			break;
+		}
+		return  lesDirectionPossible;
+	}
+
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé au dessus de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionHaut(Personnage heros,float futureX,float futureY) throws SlickException {
 
 
@@ -399,6 +506,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé au dessous de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionBas(Personnage heros, float futureX, float futureY) throws SlickException {
 
 		int horizontal = heros.getHorizontal();
@@ -435,6 +550,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé à gauche de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionGauche(Personnage heros,float futureX,float futureY) throws SlickException {
 
 		int vertical = heros.getVertical();
@@ -457,6 +580,14 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Verifie les collision entre la futur position du personnage et un possible mur situé à droite de lui
+	 * @param heros
+	 * @param futureX
+	 * @param futureY
+	 * @return boolean
+	 * @throws SlickException
+	 */
 	private boolean collisionDroite(Personnage heros,float futureX,float futureY) throws SlickException {
 
 
@@ -490,12 +621,19 @@ public class Labyrinthe implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Retourne le tableau des murs.
+	 * @return tabMur le tableu contenant les murs et les passages.
+	 */
 	public Mur[][] getTabMur(){
 		return  tabMur;
 	}
 
 
-	//Construction Monstres et Labyrinthe
+	/**
+	 * Place des monstres dans le labyrinthe.
+	 * @param nombreMonstre nombre de monstres à placer
+	 */
 	private void produitMonstres(int nombreMonstre){
 
 		for(int i = 0; i < nombreMonstre; ++i){
@@ -518,6 +656,10 @@ public class Labyrinthe implements Serializable{
 
 	}
 
+	/**
+	 * Recuperation de la largeur et hauteur du labyrinthe dans ce fichier
+	 * @param fichierName nom du fichier contenant le labyrinthe.
+	 */
 	private void iniLargeurHauteur(String fichierName){
 		//On lis deja une fois le fichier pour connaitre la hauteur  oui c lourd  mais de toute facon no fichier ne feront probablement jamais plus de quelque Ko  donc  cela reste rapide
 		try
@@ -625,8 +767,43 @@ public class Labyrinthe implements Serializable{
 		lesHeros.get(0).arretGauche();
 	}
 
+	/**
+	 * Fonction permettant au heros d'attaquer
+	 */
+	public void attaquer(){
+	lesHeros.get(0).attaquer();
+	   float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
+	   float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
+	   for(Monstre m : listeMonstres){
+		   float xM = m.getX()/LARGEUR_MUR;
+		   float yM = m.getY()/HAUTEUR_MUR;
+		   boolean estToucher = false;
+		   if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
+			   estToucher = true;
+		   }
+		   
+		   if(estToucher){
+			   lesHeros.get(0).setPointVie(m.getAttaque());
+			   m.setPointVie(lesHeros.get(0).getAttaque());
+			   if(m.getPointVie() <= 0){
+				   m.mortMonstres(); 
+			   }
+		   }
+		   if(lesHeros.get(0).getPointVie() <= 0){
+			   MORT_HEROS = true;
+			   lesHeros.get(0).mort();
+		   }
+	   }
 
-	public void deplacerMonstres(){
+	}
+	
+	
+	public void attaquerStop(){
+		lesHeros.get(0).attaquerStop();
+	}
+
+
+	/*public void deplacerMonstres(){
 		for(Monstre monstre :listeMonstres){
 
 			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
@@ -672,20 +849,25 @@ public class Labyrinthe implements Serializable{
 			}
 
 		}
-	}
+	}*/
 
 
+	/**
+	 * Fonction qui permet au monstre de changer de direction si collision, pas de demi-tour si possible
+	 * @param monstre
+	 * @param delta
+	 * @return boolean vrai s'il existe une sortie
+	 * @throws SlickException
+	 */
 	public boolean changerDirection(Monstre monstre, int delta) throws SlickException {
 		monstre.setVertical(0);
 		monstre.setHorizontal(0);
-		int x = (int)(monstre.getX() ) / LARGEUR_MUR;
-		int y = (int)(monstre.getY() ) / HAUTEUR_MUR;
+		int x = (int)(monstre.getX() + 6 ) / LARGEUR_MUR;
+		int y = (int)(monstre.getY() + 19 ) / HAUTEUR_MUR;
 		float vitesseActu = delta*Monstre.VITESSE;
 
 		float fx = monstre.getX();
 		float fy = monstre.getY();
-		int horizontal = monstre.getHorizontal();
-		int vertical = monstre.getVertical();
 
 		float futureX = fx;
 		float futureY = fy;
@@ -694,89 +876,90 @@ public class Labyrinthe implements Serializable{
 
 		ArrayList<Integer> cheminValide = new ArrayList<>();
 
-		futureX = fx;
-		futureY = fy - vitesseActu;
-		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionHaut(monstre, futureX, futureY) ) {
-			cheminValide.add(0);
-		}
-
-		futureX = fx + vitesseActu;
-		futureY = fy;
-		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionDroite(monstre, futureX, futureY)) {
-			cheminValide.add(1);
-		}
 
 		futureX = fx;
 		futureY = fy + vitesseActu;
 		if(y+1 < hauteur-1 && tabMur[x][y+1] == null && !collisionBas(monstre, futureX, futureY)) {
+			cheminValide.add(0);
+		}
+		futureX = fx + vitesseActu;
+		futureY = fy;
+		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionDroite(monstre, futureX, futureY) ) {
+			cheminValide.add(1);
+		}
+		futureX = fx;
+		futureY = fy - vitesseActu;
+		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionHaut(monstre, futureX, futureY)  ) {
 			cheminValide.add(2);
 		}
-
 		futureX = fx - vitesseActu;
 		futureY = fy;
 		if (x-1 > 0 && tabMur[x-1][y] == null && !collisionGauche(monstre, futureX, futureY)) {
 			cheminValide.add(3);
 		}
 
-		Random r = new Random();
-		int rd =  r.nextInt(cheminValide.size());
-		int direction = cheminValide.get(rd);
+		if (cheminValide.size() > 0) {
+			Random r = new Random();
+			int rd =  r.nextInt(cheminValide.size());
 
-		monstre.direction(direction);
+			int i = monstre.getDirectionActu();
+			int oppose = (i%4 - 2 >= 0) ? (i%4) - 2  : (i%4) + 2 ; 
+			// si le monstre a choisit de retourner et qu'on a plus d'une direction possible
+			// on choisit une autre direction
+			while (cheminValide.size() > 1 &&  cheminValide.get(rd) == oppose ) {
+				rd =  r.nextInt(cheminValide.size());
+			}
 
-		if (cheminValide.size() > 0) changer = true;
+			int direction = cheminValide.get(rd);
+			switch(direction){
+			case 0:
+				monstre.setVertical(1);
+				break;
+			case 1:
+				monstre.setHorizontal(1);
+				break;
+			case 2:
+				monstre.setVertical(-1);
+				break;
+			case 3:
+				monstre.setHorizontal(-1);
+			}
+
+			monstre.setDirectionActu(direction + 4);
+			changer = true;
+		}
 
 		return changer;
 	}
 
+
+	// si le monstre est sur une nouvelle case
 	// regarde dans toutes les directions les chemins possible
-	private void direction(Monstre monstre, int delta) throws SlickException {
-		monstre.setVertical(0);
-		monstre.setHorizontal(0);
-		float vitesseActu = delta*Monstre.VITESSE;
 
-		float x = monstre.getX();
-		float y = monstre.getY();
-		int horizontal = monstre.getHorizontal();
-		int vertical = monstre.getVertical();
+	/**
+	 * Appel changerDirection à chaque position du monstre.
+	 * @param monstre
+	 * @param delta
+	 * @throws SlickException
+	 * @see #changerDirection(Monstre, int)
+	 */
+	private void intersection(Monstre monstre, int delta) throws SlickException {
 
-		float futureX = x;
-		float futureY = y;
+		int xAvant = (int)(monstre.getPosXPrecedent() ) / LARGEUR_MUR;
+		int yAvant = (int)(monstre.getPosYprecedent() ) / HAUTEUR_MUR;
 
-		ArrayList<Integer> cheminValide = new ArrayList<>();
-
-		futureX = x;
-		futureY = y - vitesseActu;
-		if( !collisionHaut(monstre, futureX, futureY) ){
-			cheminValide.add(0);
+		int xActu = (int)(monstre.getX() ) / LARGEUR_MUR;
+		int yActu = (int)(monstre.getY() ) / HAUTEUR_MUR;
+		
+		if (xAvant  != xActu || yAvant != yActu) {
+			changerDirection(monstre, delta);
 		}
-
-		futureX = x + vitesseActu;
-		futureY = y;
-		if( !collisionDroite(monstre, futureX, futureY) ){
-			cheminValide.add(1);
-		}
-
-		futureX = x - vitesseActu;
-		futureY = y;
-		if( !collisionGauche(monstre, futureX, futureY) ){
-			cheminValide.add(3);
-		}
-
-		futureX = x;
-		futureY = y + vitesseActu;
-		if( !collisionBas(monstre, futureX, futureY) ){
-			cheminValide.add(2);
-		}
-
-		Random r = new Random();
-		int rd =  r.nextInt(cheminValide.size());
-		int direction = cheminValide.get(rd);
-		monstre.direction(direction);
 	}
 
 
-
+	/**
+	 * Verifie la collision entre les monstres et les heros
+	 */
 	public void collison(){
 		for(Monstre monstre: listeMonstres){
 			if(lesHeros.get(0).getX() == monstre.getX() && lesHeros.get(0).getY() == monstre.getY()){
@@ -785,7 +968,9 @@ public class Labyrinthe implements Serializable{
 		}
 	}
 
-	//AFFICHAGE
+	/**
+	 * Affiche le jeu en version texte.
+	 */
 	public void afficher(){
 		int x =  (int)lesHeros.get(0).getX();
 		int y = (int)lesHeros.get(0).getY();
@@ -802,7 +987,7 @@ public class Labyrinthe implements Serializable{
 						boolean avoirMonstre = false;
 						for (Monstre m : listeMonstres){
 							if(m.getX() == j && i == m.getY() && !avoirMonstre){
-								if(m instanceof Orc){
+								if(m instanceof Soldat){
 									System.out.print("O");
 								}
 								if(m instanceof Dragon){
@@ -907,27 +1092,33 @@ public class Labyrinthe implements Serializable{
 		return tab;
 	}
 
-	// fait bouger le monstre vers le heros de facon "intelligente" chemin le plus court
-	// calcul les chemins du heros vers les monstres
-	public void deplacementIntelligentMonstre(Monstre m, int[][] tab) {
 
-		ArrayList<String> dep = calculChemin(tab, m);
+	/**
+	 * A COMPLETER
+	 * Deplace ce monstre vers le heros en prenant le chemin le plus court.
+	 * @param monstre
+	 * @param tab tableau du labyrinthe
+	 * @see #calculChemin(int[][], Monstre)
+	 */
+	public void deplacementIntelligentMonstre(Monstre monstre, int[][] tab) {
+
+		ArrayList<String> dep = calculChemin(tab, monstre);
 		for (String ss : dep ) System.out.print(ss + "  " );
 		System.out.println();
 		// recupere le premier deplacement du monstre
 		String s = dep.get(0);
 		switch(s) {
 		case "s":
-			m.goBas();
+			monstre.goBas();
 			break;
 		case "z":
-			m.goHaut();
+			monstre.goHaut();
 			break;
 		case "q":
-			m.goGauche();
+			monstre.goGauche();
 			break;
 		case "d":
-			m.goDroite();
+			monstre.goDroite();
 			break;
 		default:
 			break;
@@ -935,8 +1126,14 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-	// cherche un chemin du monstre vers le heros en valuant les cases
-	// la valuation correspond au nombre de deplacement necessaire en partant du heros
+	/**
+	 * A COMPLETER
+	 * Cherche un chemin du monstre vers le heros en valuant les cases
+	 * la valuation correspond au nombre de deplacement necessaire en partant du heros
+	 * @param tab
+	 * @param x
+	 * @param y
+	 */
 	private void remplirTableau(int[][] tab,int x,int y) {
 		boolean faire[] = new boolean[4];
 		// tableau qui indique si la case a deja ete value
@@ -971,28 +1168,33 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-
-	// Calcul du chemin de depart (monstre) vers larrivee (heros)
-	public ArrayList<String> calculChemin(int[][] t, Monstre m) {
-		int x = (int)m.getX() /LARGEUR_MUR;
-		int y = (int)m.getY() /LARGEUR_MUR;
-		ArrayList<String> tab = new ArrayList<>();
+	/**
+	 * A COMPLETER
+	 * Calcul du chemin le plus cours entre ce monstre et le heros.
+	 * @param t
+	 * @param monstre
+	 * @return liste Liste des directions que ce monstre doit prendre pour aller a la position du heros.
+	 */
+	public ArrayList<String> calculChemin(int[][] t, Monstre monstre) {
+		int x = (int)monstre.getX() /LARGEUR_MUR;
+		int y = (int)monstre.getY() /LARGEUR_MUR;
+		ArrayList<String> liste = new ArrayList<>();
 		int min = Integer.MAX_VALUE;
 		String s = "";
 
 		int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
 		if (x == xh && y == yh) {
-			tab.add("");
+			liste.add("");
 		}
 		// Si le monstre est a 1 case du heros
 		else if (x == xh) {
 			if (y + 1 == yh) s = "s";
 			else s = "z";
-			tab.add(0,s);
+			liste.add(0,s);
 		} else if (y == yh) {
 			if (x + 1 == xh) s = "d";
 			else s = "q";
-			tab.add(0,s);
+			liste.add(0,s);
 		} else {
 			// sinon on lance la boucle  pour chercher le chemin le plus court
 			while (min > 1 && x >= 0 && y >= 0) {
@@ -1027,14 +1229,22 @@ public class Labyrinthe implements Serializable{
 				x = i;
 				y = j;
 				System.out.println(t[x][y] + " " +s );
-				tab.add(s);
+				liste.add(s);
 			}
 		}
-		return tab;
+		return liste;
 	}
 
 	//  verifie si un chemin vers le heros a ete trouve
 	// donc on regarde si une des 4 cases autour du heros est numerote
+
+	/**
+	 * A COMPLETER
+	 * verifie si un chemin vers le heros a ete trouve
+	 * donc on regarde si une des 4 cases autour du heros est numerote
+	 * @param tab
+	 * @return
+	 */
 	public boolean verifChemin(int[][] tab) {
 		boolean trouve = false;
 		int x = (int)lesHeros.get(0).getX()/LARGEUR_MUR;

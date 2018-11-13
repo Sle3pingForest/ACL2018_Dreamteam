@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Observable;
 
 public abstract class Personnage extends Observable implements Serializable{
-	
 
 
+    protected String nom;
 	protected float x ,y;
     protected int vertical = 0;
     protected int horizontal = 0;
@@ -17,7 +17,6 @@ public abstract class Personnage extends Observable implements Serializable{
 
     //Position static
     public final static int BAS = 0;
-
     public final static int DROITE = 1;
     public final static int HAUT = 2;
     public final static int GAUCHE = 3;
@@ -28,6 +27,16 @@ public abstract class Personnage extends Observable implements Serializable{
     public final static int AVANCER_HAUT = 6;
     public final static int AVANCER_GAUCHE = 7;
 
+    public final static int ATTAQUER_BAS = 8;
+    public final static int ATTAQUER_HAUT = 9;
+    public final static int ATTAQUER_GAUCHE = 10;
+    public final static int ATTAQUER_DROITE = 11;
+
+    public final static int MORT = 12;
+    public final static int MORT_BAS = 13;
+    public final static int MORT_HAUT = 14;
+    public final static int MORT_DROITE = 15;
+    public final static int MORT_GAUCHE = 16;
 
     public final static  float VITESSE = 0.2f;
     public final static int LARGEUR_SPRITE = 30;
@@ -37,7 +46,7 @@ public abstract class Personnage extends Observable implements Serializable{
     protected int directionActu = BAS;
     
 	// sert a enlever les collisions pour tester plus facilement
-	private boolean collision = true;
+	protected boolean collision = true;
     
 	protected int pointVie;
 	protected int defense, attaque, vitesse;
@@ -137,6 +146,47 @@ public abstract class Personnage extends Observable implements Serializable{
             }
         }
     }
+    
+    public void attaquer(){
+    	if(directionActu == BAS){
+    		directionActu = ATTAQUER_BAS;
+    	}
+    	else if(directionActu == HAUT){
+    		directionActu = ATTAQUER_HAUT;
+    	}
+    	else if(directionActu == GAUCHE){
+    		directionActu = ATTAQUER_GAUCHE;
+    		
+    	}
+    	else if(directionActu == DROITE){
+    		directionActu = ATTAQUER_DROITE;
+    	}
+    }
+    
+    public void mort(){
+    
+    	if(directionActu == ATTAQUER_BAS){
+    		directionActu = MORT_BAS;
+		}
+    	else if(directionActu == ATTAQUER_HAUT){
+			directionActu = MORT_HAUT;
+		}
+		else if(directionActu == ATTAQUER_GAUCHE){
+			directionActu = MORT_GAUCHE;
+			
+		}
+		else if(directionActu == ATTAQUER_DROITE){
+			directionActu = MORT_DROITE;
+		}
+    }
+    
+    public void mortMonstres(){
+		directionActu = MORT;
+    }
+    
+    public void attaquerStop(){
+        directionActu = BAS;
+   }
 
     public void arretHaut(){
 
@@ -211,5 +261,18 @@ public abstract class Personnage extends Observable implements Serializable{
 	public void setCollision(boolean b){
 		collision = b;
 	}
+
+    public String getNom(){
+        return this.nom;
+    }
+    
+    public void setPointVie(int i){
+    	if(i >= defense){
+        	this.pointVie = this.pointVie- (i - defense);
+    	}
+    	else{
+    		this.pointVie = this.pointVie;
+    	}
+    }
 
 }

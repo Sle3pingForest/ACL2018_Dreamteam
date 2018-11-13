@@ -17,24 +17,23 @@ import model.personnages.Personnage;
 public abstract class Monstre extends Personnage {
 
 
-	protected String nom;
-
 	public final static  float VITESSE_M = 0.05f;
 
 	protected  int LARGEUR_SPRITE = 30;    
 	protected  int HAUTEUR_SPRITE = 30;
 	protected  int HAUTEUR = 30;
 	protected  int LARGEUR = 30;
+	
+	protected float posXPrecedent, posYprecedent;
+
+
 
 
 	public Monstre(int x, int y){
 		super(x,y);
-		vertical = 1;
-		directionActu = Personnage.AVANCER_BAS;
-	}
-
-	public String getNom(){
-		return this.nom;
+		posXPrecedent = x;
+		posYprecedent = y;
+		goBas();
 	}
 
 	public void directionAleatoire(){
@@ -61,26 +60,23 @@ public abstract class Monstre extends Personnage {
 		}
 	}
 	
-	public void direction(int direction) {
-		vertical = 0;
-		horizontal = 0;
-		switch(direction){
-		case 0:
-			vertical = -1;
-			directionActu = Personnage.AVANCER_HAUT;
-			break;
-		case 1:
-			horizontal = 1;
-			directionActu = Personnage.AVANCER_DROITE;
-			break;
-		case 2:
-			directionActu = Personnage.AVANCER_BAS;
-			vertical = 1;
-			break;
-		case 3:
-			directionActu = Personnage.AVANCER_GAUCHE;
-			horizontal = -1;
-		}
+
+
+	public float getPosXPrecedent() {
+		return posXPrecedent;
+	}
+
+	public float getPosYprecedent() {
+		return posYprecedent;
+	}
+	
+
+	public void setPosXPrecedent(float posXPrecedent) {
+		this.posXPrecedent = posXPrecedent;
+	}
+
+	public void setPosYprecedent(float prosYprecedent) {
+		this.posYprecedent = prosYprecedent;
 	}
 
 }

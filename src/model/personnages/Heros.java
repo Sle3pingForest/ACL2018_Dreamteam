@@ -13,10 +13,9 @@ import org.newdawn.slick.SlickException;
 
 public class Heros extends Personnage {
 
-    private String nom;
-
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
+
 
     protected int tailleInventaire = 10;
 
@@ -25,7 +24,7 @@ public class Heros extends Personnage {
     	super(x,y);
     	this.pointVie = 5;
     	this.nom = nom;
-    	this.attaque = 2;
+    	this.attaque = 3;
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
     }
@@ -71,6 +70,7 @@ public class Heros extends Personnage {
     public Tresor getTresorDeMap(){
         return  tresorDeMap;
     }
+
 
     public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
