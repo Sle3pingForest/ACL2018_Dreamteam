@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import model.Item.Epee;
 import model.Item.Item;
 import model.Item.Tresor;
 import model.mur.Mur;
@@ -180,6 +181,8 @@ public class Labyrinthe implements Serializable{
 			}
 		}
 		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
+		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Epee(150,150);
+
 	}
 
 	/**

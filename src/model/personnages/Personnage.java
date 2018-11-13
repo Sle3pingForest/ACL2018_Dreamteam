@@ -230,6 +230,7 @@ public abstract class Personnage extends Observable implements Serializable{
 	public int getVitesse() {
 		return vitesse;
 	}
+
     public void ajouterAInventaire(Item i){}
 
     public void setDirectionActu(int directionActu) {

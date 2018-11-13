@@ -61,7 +61,6 @@ public abstract class Monstre extends Personnage {
 	}
 	
 
-
 	public float getPosXPrecedent() {
 		return posXPrecedent;
 	}
