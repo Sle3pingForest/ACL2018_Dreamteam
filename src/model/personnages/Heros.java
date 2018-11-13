@@ -79,6 +79,5 @@ public class Heros extends Personnage {
         }*/
     	 inventaire.add(i);
          i.ramasser();
-         System.err.print(inventaire.get(0));
     }
 }
