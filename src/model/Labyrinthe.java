@@ -181,7 +181,7 @@ public class Labyrinthe implements Serializable{
 			}
 		}
 		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
-		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Epee(150,150);
+		//lesObjets[murActu.getPosX()][murActu.getPosY()] = new Epee(150,150);
 
 	}
 
@@ -265,9 +265,7 @@ public class Labyrinthe implements Serializable{
 	public void update(GameContainer container, int delta) throws SlickException {
 
 		updateHeros(lesHeros.get(0),delta);
-		if(lesHeros.get(0).getTresorDeMap() != null){
-			tresorTrouver = true;
-		}
+		
 		//deplacerMonstres();
 		for(Monstre m : listeMonstres){
 			if(m.getPointVie() >0 ){
@@ -289,6 +287,16 @@ public class Labyrinthe implements Serializable{
 
 		float x = heros.getX();
 		float y = heros.getY();
+		
+		/*int xH = (int)(lesHeros.get(0).getX()/LARGEUR_MUR);
+		int yH = (int)(lesHeros.get(0).getY()/HAUTEUR_MUR);
+		if(lesObjets[xH][yH] != null){
+			//tresorTrouver = true;
+			lesHeros.get(0).ajouterAInventaire(lesObjets[xH][yH]);
+			lesObjets[xH][yH].isRamasser();
+			System.err.println("j ai trouve mon tresort");
+		}*/
+		
 		int horizontal = heros.getHorizontal();
 		int vertical = heros.getVertical();
 
@@ -491,7 +499,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -500,7 +508,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -535,7 +543,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -544,7 +552,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -576,7 +584,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -606,7 +614,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
@@ -615,7 +623,7 @@ public class Labyrinthe implements Serializable{
 		if(tabMur[xCaseFuture][yCaseFuture] != null){
 			return true;
 		}
-		if(lesObjets[xCaseFuture][yCaseFuture] != null){
+		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
 			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}

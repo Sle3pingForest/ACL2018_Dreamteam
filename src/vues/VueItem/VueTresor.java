@@ -44,12 +44,13 @@ public class VueTresor extends VueItem {
     @Override
     public void render(GameContainer container, Graphics g) {
         super.render(container, g);
-        if(animationEnCour == 1){
-            if(animations[animationEnCour].getFrame() == 2){
-                animationEnCour = 2;
-            }
+        if(animationEnCour == 0 && !item.isRamasser()){
+        	animationEnCour = 0;
         }
-        if(animationEnCour == 0 && item.isRamasser()){
+        else if(animationEnCour == 1){
+                animationEnCour = 2;
+        }
+        else if(animationEnCour == 0 && item.isRamasser()){
             animationEnCour = 1;
         }
     }
