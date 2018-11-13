@@ -60,5 +60,27 @@ public abstract class Monstre extends Personnage {
 				horizontal = -1;
 		}
 	}
+	
+	public void direction(int direction) {
+		vertical = 0;
+		horizontal = 0;
+		switch(direction){
+		case 0:
+			vertical = -1;
+			directionActu = Personnage.AVANCER_HAUT;
+			break;
+		case 1:
+			horizontal = 1;
+			directionActu = Personnage.AVANCER_DROITE;
+			break;
+		case 2:
+			directionActu = Personnage.AVANCER_BAS;
+			vertical = 1;
+			break;
+		case 3:
+			directionActu = Personnage.AVANCER_GAUCHE;
+			horizontal = -1;
+		}
+	}
 
 }
