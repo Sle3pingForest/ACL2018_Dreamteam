@@ -6,7 +6,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-public abstract  class VueItem {
+public abstract class VueItem {
 
     protected Item item;
     protected Animation[] animations;
