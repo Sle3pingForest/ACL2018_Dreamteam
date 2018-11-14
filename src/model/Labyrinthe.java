@@ -52,7 +52,7 @@ public class Labyrinthe implements Serializable{
 	 * @param hauteur
 	 * @see #creuse()
 	 */
-	public Labyrinthe(int longueur ,int hauteur){
+	public Labyrinthe(int longueur ,int hauteur, int nbMonstres){
 		this.longueur = longueur;
 		this.hauteur = hauteur;
 		this.creationMonstres = new FabriqueMonstre();
@@ -75,7 +75,7 @@ public class Labyrinthe implements Serializable{
 
 		/**** Et maintenant on creuse ****/
 		creuse();
-		produitMonstres(50);
+		produitMonstres(nbMonstres);
 	}
 
 	/**
