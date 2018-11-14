@@ -30,7 +30,7 @@ public class Labyrinthe implements Serializable{
 	private int longeurCarte;
 	private int hauteurCarte;
 
-	private int[] tabNomMonstre ={FabriqueMonstre.Soldat,FabriqueMonstre.Soldat};
+	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
 	private Item [][]lesObjets;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
@@ -363,7 +363,10 @@ public class Labyrinthe implements Serializable{
 					}else
 					{
 						//monstre.directionAleatoire();
-						changerDirection(monstre, delta);
+						if(monstre instanceof Soldat){
+
+							changerDirection(monstre, delta);
+						}
 					}
 				}
 				if(vertical == 1){
