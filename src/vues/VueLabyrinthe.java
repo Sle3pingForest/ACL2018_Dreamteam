@@ -86,7 +86,6 @@ public class VueLabyrinthe implements Serializable{
                 }
             }
         }
-        System.out.println(lesObjetsVue);
     }
 
     public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){
@@ -117,9 +116,6 @@ public class VueLabyrinthe implements Serializable{
             yActu += Labyrinthe.HAUTEUR_MUR;
         }
 
-        for(VueHeros h : lesHerosVue){
-            h.render(container,g);
-        }
 
         for(VueMonstres m : lesMonstresVue){
             m.render(container,g);
@@ -127,6 +123,10 @@ public class VueLabyrinthe implements Serializable{
 
         for(VueItem i : lesObjetsVue){
             i.render(container, g);
+        }
+
+        for(VueHeros h : lesHerosVue){
+            h.render(container,g);
         }
     }
 

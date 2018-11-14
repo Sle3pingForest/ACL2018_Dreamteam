@@ -40,7 +40,7 @@ public class Jeu extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        labyModel =  new Labyrinthe(20,20);
+        labyModel =  new Labyrinthe(100,100);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur

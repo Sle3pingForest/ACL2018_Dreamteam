@@ -185,8 +185,6 @@ public class Labyrinthe implements Serializable{
 			}
 		}
 		lesObjets[murActu.getPosX()][murActu.getPosY()] = new Tresor(murActu.getPosX()* LARGEUR_MUR,murActu.getPosY()*HAUTEUR_MUR,null);
-		//lesObjets[murActu.getPosX()][murActu.getPosY()] = new Epee(150,150);
-
 	}
 
 	/**
@@ -267,8 +265,6 @@ public class Labyrinthe implements Serializable{
 	 * @throws SlickException
 	 */
 	public void update(GameContainer container, int delta) throws SlickException {
-
-		updateHeros(lesHeros.get(0),delta);
 		
 		//deplacerMonstres();
 		for(Monstre m : listeMonstres){
@@ -276,6 +272,9 @@ public class Labyrinthe implements Serializable{
 				updateMonstre(m, delta);
 			}
 		}
+
+
+		updateHeros(lesHeros.get(0),delta);
 
 	}
 

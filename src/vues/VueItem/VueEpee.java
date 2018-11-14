@@ -5,7 +5,7 @@ import org.newdawn.slick.*;
 
 public class VueEpee extends VueItem {
 
-    private final static String CHEMIN_EPEE="main/resources/Items/epee/epee.png";
+    private final static String CHEMIN_EPEE="main/resources/Items/epee/epee2.png";
 
     public VueEpee(Epee epee) throws SlickException {
         super(epee);
