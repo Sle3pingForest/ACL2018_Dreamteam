@@ -70,4 +70,5 @@ public class HerosTest {
 		fail("10 objets ne doit pas pouvoir reduire linventaire a une taille inferieure");
 		
 	}
+
 }
