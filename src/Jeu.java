@@ -40,7 +40,7 @@ public class Jeu extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        labyModel =  new Labyrinthe(20,20);
+        labyModel =  new Labyrinthe(30,30, 20);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
@@ -133,10 +133,9 @@ public class Jeu extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
         labyModel.update(container,delta);
-        if(labyModel.isTresorTrouver()){
-        	System.out.println("GRONUL");
-            container.exit();
-        }
+        /*if(labyModel.isTresorTrouver()){
+            //container.exit();
+        }*/
     }
 
 

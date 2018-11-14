@@ -27,6 +27,7 @@ public class Heros extends Personnage {
     	this.attaque = 3;
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
+    	tailleInventaire = 10;
     }
     
     public void charge(Heros h) {
@@ -54,7 +55,6 @@ public class Heros extends Personnage {
 		return nom;
 	}
 
-
     public int getTailleInventaire() {
         return tailleInventaire;
     }
@@ -71,10 +71,15 @@ public class Heros extends Personnage {
         return  tresorDeMap;
     }
 
-
     public void ajouterAInventaire(Item i){
-        if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
-            inventaire.add(i);
+        if(!i.getClass().getName().equals("model.Item.Tresor")) {
+            if(i.isRamasser() == false){
+                if (inventaire.size() < tailleInventaire){
+                    inventaire.add(i);
+                    i.ramasser();
+                }
+            }
+            System.out.println(inventaire);
         }else{
             tresorDeMap = (Tresor)i;
         }

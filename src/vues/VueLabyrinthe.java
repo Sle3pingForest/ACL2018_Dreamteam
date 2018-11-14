@@ -1,5 +1,6 @@
 package vues;
 
+import model.Item.Epee;
 import model.Item.Item;
 import model.Item.Tresor;
 import model.Labyrinthe;
@@ -16,6 +17,7 @@ import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import vues.VueItem.VueEpee;
 import vues.VueItem.VueItem;
 import vues.VueItem.VueTresor;
 import vues.VueMonstres.VueDragon;
@@ -76,10 +78,13 @@ public class VueLabyrinthe implements Serializable{
 
                             lesObjetsVue.add(new VueTresor((Tresor) itemActu));
                             break;
+
+                        case "model.Item.Epee":
+                            lesObjetsVue.add(new VueEpee((Epee) itemActu));
+                            break;
                     }
                 }
             }
-
         }
     }
 
@@ -111,9 +116,6 @@ public class VueLabyrinthe implements Serializable{
             yActu += Labyrinthe.HAUTEUR_MUR;
         }
 
-        for(VueHeros h : lesHerosVue){
-            h.render(container,g);
-        }
 
         for(VueMonstres m : lesMonstresVue){
             m.render(container,g);
@@ -121,6 +123,10 @@ public class VueLabyrinthe implements Serializable{
 
         for(VueItem i : lesObjetsVue){
             i.render(container, g);
+        }
+
+        for(VueHeros h : lesHerosVue){
+            h.render(container,g);
         }
     }
 

@@ -4,6 +4,8 @@ import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Soldat;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -59,35 +61,35 @@ public class VueSoldat extends VueMonstres {
 	}
 
 
-	private void chargerStaticBas(String chemin, int largeur, int hauteur) throws SlickException{
+	protected void chargerStaticBas(String chemin, int largeur, int hauteur) throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.BAS] = animation;
 	}
 
-	private void chargerStaticGauche(String chemin, int largeur, int hauteur)throws SlickException{
+	protected void chargerStaticGauche(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.GAUCHE] = animation;
 	}
 
-	private void chargerStaticHaut(String chemin, int largeur, int hauteur)throws SlickException{
+	protected void chargerStaticHaut(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(2, 4), 200);
 		this.animations[Monstre.HAUT] = animation;
 	}
 
-	private void chargerStaticDroite(String chemin, int largeur, int hauteur)throws SlickException{
+	protected void chargerStaticDroite(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(1, 4), 200);
 		this.animations[Monstre.DROITE] = animation;
 	}
 
-	private void chargerMarcheBas(String chemin, int largeur, int hauteur) throws SlickException{
+	protected void chargerMarcheBas(String chemin, int largeur, int hauteur) throws SlickException{
         SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
         animation.addFrame(spriteSheet.getSprite(1, 0), 150);
@@ -98,7 +100,7 @@ public class VueSoldat extends VueMonstres {
 		this.animations[Monstre.AVANCER_BAS] = animation;
 	}
 
-	private void chargerMarcheDroite(String chemin, int largeur, int hauteur) throws SlickException{
+	protected void chargerMarcheDroite(String chemin, int largeur, int hauteur) throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);//+3  car les largeur sur le sprite son pas toute les meme
 		Animation animation = new Animation();
 		Image img = spriteSheet.getSprite(0, 0);
@@ -113,7 +115,7 @@ public class VueSoldat extends VueMonstres {
 		this.animations[Monstre.AVANCER_DROITE] = animation;
 	}
 
-	private void chargerMarcheGauche(String chemin, int largeur, int hauteur) throws SlickException{
+	protected void chargerMarcheGauche(String chemin, int largeur, int hauteur) throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);//+2  car les largeur sur le sprite son pas toute les meme
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(0, 0), 100);
@@ -123,7 +125,7 @@ public class VueSoldat extends VueMonstres {
 	}
 
 
-	private void chargerMarcheHaut(String chemin, int largeur, int hauteur)throws SlickException{
+	protected void chargerMarcheHaut(String chemin, int largeur, int hauteur)throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur, hauteur);
 		Animation animation = new Animation();
 
@@ -143,11 +145,12 @@ public class VueSoldat extends VueMonstres {
 		this.animations[Monstre.AVANCER_HAUT] = animation;
 	}
 	
-	public void mortEffect() throws SlickException{
+	protected void mortEffect() throws SlickException{
 		SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_MORT, 26, 32);
 		Animation animation = new Animation();
 		animation.addFrame(spriteSheet.getSprite(3, 0), 200);
 		this.animations[Monstre.MORT] = animation;
 	}
+
 
 }

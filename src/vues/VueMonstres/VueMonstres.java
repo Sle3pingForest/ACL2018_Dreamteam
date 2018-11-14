@@ -17,8 +17,6 @@ import vues.VueLabyrinthe;
 
 public abstract class VueMonstres {
 
-
-	
 	protected Animation[] animations = new Animation[20];
 	protected Monstre m;
 
@@ -26,6 +24,26 @@ public abstract class VueMonstres {
 		this.m = m;
 	}
 
+	
+	protected abstract void chargerAnimation(String chemin) throws SlickException;
+
+	protected abstract void chargerStaticBas(String chemin, int largeur, int hauteur) throws SlickException;
+
+	protected abstract void chargerStaticGauche(String chemin, int largeur, int hauteur)throws SlickException;
+
+	protected abstract void chargerStaticHaut(String chemin, int largeur, int hauteur)throws SlickException;
+
+	protected abstract void chargerStaticDroite(String chemin, int largeur, int hauteur)throws SlickException;
+
+	protected abstract void chargerMarcheBas(String chemin, int largeur, int hauteur) throws SlickException;
+
+	protected abstract void chargerMarcheDroite(String chemin, int largeur, int hauteur) throws SlickException;
+
+	protected abstract void chargerMarcheGauche(String chemin, int largeur, int hauteur) throws SlickException;
+
+	protected abstract void chargerMarcheHaut(String chemin, int largeur, int hauteur)throws SlickException;
+	
+	protected abstract void mortEffect() throws SlickException;
 
 	public void render(GameContainer container, Graphics g) {
 		float x = m.getX() ;
