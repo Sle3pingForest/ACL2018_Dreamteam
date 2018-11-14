@@ -30,9 +30,10 @@ public class Labyrinthe implements Serializable{
 	public final static int LARGEUR_MUR = 32;
 	private int longeurCarte;
 	private int hauteurCarte;
-	private int[] tabNomMonstre ={FabriqueMonstre.Soldat,FabriqueMonstre.Soldat};
+
+	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
+	private Item [][]lesObjets;
 	private int [] tabNomItem = {ItemFactory.EPEE};
-	private Item [][] lesObjets;
 	private ItemFactory creationItem;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
@@ -54,7 +55,7 @@ public class Labyrinthe implements Serializable{
 	 * @param hauteur
 	 * @see #creuse()
 	 */
-	public Labyrinthe(int longueur ,int hauteur){
+	public Labyrinthe(int longueur ,int hauteur, int nbMonstres){
 		this.longueur = longueur;
 		this.hauteur = hauteur;
 		this.creationMonstres = new FabriqueMonstre();
@@ -78,8 +79,8 @@ public class Labyrinthe implements Serializable{
 
 		/**** Et maintenant on creuse ****/
 		creuse();
-		produitMonstres(50);
-		produitItem(20);
+		produitMonstres(nbMonstres);
+		produitItem(nbMonstres/5);
 	}
 
 	/**
@@ -366,7 +367,10 @@ public class Labyrinthe implements Serializable{
 					}else
 					{
 						//monstre.directionAleatoire();
-						changerDirection(monstre, delta);
+						if(monstre instanceof Soldat){
+
+							changerDirection(monstre, delta);
+						}
 					}
 				}
 				if(vertical == 1){

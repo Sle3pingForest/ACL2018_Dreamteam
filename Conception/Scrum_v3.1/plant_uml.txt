@@ -1,0 +1,99 @@
+@startuml
+Jeu -* "1" DAOFactory
+Jeu -* Song
+abstract class DAOFactory
+interface JeuDAO
+JeuSerializableDAO .|> JeuDAO
+SerializableFactory <|- DAOFactory
+SerializableFactory .> JeuSerializableDAO
+Principal --* Jeu
+Principal -* Menu
+Principal --* EditeurMap
+
+BasicGame <|-- Jeu
+BasicGame <|- Principal
+BasicGame <|-- Menu
+package "model" {
+
+class Labyrinthe 
+package "mur" {
+class Mur
+}
+
+package "item" {
+interface Ramassable
+Item <|-- Tresor
+Item <|-- Arc
+Item <|-- Epee
+Item <|-- Piege
+Item <|-- projectile
+Ramassable <.. Arc
+Ramassable <.. Tresor
+Ramassable <.. Epee
+}
+package "personnages" {
+Personnages <|-- Heros
+class Heros
+
+package "Monstre" {
+  
+Personnages <|-- Monstre
+Monstre <|-- Soldat
+Monstre <|-- Dragon
+}
+}
+
+}
+
+package vues {
+class VueLabyrinthe
+class Song
+class VueElementDecor
+class VueHeros
+
+package vueItem {
+VueItem <|-- VueTresor
+VueItem <|-- VueProjectile
+VueItem <|-- Piege
+VueItem <|-- Epee
+}
+
+package vueMonstres {
+VueMonstres <|-- VueSoldat
+VueMonstres <|-- VueDragon
+}
+
+}
+
+package org.newdawn.slick {
+class BasicGame
+}
+
+Labyrinthe "1" --* "*"  Mur
+Labyrinthe "1" --* "*" Item 
+Jeu --> "1" Labyrinthe
+Jeu  --* "1" VueLabyrinthe
+
+VueLabyrinthe -* VueElementDecor
+
+VueLabyrinthe --* "*" VueHeros
+VueLabyrinthe --* "*" VueItem
+VueLabyrinthe --* "*" VueMonstres
+
+VueHeros --* Heros
+VueItem --* Item
+VueMonstres --* Monstre
+VueLabyrinthe --* Labyrinthe
+
+Labyrinthe "1" --* "*" Heros
+Labyrinthe "1" --* "*" Monstre
+
+Class Personnages {
++void goGauche()
++void goDroite()
++void goHaut()
++void goBas()
+}
+Class Labyrinthe 
+Class Monstre
+@enduml
