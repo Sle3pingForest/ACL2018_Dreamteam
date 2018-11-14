@@ -17,8 +17,8 @@ public class VueDragon extends VueMonstres {
 	private final static  String CHEMIN_DRAGON = "main/resources/Personnages/Monstres/Dragon.png";
 	private final static  String CHEMIN_MORT= "main/resources/Personnages/Monstres/death.png";
 
-	private final static int HAUTEUR_SPRITES = 96;
-	private final static int LARGEUR_SPRITES = 96;
+	private final static int HAUTEUR_SPRITES = 50;
+	private final static int LARGEUR_SPRITES = 49;
 
 	public VueDragon(Dragon dragon) throws SlickException{
 		super(dragon); 

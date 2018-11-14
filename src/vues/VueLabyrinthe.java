@@ -86,7 +86,6 @@ public class VueLabyrinthe implements Serializable{
                 }
             }
         }
-        System.out.println(lesObjetsVue);
     }
 
     public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){

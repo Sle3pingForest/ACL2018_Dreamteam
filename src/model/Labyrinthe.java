@@ -11,6 +11,7 @@ import java.util.Random;
 
 import model.Item.Epee;
 import model.Item.Item;
+import model.Item.ItemFactory;
 import model.Item.Tresor;
 import model.mur.Mur;
 import model.personnages.Heros;
@@ -32,6 +33,8 @@ public class Labyrinthe implements Serializable{
 
 	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
 	private Item [][]lesObjets;
+	private int [] tabNomItem = {ItemFactory.EPEE};
+	private ItemFactory creationItem;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
 	private ArrayList<Monstre> listeMonstres;
@@ -52,7 +55,7 @@ public class Labyrinthe implements Serializable{
 	 * @param hauteur
 	 * @see #creuse()
 	 */
-	public Labyrinthe(int longueur ,int hauteur){
+	public Labyrinthe(int longueur ,int hauteur, int nbMonstres){
 		this.longueur = longueur;
 		this.hauteur = hauteur;
 		this.creationMonstres = new FabriqueMonstre();
@@ -60,6 +63,7 @@ public class Labyrinthe implements Serializable{
 		lesObjets = new Item[longueur][hauteur];
 		tabMur = new Mur[longueur][hauteur];
 		this.listeMonstres = new ArrayList<>();
+		this.creationItem = new ItemFactory();
 		longeurCarte = tabMur.length * LARGEUR_MUR;
 		hauteurCarte = tabMur[0].length * HAUTEUR_MUR;
 
@@ -75,7 +79,8 @@ public class Labyrinthe implements Serializable{
 
 		/**** Et maintenant on creuse ****/
 		creuse();
-		produitMonstres(50);
+		produitMonstres(nbMonstres);
+		produitItem(nbMonstres/5);
 	}
 
 	/**
@@ -667,15 +672,41 @@ public class Labyrinthe implements Serializable{
 				}
 			}
 		}
+	}
+
+	/**
+	 * Place des Items dans le labyrinthe.
+	 * @param nombreItem nombre de d'item à placer
+	 */
+	private void produitItem(int nombreItem){
+
+		for(int i = 0; i < nombreItem; ++i){
+			int rng  = (int)(Math.random() * (tabNomItem.length)) ;
+
+			int posX = (int)(Math.random() * (longueur));
+			int posY = (int)(Math.random() * (hauteur));
+			boolean correct = false;
+			while(!correct){
+				if(tabMur[posX][posY] == null){
+					correct = true;
+							lesObjets[posX][posY] = this.creationItem.creerItems(tabNomItem[rng], posX * LARGEUR_MUR, posY * HAUTEUR_MUR);
+				}
+				else{
+					posX = (int)(Math.random() * (longueur));
+					posY = (int)(Math.random() * (hauteur));
+				}
+			}
+		}
 
 	}
+
 
 	/**
 	 * Recuperation de la largeur et hauteur du labyrinthe dans ce fichier
 	 * @param fichierName nom du fichier contenant le labyrinthe.
 	 */
 	private void iniLargeurHauteur(String fichierName){
-		//On lis deja une fois le fichier pour connaitre la hauteur  oui c lourd  mais de toute facon no fichier ne feront probablement jamais plus de quelque Ko  donc  cela reste rapide
+		//On lit deja une fois le fichier pour connaitre la hauteur  oui c lourd  mais de toute facon no fichier ne feront probablement jamais plus de quelque Ko  donc  cela reste rapide
 		try
 		{
 			File f = new File (fichierName);
