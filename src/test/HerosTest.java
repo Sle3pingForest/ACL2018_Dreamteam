@@ -1,38 +1,36 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import model.Item.Item;
 import model.Item.Piege;
-import model.Item.Tresor;
 import model.personnages.Heros;
 
-class HerosTest {
+public class HerosTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 	}
 
 	@Test
-	void Right() {
+	public void Right() {
 		Heros h = new Heros(1, 1, "Manger");
 		h.goHaut();
 		
@@ -53,12 +51,9 @@ class HerosTest {
 		
 		
 	}
-
-	
-	
 	
 	@Test
-	void setTailleInventaireTest() {
+	public void setTailleInventaireTest() {
 		Heros h = new Heros(1, 1, "Manger");
 		for (int i = 0; i < 10; i++) {
 			h.ajouterAInventaire(new Piege(1,1));
@@ -69,12 +64,10 @@ class HerosTest {
 	}
 	
 	@Test
-	void setTailleInventairNegatifeTest() {
+	public void setTailleInventairNegatifeTest() {
 		Heros h = new Heros(1, 1, "Manger");
 		h.setTailleInventaire(-2);
 		fail("10 objets ne doit pas pouvoir reduire linventaire a une taille inferieure");
 		
 	}
-	
-
 }
