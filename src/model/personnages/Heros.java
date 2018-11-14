@@ -72,11 +72,12 @@ public class Heros extends Personnage {
     }
 
     public void ajouterAInventaire(Item i){
-        if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
-            inventaire.add(i);
-            i.ramasser();
+        /*if(!i.getClass().getName().equals("model.Item.Tresor") && inventaire.size() <= tailleInventaire) {
+           
         }else{
             tresorDeMap = (Tresor)i;
-        }
+        }*/
+    	 inventaire.add(i);
+         i.ramasser();
     }
 }

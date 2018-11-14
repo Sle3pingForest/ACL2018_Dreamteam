@@ -133,10 +133,9 @@ public class Jeu extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
         labyModel.update(container,delta);
-        if(labyModel.isTresorTrouver()){
-        	System.out.println("GRONUL");
-            container.exit();
-        }
+        /*if(labyModel.isTresorTrouver()){
+            //container.exit();
+        }*/
     }
 
 
