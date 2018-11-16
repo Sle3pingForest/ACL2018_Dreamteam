@@ -7,7 +7,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import vues.Hud;
+import vues.HudBarreDeVie;
 import vues.HudEndGame;
+import vues.HudVictoire;
 import vues.Song;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
@@ -34,8 +36,9 @@ public class Jeu extends BasicGameState {
     private static int width = (int) screenSize.getWidth();
     private static int height = (int) screenSize.getHeight();
     
-    private Hud hud;
+    private HudBarreDeVie hud;
     private HudEndGame hud_fin_du_jeu;
+    private HudVictoire hudVictory;
     
     private static Jeu instance = null;
 	public static Jeu getInstance() {
@@ -46,7 +49,6 @@ public class Jeu extends BasicGameState {
 	}
 
     private Jeu() {
-    	hud = new Hud();
     }
 
     @Override
@@ -61,6 +63,9 @@ public class Jeu extends BasicGameState {
         Song.jouerBackground();
         float x = labyModel.getHeros(0).getX();
         float y = labyModel.getHeros(0).getY();
+    	hud = new HudBarreDeVie();
+    	hudVictory = new HudVictoire();
+    	hudVictory.init(x,y);
         this.hud.init(x,y);
         this.hud_fin_du_jeu = new HudEndGame();
     }
@@ -99,6 +104,7 @@ public class Jeu extends BasicGameState {
         	this.hud_fin_du_jeu.init(h.getX(),h.getY() ); 
         	this.hud_fin_du_jeu.render(g);
         }
+        if (h.getTresorDeMap() != null) this.hudVictory.render(g);
     }
 
     public void keyPressed(int key, char c) {

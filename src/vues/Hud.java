@@ -9,22 +9,16 @@ import org.newdawn.slick.SlickException;
 
 import model.Labyrinthe;
 
-public class Hud {
+public abstract class Hud {
 	
-	private Image playerbars;
-	private float x,y;
-	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private static int width = (int) screenSize.getWidth();
-	private static int height = (int) screenSize.getHeight();
+	protected Image playerbars;
+	protected float x,y;
+	protected static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	protected static int width = (int) screenSize.getWidth();
+	protected static int height = (int) screenSize.getHeight();
 	
-	public void init(float x, float y) throws SlickException {
-		this.playerbars = new Image("main/resources/hud/Heart_Sprite.png");
-		this.x = x;
-		this.y = y;
-	}
+	public abstract void init(float x, float y) throws SlickException;
 	
-	public void render(Graphics g) {
-		g.drawImage(this.playerbars,(1*Labyrinthe.HAUTEUR_MUR),(1*Labyrinthe.HAUTEUR_MUR));
-	}
+	public abstract void render(Graphics g);
 
 }

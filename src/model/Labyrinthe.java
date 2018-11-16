@@ -101,7 +101,7 @@ public class Labyrinthe implements Serializable{
 		int yDebut = random.nextInt(hauteur-2)+1;
 
 		lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
-
+		
 
 		ArrayList<Mur> chemin = new ArrayList<Mur>();
 		chemin.add(tabMur[xDebut][yDebut]);
@@ -303,7 +303,6 @@ public class Labyrinthe implements Serializable{
 		
 		int horizontal = heros.getHorizontal();
 		int vertical = heros.getVertical();
-
 		float futureX = x + horizontal * vitesseActu;
 		float futureY = y + vertical * vitesseActu;
 		if(futureX > 0 && futureX < getLongeurCarte() - LARGEUR_MUR && futureY > 0 && futureY < getHauteurCarte()-HAUTEUR_MUR){

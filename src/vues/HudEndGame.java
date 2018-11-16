@@ -9,13 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import model.Labyrinthe;
 
-public class HudEndGame {
-	
-	private Image playerbars;
-	private float x,y;
-	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private static int width = (int) screenSize.getWidth();
-	private static int height = (int) screenSize.getHeight();
+public class HudEndGame extends Hud{
 	
 	public void init(float x, float y) throws SlickException {
 		this.playerbars = new Image("main/resources/hud/you_died.png");
