@@ -3,6 +3,9 @@ import model.personnages.Heros;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
+
 import vues.Song;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
@@ -14,8 +17,11 @@ import java.util.Collections;
 
 /* C'est la class principal de notre jeu
 * Elle sair de boucle principal mais aussi de Controlleur pour les touche */
-public class Jeu extends BasicGame {
+public class Jeu extends BasicGameState {
 
+	public static final int ID = 2;
+	
+	private StateBasedGame game;
     private GameContainer container;
     private static VueLabyrinthe labyVue;
     private static Labyrinthe labyModel;
@@ -34,12 +40,12 @@ public class Jeu extends BasicGame {
 	}
 
     private Jeu() {
-        super("Link The Labyrinthe's Master");
     }
 
     @Override
-    public void init(GameContainer container) throws SlickException {
+    public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
+        this.game = game;
         labyModel =  new Labyrinthe(30,30, 20);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
@@ -67,7 +73,7 @@ public class Jeu extends BasicGame {
     
 
 	@Override
-    public void render(GameContainer container, Graphics g) throws SlickException {
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 	    Heros h = labyModel.getHeros(0);
         int cameraX = (int)(container.getWidth() / 2 - h.getX());
         int cameraY = (int)(container.getHeight() / 2 - h.getY());
@@ -92,10 +98,8 @@ public class Jeu extends BasicGame {
     }
 
     public void keyPressed(int key, char c) {
-        if(key == Input.KEY_ESCAPE){
-            container.exit();
-        }
         switch (key) {
+        	case Input.KEY_ESCAPE: container.exit(); break;
             case Input.KEY_UP:  labyModel.goHaut();    break;
             case Input.KEY_LEFT: labyModel.goGauche();   break;
             case Input.KEY_DOWN: labyModel.goBas();   break;
@@ -125,23 +129,24 @@ public class Jeu extends BasicGame {
             case Input.KEY_LEFT: labyModel.arretGauche();   break;
             case Input.KEY_DOWN: labyModel.arretBas();   break;
             case Input.KEY_RIGHT: labyModel.arretDroite();  break;
+            case Input.KEY_ENTER: game.enterState(MainScreenGameState.ID); break;
            // case Input.KEY_SPACE: labyModel.attaquerStop();   break;
         }
     }
 
 
     @Override
-    public void update(GameContainer container, int delta) throws SlickException {
+    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         labyModel.update(container,delta);
         /*if(labyModel.isTresorTrouver()){
             //container.exit();
         }*/
     }
 
-
+    /*
     public static void main(String[] args) throws SlickException {
         new AppGameContainer(new Jeu(), width, height, true).start();
-    }
+    }*/
     
     public void save() throws SlickException {
     	DAOFactory.getAbstractDAOFactory(1).getJeuDAO().save(this);
@@ -156,6 +161,11 @@ public class Jeu extends BasicGame {
     	return labyModel.getLesHeros();
     }
    
+    @Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return ID;
+	}
 
 	
 }
