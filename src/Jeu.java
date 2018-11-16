@@ -6,12 +6,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import vues.Hud;
+import vues.HudEndGame;
 import vues.Song;
 import vues.VueHeros;
 import vues.VueLabyrinthe;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -31,6 +34,9 @@ public class Jeu extends BasicGameState {
     private static int width = (int) screenSize.getWidth();
     private static int height = (int) screenSize.getHeight();
     
+    private Hud hud;
+    private HudEndGame hud_fin_du_jeu;
+    
     private static Jeu instance = null;
 	public static Jeu getInstance() {
 		if (instance == null) {
@@ -40,6 +46,7 @@ public class Jeu extends BasicGameState {
 	}
 
     private Jeu() {
+    	hud = new Hud();
     }
 
     @Override
@@ -52,23 +59,16 @@ public class Jeu extends BasicGameState {
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
         Song.chargerForet();
         Song.jouerBackground();
+        float x = labyModel.getHeros(0).getX();
+        float y = labyModel.getHeros(0).getY();
+        this.hud.init(x,y);
+        this.hud_fin_du_jeu = new HudEndGame();
     }
     
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
     	labyVue = VueLabyrinthe.getInstance();
     	labyModel.getHeros(0).charge(lesHeros2.get(0));
-		//lesHeros.clear();
-		//lesHeros = lesHeros2;
-		//lesHerosVue.clear();
-		//System.out.println(lesHeros);
-		//lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
-    	/*System.out.println(h.getX());
-    	
-    	lesHeros.get(0).setX(h.getX());
-    	lesHeros.get(0).setY(h.getY());*/
-
-    	
 	}
     
 
@@ -91,10 +91,14 @@ public class Jeu extends BasicGameState {
         }
 
         g.translate(cameraX, cameraY);
-
+        
 
         labyVue.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-
+        this.hud.render(g);
+        if (h.getPointVie() <= 0) {
+        	this.hud_fin_du_jeu.init(h.getX(),h.getY() ); 
+        	this.hud_fin_du_jeu.render(g);
+        }
     }
 
     public void keyPressed(int key, char c) {
@@ -105,7 +109,7 @@ public class Jeu extends BasicGameState {
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
             case Input.KEY_SPACE: labyModel.attaquer() ; break;
-            case Input.KEY_0:	try {
+            case Input.KEY_B:	try {
 				save();
 				System.out.println("SAVE");
 			} catch (SlickException e) {
@@ -113,7 +117,7 @@ public class Jeu extends BasicGameState {
 				e.printStackTrace();
 			}
             	break;
-            case Input.KEY_1: try {
+            case Input.KEY_L: try {
 				this.charger();
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block

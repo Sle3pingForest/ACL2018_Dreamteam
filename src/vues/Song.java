@@ -16,7 +16,7 @@ public class Song {
     private static int pitchSong = 1;
 
     public static void chargerForet() throws SlickException {
-        background = new Music("main/resources/song/musique/Woods.ogg");
+        background = new Music("main/resources/song/musique/bisounours_karaok_.ogg");
     }
 
     public static void jouerBackground() {
