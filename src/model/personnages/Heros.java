@@ -1,6 +1,7 @@
 package model.personnages;
 
 import model.Item.Item;
+import model.Item.Projectile;
 import model.Item.Tresor;
 import model.mur.Mur;
 
@@ -15,6 +16,7 @@ public class Heros extends Personnage {
 
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
+    private Projectile projectile;
 
 
     protected int tailleInventaire = 10;
@@ -28,6 +30,7 @@ public class Heros extends Personnage {
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
     	tailleInventaire = 10;
+    	this.projectile = new Projectile(x,y);
     }
     
     public void charge(Heros h) {
@@ -71,7 +74,38 @@ public class Heros extends Personnage {
         return  tresorDeMap;
     }
 
-    public void ajouterAInventaire(Item i){
+    
+    
+    public Projectile getProjectile() {
+		return projectile;
+	}
+
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
+	}
+
+	 public void tirer(){
+		 this.projectile.setPosX(this.x);
+		 this.projectile.setPosY(this.y);
+		 this.projectile.setxInit(this.x);
+		 this.projectile.setyInit(this.y);
+	    	if(directionActu == BAS){
+	   		 	this.projectile.deplacer(ATTAQUER_BAS);
+	    	}
+	    	else if(directionActu == HAUT){
+		   		 this.projectile.deplacer(ATTAQUER_HAUT);
+	    	}
+	    	else if(directionActu == GAUCHE){
+		   		 this.projectile.deplacer(ATTAQUER_GAUCHE);
+	    		
+	    	}
+	    	else if(directionActu == DROITE){
+		   		 this.projectile.deplacer(ATTAQUER_DROITE);
+	    	}
+	    	
+	 }
+	
+	public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor")) {
             if(i.isRamasser() == false){
                 if (inventaire.size() < tailleInventaire){
@@ -79,7 +113,6 @@ public class Heros extends Personnage {
                     i.ramasser();
                 }
             }
-            System.out.println(inventaire);
         }else{
             tresorDeMap = (Tresor)i;
         }

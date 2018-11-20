@@ -12,6 +12,7 @@ import java.util.Random;
 import model.Item.Epee;
 import model.Item.Item;
 import model.Item.ItemFactory;
+import model.Item.Projectile;
 import model.Item.Tresor;
 import model.mur.Mur;
 import model.personnages.Heros;
@@ -333,7 +334,56 @@ public class Labyrinthe implements Serializable{
 				heros.setY(futureY);
 			}
 		}
+		
+		
+		
+		
+		
+		float vitesseProjectille = delta*Projectile.VITESSE;
 
+		float xP = heros.getProjectile().getX();
+		float yP = heros.getProjectile().getY();
+		
+
+		
+		int horizontalP = heros.getProjectile().getHorizontal();
+		int verticalP = heros.getProjectile().getVertical();
+		float futureXP = xP + horizontalP * vitesseProjectille;
+		float futureYP = yP + verticalP * vitesseProjectille;
+		//System.err.println(futureYP + "***" + heros.getProjectile().getY());
+		if(futureXP > 0 && futureXP < getLongeurCarte() - LARGEUR_MUR && futureYP > 0 && futureYP < getHauteurCarte()-HAUTEUR_MUR){
+			if (heros.getProjectile().getCollision()  ) {
+				if(verticalP == -1){
+					heros.getProjectile().setPosY((int)futureYP);
+					if(!collisionHaut(heros, futureX, futureY)){
+						heros.getProjectile().setPosY((int)futureYP);
+					}
+				}
+				if(verticalP == 1){
+					heros.getProjectile().setPosY((int)futureYP);
+					if(!collisionBas( heros,futureXP, futureYP)){
+						heros.getProjectile().setPosY((int)futureYP);
+					}
+				}
+
+				if(horizontalP == -1){
+					heros.getProjectile().setPosY((int)futureXP);
+					if(!collisionGauche(heros, futureX, futureY)){
+						heros.getProjectile().setPosY((int)futureXP);
+					}
+				}
+				if(horizontalP == 1){
+					heros.getProjectile().setPosY((int)futureXP);
+					if(!collisionDroite(heros, futureX, futureY)){
+						heros.getProjectile().setPosY((int)futureXP);
+					}
+				}
+			} else {
+				heros.getProjectile().setPosY((int)futureXP);
+				heros.getProjectile().setPosY((int)futureYP);
+			}
+			
+		}
 	}
 
 
@@ -1333,5 +1383,31 @@ public class Labyrinthe implements Serializable{
 
 	public int getHauteurLaby(){
 		return hauteur*HAUTEUR_MUR;
+	}
+
+	public void tirer() {
+	   lesHeros.get(0).tirer();
+	  // float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
+	   //float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
+	   /*for(Monstre m : listeMonstres){
+		   float xM = m.getX()/LARGEUR_MUR;
+		   float yM = m.getY()/HAUTEUR_MUR;
+		   boolean estToucher = false;
+		   if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
+			   estToucher = true;
+		   }
+		   
+		   if(estToucher){
+			   lesHeros.get(0).setPointVie(m.getAttaque());
+			   m.setPointVie(lesHeros.get(0).getAttaque());
+			   if(m.getPointVie() <= 0){
+				   m.mortMonstres(); 
+			   }
+		   }
+		   if(lesHeros.get(0).getPointVie() <= 0){
+			   MORT_HEROS = true;
+			   lesHeros.get(0).mort();
+		   }
+	   }	*/
 	}
 }

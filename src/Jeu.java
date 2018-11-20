@@ -115,6 +115,7 @@ public class Jeu extends BasicGameState {
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
             case Input.KEY_SPACE: labyModel.attaquer() ; break;
+            case Input.KEY_P: labyModel.tirer() ; break;
             case Input.KEY_B:	try {
 				save();
 				System.out.println("SAVE");
