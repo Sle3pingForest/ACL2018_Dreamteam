@@ -4,7 +4,7 @@ import model.personnages.Personnage;
 
 public class Projectile extends Item {
 
-	public final static float VITESSE = 0.3f;
+	public final static float VITESSE = 0.1f;
     protected int vertical = 0;
     protected int horizontal = 0;
     //Position static
@@ -14,11 +14,10 @@ public class Projectile extends Item {
     public final static int GAUCHE = 3;
     
     protected float x,y;
-    
 
-    protected int directionActu = BAS;
-	protected boolean collision = true;
-	protected int porte = 3;
+    protected int directionActu = -1;
+	protected boolean collision = true, touche;
+	protected int porte = 4;
 	protected float xInit, yInit;
     
 	
@@ -28,11 +27,28 @@ public class Projectile extends Item {
 		this.y = posY;
 		this.xInit = posX;
 		this.yInit = posY;
-		
+		this.touche = false;
 		// TODO Auto-generated constructor stub
 	}
 	
-    public float getxInit() {
+
+	public boolean isTouche() {
+		return touche;
+	}
+
+	public void setTouche(boolean touche) {
+		this.touche = touche;
+	}
+
+	public int getPorte() {
+		return porte;
+	}
+
+	public void setPorte(int porte) {
+		this.porte = porte;
+	}
+
+	public float getxInit() {
 		return xInit;
 	}
 
@@ -57,19 +73,23 @@ public class Projectile extends Item {
     public void goDroite(){
         directionActu = DROITE;
         this.horizontal = 1;
+        this.vertical = 0;
     }
 
     public void goGauche(){
     	directionActu = GAUCHE;
-        this.horizontal = -11;
+        this.horizontal = -1;
+        this.vertical = 0;
     }
     public void goBas(){
         directionActu = BAS;
         this.vertical = 1;
+        this.horizontal = 0;
     }
     public void goHaut(){
-    	this.vertical = -1;
         directionActu = HAUT;
+    	this.vertical = -1;
+    	this.horizontal = 0;
     }
 	
 	public int getVertical() {
@@ -111,11 +131,11 @@ public class Projectile extends Item {
 			goHaut();
 		}
 	}
-	public void setPosX(float posX) {
+	public void setX(float posX) {
         this.x = posX;
     }
 
-    public void setPosY(float posY) {
+    public void setY(float posY) {
         this.y = posY;
     }
     
@@ -125,6 +145,18 @@ public class Projectile extends Item {
 
     public float getY() {
         return this.y;
+    }
+    
+    public boolean distanceMax() {
+    	boolean check = false;
+    	
+    	int porteeX = Math.abs( ((int)(x/30) - (int)(xInit/30) ) );
+    	int porteeY = Math.abs( ((int)(y/30) - (int)(yInit/30) ) );
+    	
+    	if (porteeX >= porte || porteeY >= porte) {
+    		check = true;
+    	}
+    	return check;
     }
 
 

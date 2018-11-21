@@ -102,7 +102,7 @@ public class Labyrinthe implements Serializable{
 		int yDebut = random.nextInt(hauteur-2)+1;
 
 		lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
-		
+
 
 		ArrayList<Mur> chemin = new ArrayList<Mur>();
 		chemin.add(tabMur[xDebut][yDebut]);
@@ -267,7 +267,7 @@ public class Labyrinthe implements Serializable{
 	 * @throws SlickException
 	 */
 	public void update(GameContainer container, int delta) throws SlickException {
-		
+
 		//deplacerMonstres();
 		for(Monstre m : listeMonstres){
 			if(m.getPointVie() >0 ){
@@ -292,7 +292,7 @@ public class Labyrinthe implements Serializable{
 
 		float x = heros.getX();
 		float y = heros.getY();
-		
+
 		/*int xH = (int)(lesHeros.get(0).getX()/LARGEUR_MUR);
 		int yH = (int)(lesHeros.get(0).getY()/HAUTEUR_MUR);
 		if(lesObjets[xH][yH] != null){
@@ -301,7 +301,7 @@ public class Labyrinthe implements Serializable{
 			lesObjets[xH][yH].isRamasser();
 			System.err.println("j ai trouve mon tresort");
 		}*/
-		
+
 		int horizontal = heros.getHorizontal();
 		int vertical = heros.getVertical();
 		float futureX = x + horizontal * vitesseActu;
@@ -334,58 +334,112 @@ public class Labyrinthe implements Serializable{
 				heros.setY(futureY);
 			}
 		}
-		
-		
-		
-		
-		
+
+
+
+
+		toucherProjetile();
+
 		float vitesseProjectille = delta*Projectile.VITESSE;
+		ArrayList<Projectile> lp = heros.getLprojectile();
+		for (Projectile p : lp ) {
+			float xP = p.getX();
+			float yP = p.getY();
+			int horizontalP = p.getHorizontal();
+			int verticalP = p.getVertical();
+			float futureXP = xP + horizontalP * vitesseProjectille;
+			float futureYP = yP + verticalP * vitesseProjectille;
+			if(futureXP > 0 && futureXP < getLongeurCarte() - LARGEUR_MUR && futureYP > 0 && futureYP < getHauteurCarte()-HAUTEUR_MUR){
+				if (p.getCollision()  ) {
+					if(verticalP == -1){
+						if (!collisionProjectile(p, xP, futureYP))
+							p.setY(futureYP);
+					}
+					else if(verticalP == 1){
+						if (!collisionProjectile(p, xP, futureYP))
+							p.setY(futureYP);
+					}
 
-		float xP = heros.getProjectile().getX();
-		float yP = heros.getProjectile().getY();
-		
-
-		
-		int horizontalP = heros.getProjectile().getHorizontal();
-		int verticalP = heros.getProjectile().getVertical();
-		float futureXP = xP + horizontalP * vitesseProjectille;
-		float futureYP = yP + verticalP * vitesseProjectille;
-		//System.err.println(futureYP + "***" + heros.getProjectile().getY());
-		if(futureXP > 0 && futureXP < getLongeurCarte() - LARGEUR_MUR && futureYP > 0 && futureYP < getHauteurCarte()-HAUTEUR_MUR){
-			if (heros.getProjectile().getCollision()  ) {
-				if(verticalP == -1){
-					heros.getProjectile().setPosY((int)futureYP);
-					if(!collisionHaut(heros, futureX, futureY)){
-						heros.getProjectile().setPosY((int)futureYP);
+					else if(horizontalP == -1){
+						if (!collisionProjectile(p, futureXP, yP))
+							p.setX(futureXP);
 					}
-				}
-				if(verticalP == 1){
-					heros.getProjectile().setPosY((int)futureYP);
-					if(!collisionBas( heros,futureXP, futureYP)){
-						heros.getProjectile().setPosY((int)futureYP);
+					else if(horizontalP == 1){
+						if (!collisionProjectile(p, futureXP, yP))
+							p.setX(futureXP);
 					}
+				} else {
+					p.setX(futureXP);
+					p.setY(futureYP);
 				}
-
-				if(horizontalP == -1){
-					heros.getProjectile().setPosY((int)futureXP);
-					if(!collisionGauche(heros, futureX, futureY)){
-						heros.getProjectile().setPosY((int)futureXP);
-					}
-				}
-				if(horizontalP == 1){
-					heros.getProjectile().setPosY((int)futureXP);
-					if(!collisionDroite(heros, futureX, futureY)){
-						heros.getProjectile().setPosY((int)futureXP);
-					}
-				}
-			} else {
-				heros.getProjectile().setPosY((int)futureXP);
-				heros.getProjectile().setPosY((int)futureYP);
 			}
-			
 		}
 	}
 
+	public void toucherProjetile(){
+		float xP = lesHeros.get(0).getProjectile().getX()/LARGEUR_MUR;
+		float yP = lesHeros.get(0).getProjectile().getY()/HAUTEUR_MUR;
+		for(Monstre m : listeMonstres){
+			float xM = m.getX()/LARGEUR_MUR;
+			float yM = m.getY()/HAUTEUR_MUR;
+			boolean estToucher = false;
+			if(Math.abs(yP - yM) <= (float)1/2 && Math.abs(xP-xM) <= (float)1/2  ){
+				estToucher = true;
+			}
+
+			if(estToucher){
+				//lesHeros.get(0).setPointVie(m.getAttaque());
+				m.setPointVie(lesHeros.get(0).getAttaque()*5);
+				if(m.getPointVie() <= 0){
+					m.mortMonstres(); 
+				}
+			}
+			if(lesHeros.get(0).getPointVie() <= 0){
+				MORT_HEROS = true;
+				lesHeros.get(0).mort();
+			}
+		}
+	}
+
+	public boolean collisionProjectile(Projectile p,float futureX, float futureY) {
+		boolean check = false;
+		int xCaseFuture,yCaseFuture;
+		switch (p.getDirectionActu()) {
+		case 0:
+			xCaseFuture = (int)((futureX+13)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+18)/HAUTEUR_MUR);
+			if(tabMur[xCaseFuture][yCaseFuture] != null) {
+				check = true; 
+				p.setTouche(true);
+			}
+			break;
+		case 1:
+			xCaseFuture = (int)((futureX+23)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+20)/HAUTEUR_MUR);
+				if(tabMur[xCaseFuture][yCaseFuture] != null) {
+				check = true;
+				p.setTouche(true);
+			}
+			break;
+		case 2:
+			xCaseFuture = (int)((futureX+13)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+5)/HAUTEUR_MUR);
+			if(tabMur[xCaseFuture][yCaseFuture] != null) {
+				check = true;
+				p.setTouche(true);
+			}
+			break;
+		case 3:
+			xCaseFuture = (int)((futureX+7)/LARGEUR_MUR);
+			yCaseFuture = (int)((futureY+20)/HAUTEUR_MUR);
+			if(tabMur[xCaseFuture][yCaseFuture] != null) {
+				check = true;
+				p.setTouche(true);
+			}
+			break;
+		}
+		return check;
+	}
 
 	/**
 	 * Fonction de mise ajour d'un monstre
@@ -457,7 +511,7 @@ public class Labyrinthe implements Serializable{
 				monstre.setX(futureX);
 				monstre.setY(futureY);
 			}
-			
+
 		}
 	}
 
@@ -737,7 +791,7 @@ public class Labyrinthe implements Serializable{
 			while(!correct){
 				if(tabMur[posX][posY] == null){
 					correct = true;
-							lesObjets[posX][posY] = this.creationItem.creerItems(tabNomItem[rng], posX * LARGEUR_MUR, posY * HAUTEUR_MUR);
+					lesObjets[posX][posY] = this.creationItem.creerItems(tabNomItem[rng], posX * LARGEUR_MUR, posY * HAUTEUR_MUR);
 				}
 				else{
 					posX = (int)(Math.random() * (longueur));
@@ -864,86 +918,36 @@ public class Labyrinthe implements Serializable{
 	 * Fonction permettant au heros d'attaquer
 	 */
 	public void attaquer(){
-	lesHeros.get(0).attaquer();
-	   float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
-	   float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
-	   for(Monstre m : listeMonstres){
-		   float xM = m.getX()/LARGEUR_MUR;
-		   float yM = m.getY()/HAUTEUR_MUR;
-		   boolean estToucher = false;
-		   if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
-			   estToucher = true;
-		   }
-		   
-		   if(estToucher){
-			   lesHeros.get(0).setPointVie(m.getAttaque());
-			   m.setPointVie(lesHeros.get(0).getAttaque());
-			   if(m.getPointVie() <= 0){
-				   m.mortMonstres(); 
-			   }
-		   }
-		   if(lesHeros.get(0).getPointVie() <= 0){
-			   MORT_HEROS = true;
-			   lesHeros.get(0).mort();
-		   }
-	   }
+		lesHeros.get(0).attaquer();
+		float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
+		float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
+		for(Monstre m : listeMonstres){
+			float xM = m.getX()/LARGEUR_MUR;
+			float yM = m.getY()/HAUTEUR_MUR;
+			boolean estToucher = false;
+			if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
+				estToucher = true;
+			}
+
+			if(estToucher){
+				lesHeros.get(0).setPointVie(m.getAttaque());
+				m.setPointVie(lesHeros.get(0).getAttaque());
+				if(m.getPointVie() <= 0){
+					m.mortMonstres(); 
+				}
+			}
+			if(lesHeros.get(0).getPointVie() <= 0){
+				MORT_HEROS = true;
+				lesHeros.get(0).mort();
+			}
+		}
 
 	}
-	
-	
+
+
 	public void attaquerStop(){
 		lesHeros.get(0).attaquerStop();
 	}
-
-
-	/*public void deplacerMonstres(){
-		for(Monstre monstre :listeMonstres){
-
-			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
-			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
-
-			ArrayList<Integer> cheminValide = new ArrayList<>();
-
-			if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
-				cheminValide.add(2);
-			}
-			if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
-				cheminValide.add(1);
-			}
-			if(y-1 > 0 && tabMur[x][y-1] == null) {
-				cheminValide.add(0);
-			}
-			if (x-1 > 0 && tabMur[x-1][y] == null) {
-				cheminValide.add(3);
-			}
-			// si le monstre est static 
-			//if (!check) direction = direction(monstre);
-
-			Random r = new Random();
-			int rd =  r.nextInt(cheminValide.size());
-			int direction = cheminValide.get(rd);
-
-			switch(direction){
-			case 0:
-				monstre.setVertical(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_HAUT);
-				break;
-			case 1:
-				monstre.setHorizontal(1);
-				monstre.setDirectionActu(Personnage.AVANCER_DROITE);
-				break;
-			case 2:
-				monstre.setVertical(1);
-				monstre.setDirectionActu(Personnage.AVANCER_BAS);
-				break;
-			case 3:
-				monstre.setHorizontal(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
-			}
-
-		}
-	}*/
-
 
 	/**
 	 * Fonction qui permet au monstre de changer de direction si collision, pas de demi-tour si possible
@@ -1043,7 +1047,7 @@ public class Labyrinthe implements Serializable{
 
 		int xActu = (int)(monstre.getX() ) / LARGEUR_MUR;
 		int yActu = (int)(monstre.getY() ) / HAUTEUR_MUR;
-		
+
 		if (xAvant  != xActu || yAvant != yActu) {
 			changerDirection(monstre, delta);
 		}
@@ -1386,28 +1390,7 @@ public class Labyrinthe implements Serializable{
 	}
 
 	public void tirer() {
-	   lesHeros.get(0).tirer();
-	  // float xH = lesHeros.get(0).getX()/LARGEUR_MUR;
-	   //float yH = lesHeros.get(0).getY()/HAUTEUR_MUR;
-	   /*for(Monstre m : listeMonstres){
-		   float xM = m.getX()/LARGEUR_MUR;
-		   float yM = m.getY()/HAUTEUR_MUR;
-		   boolean estToucher = false;
-		   if(Math.abs(yH -yM) < 1 && Math.abs(xH-xM) < 1  ){
-			   estToucher = true;
-		   }
-		   
-		   if(estToucher){
-			   lesHeros.get(0).setPointVie(m.getAttaque());
-			   m.setPointVie(lesHeros.get(0).getAttaque());
-			   if(m.getPointVie() <= 0){
-				   m.mortMonstres(); 
-			   }
-		   }
-		   if(lesHeros.get(0).getPointVie() <= 0){
-			   MORT_HEROS = true;
-			   lesHeros.get(0).mort();
-		   }
-	   }	*/
+		lesHeros.get(0).tirer();
+
 	}
 }

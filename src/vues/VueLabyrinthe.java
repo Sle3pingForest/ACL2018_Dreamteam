@@ -87,7 +87,7 @@ public class VueLabyrinthe implements Serializable{
             }
         }
         
-        this.vueProjectille = new VueProjectile(this.lab.getHeros(0).getProjectile());
+        this.vueProjectille = new VueProjectile(this.lab.getHeros(0).getLprojectile());
     }
 
     public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){

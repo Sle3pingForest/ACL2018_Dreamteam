@@ -17,6 +17,7 @@ public class Heros extends Personnage {
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
     private Projectile projectile;
+    private ArrayList<Projectile> lprojectile;
 
 
     protected int tailleInventaire = 10;
@@ -31,6 +32,7 @@ public class Heros extends Personnage {
     	inventaire = new ArrayList<Item>();
     	tailleInventaire = 10;
     	this.projectile = new Projectile(x,y);
+    	lprojectile = new ArrayList<>();
     }
     
     public void charge(Heros h) {
@@ -85,8 +87,21 @@ public class Heros extends Personnage {
 	}
 
 	 public void tirer(){
-		 this.projectile.setPosX(this.x);
-		 this.projectile.setPosY(this.y);
+		 this.lprojectile.add(new Projectile(this.x, this.y));
+		 if(directionActu == BAS){
+	   		 	this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_BAS);
+	    	}
+	    	else if(directionActu == HAUT){
+	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_HAUT);
+	    	}
+	    	else if(directionActu == GAUCHE){
+	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_GAUCHE);
+	    	}
+	    	else if(directionActu == DROITE){
+	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_DROITE);
+	    	}
+		 /*this.projectile.setX(this.x);
+		 this.projectile.setY(this.y);
 		 this.projectile.setxInit(this.x);
 		 this.projectile.setyInit(this.y);
 	    	if(directionActu == BAS){
@@ -102,9 +117,17 @@ public class Heros extends Personnage {
 	    	else if(directionActu == DROITE){
 		   		 this.projectile.deplacer(ATTAQUER_DROITE);
 	    	}
-	    	
+	    	*/
 	 }
 	
+	public ArrayList<Projectile> getLprojectile() {
+		return lprojectile;
+	}
+
+	public void setLprojectile(ArrayList<Projectile> lprojectile) {
+		this.lprojectile = lprojectile;
+	}
+
 	public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor")) {
             if(i.isRamasser() == false){
