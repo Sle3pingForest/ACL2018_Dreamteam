@@ -63,7 +63,7 @@ public class Jeu extends BasicGameState {
         Song.jouerBackground();
         float x = labyModel.getHeros(0).getX();
         float y = labyModel.getHeros(0).getY();
-    	hud = new HudBarreDeVie();
+    	hud = new HudBarreDeVie(labyModel);
     	hudVictory = new HudVictoire();
     	hudVictory.init(x,y);
         this.hud.init(x,y);

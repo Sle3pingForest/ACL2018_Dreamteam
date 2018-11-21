@@ -1,16 +1,19 @@
 package model.Item;
 
+import model.personnages.Heros;
+
 public abstract class Item {
 
     private int posX;
     private int posY;
-
     private boolean ramasser;
+    private boolean ramassable;
 
-    public Item(int posX,int posY){
+    public Item(int posX, int posY){
         this.posX = posX;
         this.posY = posY;
         ramasser = false;
+        ramassable = true;
     }
 
     public int getPosX() {
@@ -35,5 +38,17 @@ public abstract class Item {
 
     public void ramasser(){
         ramasser = true;
+    }
+
+    public boolean isRamassable() {
+        return ramassable;
+    }
+
+    public void setRamassable(boolean ramassable) {
+        this.ramassable = ramassable;
+    }
+
+    public void blesser(Heros heros){
+        heros.setPointVie(heros.getPointVie()-1);
     }
 }

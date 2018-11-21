@@ -2,6 +2,8 @@ package model.personnages;
 
 import model.Item.Item;
 import model.Item.Projectile;
+import model.Item.Piege;
+import model.Item.Ramassable;
 import model.Item.Tresor;
 import model.mur.Mur;
 
@@ -18,6 +20,8 @@ public class Heros extends Personnage {
     private ArrayList<Item> inventaire;
     private Projectile projectile;
     private ArrayList<Projectile> lprojectile;
+
+    private int pointVie;
 
 
     protected int tailleInventaire = 10;
@@ -128,12 +132,30 @@ public class Heros extends Personnage {
 		this.lprojectile = lprojectile;
 	}
 
-	public void ajouterAInventaire(Item i){
+
+    public int getPointVie() {
+        return pointVie;
+    }
+
+    public void setPointVie(int pointVie) {
+        this.pointVie = pointVie;
+    }
+
+    public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor")) {
-            if(i.isRamasser() == false){
-                if (inventaire.size() < tailleInventaire){
+            if(!i.isRamasser() && i.isRamassable()) {
+                if (inventaire.size() < tailleInventaire) {
                     inventaire.add(i);
                     i.ramasser();
+                    System.out.println(inventaire);
+                }
+            }
+            else if(i.getClass().getName().equals("model.Item.Piege")){
+                if(!i.isRamasser()){
+                    System.out.println("Avant" + this.pointVie);
+                    i.blesser(this);
+                    i.ramasser();
+                    System.out.println("Après" + this.pointVie);
                 }
             }
         }else{
