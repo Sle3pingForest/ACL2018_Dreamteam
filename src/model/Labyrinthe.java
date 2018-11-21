@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import model.Item.Epee;
 import model.Item.Item;
 import model.Item.ItemFactory;
 import model.Item.Tresor;
@@ -33,7 +32,7 @@ public class Labyrinthe implements Serializable{
 
 	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
 	private Item [][]lesObjets;
-	private int [] tabNomItem = {ItemFactory.EPEE};
+	private int [] tabNomItem = {ItemFactory.EPEE, ItemFactory.PIEGE};
 	private ItemFactory creationItem;
 	private int longueur , hauteur;
 	private Mur[][] tabMur ;
@@ -44,6 +43,8 @@ public class Labyrinthe implements Serializable{
 	private float multiplicateurProba = 1.2f;//Il pourrait varier aleatoirement
 	private boolean tresorTrouver = false;
 	private final static int TAILLE_MAX_COULOIR = 6;
+
+	private Heros link;
 
 
 	private Random random = new Random();
@@ -100,7 +101,8 @@ public class Labyrinthe implements Serializable{
 		int xDebut = random.nextInt(longueur-2)+1;
 		int yDebut = random.nextInt(hauteur-2)+1;
 
-		lesHeros.add(new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link"));
+		link = new Heros(xDebut*LARGEUR_MUR,yDebut*HAUTEUR_MUR, "Link");
+		lesHeros.add(link);
 		
 
 		ArrayList<Mur> chemin = new ArrayList<Mur>();
@@ -506,7 +508,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
@@ -515,10 +516,8 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
-
 
 		return false;
 	}
@@ -550,7 +549,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
@@ -559,7 +557,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 
@@ -591,7 +588,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 		return false;
@@ -621,7 +617,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 		xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/LARGEUR_MUR);
@@ -630,7 +625,6 @@ public class Labyrinthe implements Serializable{
 			return true;
 		}
 		if(lesObjets[xCaseFuture][yCaseFuture] != null && heros instanceof Heros){
-			lesObjets[xCaseFuture][yCaseFuture].ramasser();
 			heros.ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
 		}
 
@@ -1333,5 +1327,9 @@ public class Labyrinthe implements Serializable{
 
 	public int getHauteurLaby(){
 		return hauteur*HAUTEUR_MUR;
+	}
+
+	public Heros getLink() {
+		return link;
 	}
 }
