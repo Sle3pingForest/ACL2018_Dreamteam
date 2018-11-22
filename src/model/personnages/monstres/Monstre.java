@@ -28,6 +28,8 @@ public abstract class Monstre extends Personnage {
 
 
 
+	protected int pixelParcouruDepuisDernierChangement = 0 ;
+
 
 	public Monstre(int x, int y){
 		super(x,y);
