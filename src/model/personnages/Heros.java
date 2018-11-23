@@ -130,27 +130,13 @@ public class Heros extends Personnage {
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
 
-        boxCollider.setX(futureX+DECALAGE_LARGEUR);
         boxCollider.setY(futureY+DECALAGE_HAUTEUR);
+        boxCollider.setX(futureX+DECALAGE_LARGEUR);
+
 
         if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
             if (getCollision()) {
-                if(vertical == -1){
-                    if(!collisionVetical(lab, futureX, futureY)){
-                        setY(futureY);
-                    }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
-                    }
-                }
-                if(vertical == 1){
-                    if(!collisionVetical( lab,futureX, futureY+HAUTEUR)){
-                        setY(futureY);
-                    }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
-                    }
-                }
+
 
                 if(horizontal == 1){
                     if(!collisionHorizontale(lab, x+LARGEUR, y)){
@@ -161,7 +147,7 @@ public class Heros extends Personnage {
                     }
                 }
                 if(horizontal == -1){
-                    if(!collisionHorizontale(lab, futureX, futureY+HAUTEUR)){
+                    if(!collisionHorizontale(lab, futureX, futureY)){
                         setX(futureX);
                     }else{
                         boxCollider.setX(x+DECALAGE_LARGEUR);
@@ -173,9 +159,26 @@ public class Heros extends Personnage {
 
             }
 
+
+
             if(futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
                 if (getCollision()) {
-
+                    if(vertical == -1){
+                        if(!collisionVetical(lab, futureX, futureY)){
+                            setY(futureY);
+                        }else{
+                            boxCollider.setX(x+DECALAGE_LARGEUR);
+                            boxCollider.setY(y+DECALAGE_HAUTEUR);
+                        }
+                    }
+                    if(vertical == 1){
+                        if(!collisionVetical( lab,futureX, futureY+HAUTEUR)){
+                            setY(futureY);
+                        }else{
+                            boxCollider.setX(x+DECALAGE_LARGEUR);
+                            boxCollider.setY(y+DECALAGE_HAUTEUR);
+                        }
+                    }
                 }else {
                     setY(futureY);
                 }
