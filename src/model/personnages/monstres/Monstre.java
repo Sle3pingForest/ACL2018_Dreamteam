@@ -3,15 +3,11 @@ package model.personnages.monstres;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import vues.VueHeros;
-import vues.VueLabyrinthe;
+import org.newdawn.slick.geom.Rectangle;
 import model.Labyrinthe;
-import model.Item.Item;
 import model.mur.Mur;
-import model.personnages.Heros;
 import model.personnages.Personnage;
 
 public abstract class Monstre extends Personnage {
@@ -36,6 +32,7 @@ public abstract class Monstre extends Personnage {
 		posXPrecedent = x;
 		posYprecedent = y;
 		goBas();
+		boxCollider = new Rectangle(0,0,0,0);
 	}
 
 	public void directionAleatoire(){
@@ -81,7 +78,7 @@ public abstract class Monstre extends Personnage {
 			if (getCollision()) {
 				intersection(lab,delta);
 				if(vertical == -1){
-					if(!collisionHaut(lab, futureX, futureY)){
+					if(!collisionVetical(lab, futureX, futureY)){
 						setPosYprecedent(y);
 						setY(futureY);
 					}else
@@ -94,7 +91,7 @@ public abstract class Monstre extends Personnage {
 					}
 				}
 				if(vertical == 1){
-					if(!collisionBas( lab,futureX, futureY)){
+					if(!collisionVetical( lab,futureX, futureY)){
 						setPosYprecedent(y);
 						setY(futureY);
 					}else
@@ -105,7 +102,7 @@ public abstract class Monstre extends Personnage {
 				}
 
 				if(horizontal == -1){
-					if(!collisionGauche(lab, futureX, futureY)){
+					if(!collisionHorizontale(lab, futureX, futureY)){
 						setPosXPrecedent(x);
 						setX(futureX);
 					}else
@@ -115,7 +112,7 @@ public abstract class Monstre extends Personnage {
 					}
 				}
 				if(horizontal == 1){
-					if(!collisionDroite(lab, futureX, futureY)){
+					if(!collisionHorizontale(lab, futureX, futureY)){
 						setPosXPrecedent(x);
 						setX(futureX);
 					}else
@@ -165,22 +162,22 @@ public abstract class Monstre extends Personnage {
 
 		futureX = fx;
 		futureY = fy + vitesseActu;
-		if(y+1 < hauteur-1 && tabMur[x][y+1] == null && !collisionBas(lab, futureX, futureY)) {
+		if(y+1 < hauteur-1 && tabMur[x][y+1] == null && !collisionVetical(lab, futureX, futureY)) {
 			cheminValide.add(0);
 		}
 		futureX = fx + vitesseActu;
 		futureY = fy;
-		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionDroite(lab, futureX, futureY) ) {
+		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionHorizontale(lab, futureX, futureY) ) {
 			cheminValide.add(1);
 		}
 		futureX = fx;
 		futureY = fy - vitesseActu;
-		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionHaut(lab, futureX, futureY)  ) {
+		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionVetical(lab, futureX, futureY)  ) {
 			cheminValide.add(2);
 		}
 		futureX = fx - vitesseActu;
 		futureY = fy;
-		if (x-1 > 0 && tabMur[x-1][y] == null && !collisionGauche(lab, futureX, futureY)) {
+		if (x-1 > 0 && tabMur[x-1][y] == null && !collisionHorizontale(lab, futureX, futureY)) {
 			cheminValide.add(3);
 		}
 

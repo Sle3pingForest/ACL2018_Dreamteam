@@ -230,7 +230,7 @@ public class Labyrinthe implements Serializable{
 			i--;
 		}
 		i = x+1;
-		while(i < longueur-1 && tabMur[i][y] == null){
+		while(i < longueur-1&& tabMur[i][y] == null){
 			tailleCouloire++;
 			if(tailleCouloire > TAILLE_MAX_COULOIR){
 				return  false;

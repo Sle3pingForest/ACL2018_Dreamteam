@@ -1,24 +1,24 @@
 package model.personnages;
 
 import model.Item.Item;
-import model.Item.Piege;
-import model.Item.Ramassable;
 import model.Item.Tresor;
 import model.Labyrinthe;
-import model.mur.Mur;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.personnages.monstres.Monstre;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 
 public class Heros extends Personnage {
 
     private Tresor tresorDeMap = null;
     private ArrayList<Item> inventaire;
+    private final static int LARGEUR=21;
+    private final static int HAUTEUR=23;
+    private final static  int DECALAGE_LARGEUR=5;
+    private final static  int DECALAGE_HAUTEUR=20;
 
     private int pointVie;
 
@@ -34,6 +34,7 @@ public class Heros extends Personnage {
     	this.defense = 0;
     	inventaire = new ArrayList<Item>();
     	tailleInventaire = 10;
+        boxCollider = new Rectangle(x+DECALAGE_LARGEUR,y+DECALAGE_HAUTEUR,LARGEUR-DECALAGE_LARGEUR,HAUTEUR-DECALAGE_HAUTEUR);
     }
     
     public void charge(Heros h) {
@@ -128,34 +129,61 @@ public class Heros extends Personnage {
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
-        if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR && futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
+
+        boxCollider.setX(futureX+DECALAGE_LARGEUR);
+        boxCollider.setY(futureY+DECALAGE_HAUTEUR);
+
+        if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
             if (getCollision()) {
                 if(vertical == -1){
-                    if(!collisionHaut(lab, futureX, futureY)){
+                    if(!collisionVetical(lab, futureX, futureY)){
                         setY(futureY);
+                    }else{
+                        boxCollider.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setY(y+DECALAGE_HAUTEUR);
                     }
                 }
                 if(vertical == 1){
-                    if(!collisionBas( lab,futureX, futureY)){
+                    if(!collisionVetical( lab,futureX, futureY+HAUTEUR)){
                         setY(futureY);
+                    }else{
+                        boxCollider.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setY(y+DECALAGE_HAUTEUR);
                     }
                 }
 
-                if(horizontal == -1){
-                    if(!collisionGauche(lab, futureX, futureY)){
+                if(horizontal == 1){
+                    if(!collisionHorizontale(lab, x+LARGEUR, y)){
                         setX(futureX);
+                    }else{
+                        boxCollider.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setY(y+DECALAGE_HAUTEUR);
                     }
                 }
-                if(horizontal == 1){
-                    if(!collisionDroite(lab, futureX, futureY)){
+                if(horizontal == -1){
+                    if(!collisionHorizontale(lab, futureX, futureY+HAUTEUR)){
                         setX(futureX);
+                    }else{
+                        boxCollider.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setY(y+DECALAGE_HAUTEUR);
                     }
                 }
             } else {
                 setX(futureX);
-                setY(futureY);
+
+            }
+
+            if(futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
+                if (getCollision()) {
+
+                }else {
+                    setY(futureY);
+                }
             }
         }
+
+
+
 
     }
 

@@ -4,6 +4,7 @@ import model.Item.Item;
 import model.Labyrinthe;
 import model.mur.Mur;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 import java.io.Serializable;
 import java.util.Observable;
@@ -43,6 +44,8 @@ public abstract class Personnage extends Observable implements Serializable{
 
     public final static  float VITESSE = 0.2f;
     public final static int LARGEUR_SPRITE = 30;
+
+    protected Rectangle boxCollider;
 
 
 
@@ -282,82 +285,56 @@ public abstract class Personnage extends Observable implements Serializable{
     /**
      * Verifie les collision entre la futur position du personnage et un possible mur situé au dessus de lui
      * @param lab labyrinthe
-     * @param futureX
-     * @param futureY
+     * @param x
+     * @param y
      * @return boolean
-     * @throws SlickException
      */
-    protected boolean collisionHaut(Labyrinthe lab,float futureX,float futureY) throws SlickException {
+    protected boolean collisionVetical(Labyrinthe lab, float x, float y) {
 
-        int xCaseFuture = (int)((futureX+6)/ Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
+        int xCaseFuture = (int)((x)/ Labyrinthe.LARGEUR_MUR);
+        int yCaseFuture = (int)((y)/Labyrinthe.HAUTEUR_MUR);
         Mur[][] tabMur = lab.getTabMur();
         Item[][] lesObjets = lab.getLesObjets();
 
-        if(horizontal == -1){
-            xCaseFuture = (int)((futureX+6-2)/Labyrinthe.LARGEUR_MUR);
-        }
-        if(horizontal == 1){
-            xCaseFuture = (int)((futureX+6+2)/Labyrinthe.LARGEUR_MUR);
-        }
-
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
-        xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
-
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
-
-        return false;
-    }
-
-    /**
-     * Verifie les collision entre la futur position du personnage et un possible mur situé au dessous de lui
-     * @param lab labyrinthe
-     * @param futureX
-     * @param futureY
-     * @return boolean
-     * @throws SlickException
-     */
-    protected boolean collisionBas(Labyrinthe lab, float futureX, float futureY) throws SlickException {
-
-        Mur[][] tabMur = lab.getTabMur();
-        Item[][] lesObjets = lab.getLesObjets();
-
-
-        int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futureY-6)/Labyrinthe.HAUTEUR_MUR)+1;
-
-        if(horizontal == -1){
-            xCaseFuture = (int)((futureX+6+2)/Labyrinthe.LARGEUR_MUR);
-        }
-        if(horizontal == 1){
-            xCaseFuture = (int)((futureX+6-2)/Labyrinthe.LARGEUR_MUR);
+        Rectangle mur1 = null;
+        Rectangle mur2 = null;
+        Rectangle mur3 = null;
+        if(tabMur[xCaseFuture-1][yCaseFuture] != null){
+            mur1 = tabMur[xCaseFuture-1][yCaseFuture].getBoxCollider();
         }
 
         if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
-        xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
-
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
         }
 
+        if(tabMur[xCaseFuture+1][yCaseFuture] != null){
+            mur3 = tabMur[xCaseFuture+1][yCaseFuture].getBoxCollider();
+        }
+
+        if(mur1 != null){
+            if(boxCollider.intersects(mur1)){
+                return true;
+            }
+        }
+        if(mur2 != null){
+            if(boxCollider.intersects(mur2)){
+                return true;
+            }
+        }
+        if(mur3 != null){
+            if(boxCollider.intersects(mur3)){
+                return true;
+            }
+        }
+
+        /*if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        }
+
+
+        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        }*/
 
         return false;
     }
@@ -365,72 +342,55 @@ public abstract class Personnage extends Observable implements Serializable{
     /**
      * Verifie les collision entre la futur position du personnage et un possible mur situé à gauche de lui
      * @param lab labyrinthe
-     * @param futureX
-     * @param futureY
+     * @param x
+     * @param y
      * @return boolean
-     * @throws SlickException
      */
-    protected boolean collisionGauche(Labyrinthe lab,float futureX,float futureY) throws SlickException {
+    protected boolean collisionHorizontale(Labyrinthe lab,float x,float y){
 
+        int xCaseFuture = (int)((x)/ Labyrinthe.LARGEUR_MUR);
+        int yCaseFuture = (int)((y)/Labyrinthe.HAUTEUR_MUR);
         Mur[][] tabMur = lab.getTabMur();
         Item[][] lesObjets = lab.getLesObjets();
 
+        Rectangle mur1 = null;
+        Rectangle mur2 = null;
+        Rectangle mur3 = null;
 
-        int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
 
-        if(vertical == -1){
-            xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
-            yCaseFuture = (int)((futureY+2+19)/Labyrinthe.HAUTEUR_MUR);
+
+        if (tabMur[xCaseFuture][yCaseFuture - 1] != null) {
+            mur1 = tabMur[xCaseFuture][yCaseFuture - 1].getBoxCollider();
         }
 
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
+        if (tabMur[xCaseFuture][yCaseFuture] != null) {
+            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
         }
+
+        if (tabMur[xCaseFuture][yCaseFuture + 1] != null) {
+            mur3 = tabMur[xCaseFuture][yCaseFuture + 1].getBoxCollider();
+        }
+
+        if(mur1 != null){
+            if(boxCollider.intersects(mur1)){
+                return true;
+            }
+        }
+        if(mur2 != null){
+            if(boxCollider.intersects(mur2)){
+                return true;
+            }
+        }
+        if(mur3 != null){
+            if(boxCollider.intersects(mur3)){
+                return true;
+            }
+        }
+
+        /*
         if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
             ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
+        }*/
         return false;
     }
-
-    /**
-     * Verifie les collision entre la futur position du personnage et un possible mur situé à droite de lui
-     * @param lab labyrinthe
-     * @param futureX
-     * @param futureY
-     * @return boolean
-     * @throws SlickException
-     */
-    protected boolean collisionDroite(Labyrinthe lab,float futureX,float futureY) throws SlickException {
-
-
-        Mur[][] tabMur = lab.getTabMur();
-        Item[][] lesObjets = lab.getLesObjets();
-
-        int xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futureY+19)/Labyrinthe.HAUTEUR_MUR);
-
-        if(vertical == -1){
-            xCaseFuture = (int)((futureX+6)/Labyrinthe.LARGEUR_MUR);
-            yCaseFuture = (int)((futureY+2+19)/Labyrinthe.HAUTEUR_MUR);
-        }
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
-        xCaseFuture = (int)((futureX-6 + Heros.LARGEUR_SPRITE)/Labyrinthe.LARGEUR_MUR);
-
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            return true;
-        }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }
-
-
-        return false;
-    }
-
 }
