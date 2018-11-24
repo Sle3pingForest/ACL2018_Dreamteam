@@ -1,4 +1,6 @@
 package vues.VueGenerateur;
 
-public class VueCreaLaby {
+import javax.swing.*;
+
+public class VueCreaLaby extends JPanel {
 }
