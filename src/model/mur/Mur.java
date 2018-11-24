@@ -29,5 +29,15 @@ public class Mur implements Serializable{
         return boxCollider;
     }
 
+    public void setPosX(int x){
+        this.posX = x;
+        boxCollider.setX(x*LARGEUR);
+    }
+
+    public void setPosY(int y){
+        this.posY = y;
+        boxCollider.setY(y*HAUTEUR);
+    }
+
 
 }
