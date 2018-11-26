@@ -219,7 +219,7 @@ public class Heros extends Personnage {
             }
         }
 
-        /*toucherProjetile(lab);
+        toucherProjetile(lab);
 
 		float vitesseProjectille = delta*Projectile.VITESSE;
 		ArrayList<Projectile> lp = this.getLprojectile();
@@ -254,7 +254,7 @@ public class Heros extends Personnage {
 					p.setY(futureYP);
 				}
 			}
-		}*/
+		}
 
 
     }
