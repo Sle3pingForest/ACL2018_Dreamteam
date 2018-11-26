@@ -98,16 +98,18 @@ public class Heros extends Personnage {
 
 	 public void tirer(Labyrinthe lab){
 		 this.lprojectile.add(new Projectile(this.x, this.y));
-		 if(directionActu == BAS){
+		 int direction = 0;
+		 if (directionActu > 3) direction = directionActu%4;
+		 if(direction == BAS){
 	   		 	this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_BAS);
 	    	}
-	    	else if(directionActu == HAUT){
+	    	else if(direction == HAUT){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_HAUT);
 	    	}
-	    	else if(directionActu == GAUCHE){
+	    	else if(direction == GAUCHE){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_GAUCHE);
 	    	}
-	    	else if(directionActu == DROITE){
+	    	else if(direction == DROITE){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_DROITE);
 	    	}
 	 }
