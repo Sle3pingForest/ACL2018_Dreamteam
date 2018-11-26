@@ -15,7 +15,7 @@ public class VueTresor extends VueItem {
         largeur_Sprite = 25;
         chargerCoffreFermer(CHEMIN_TRESOR);
         chargerCoffreQuiSOuvre(CHEMIN_TRESOR);
-        chargerCoffreOuvere(CHEMIN_TRESOR);
+        chargerCoffreOuver(CHEMIN_TRESOR);
     }
 
     private void chargerCoffreFermer(String chemin) throws SlickException {
@@ -34,7 +34,7 @@ public class VueTresor extends VueItem {
         this.animations[1] = animation;
     }
 
-    private void chargerCoffreOuvere(String chemin) throws SlickException {
+    private void chargerCoffreOuver(String chemin) throws SlickException {
         SpriteSheet spriteSheet = new SpriteSheet(chemin, largeur_Sprite, 30);
         Animation animation = new Animation();
         animation.addFrame(spriteSheet.getSprite(2, 0), 50);

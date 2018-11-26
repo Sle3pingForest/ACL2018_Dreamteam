@@ -1,5 +1,10 @@
+
 /*package test;
 
+=======
+package test;
+/*
+>>>>>>> d065c35f96973dcc1b78eded7ac0e3118ab33cf0
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -70,5 +75,6 @@ public class HerosTest {
 		fail("10 objets ne doit pas pouvoir reduire linventaire a une taille inferieure");
 		
 	}
+<<<<<<< HEAD
 
 }*/

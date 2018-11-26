@@ -122,5 +122,10 @@ public class VueDragon extends VueMonstres {
 		this.animations[Monstre.MORT] = animation;
 	}
 
+	public static Image getImageGenerateur() throws SlickException {
+		SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_DRAGON, LARGEUR_SPRITES, HAUTEUR_SPRITES);
+		return spriteSheet.getSprite(0, 0);
+	}
+
 
 }
