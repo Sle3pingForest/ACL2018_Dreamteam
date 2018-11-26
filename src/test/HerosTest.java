@@ -1,6 +1,8 @@
 package test;
-
 import static org.junit.Assert.*;
+
+import model.Item.Piege;
+import model.personnages.Heros;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,8 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import model.Item.Piege;
-import model.personnages.Heros;
 
 public class HerosTest {
 
@@ -44,31 +44,20 @@ public class HerosTest {
 			h.ajouterAInventaire(new Piege(1,1));
 		}
 		
-		assertEquals(h.getTailleInventaire(), 10);
+		assertEquals(10, h.getTailleInventaire());
+		
 		
 		h.setTailleInventaire(6);
-		assertEquals(h.getTailleInventaire(), 6);
+		assertEquals(6, h.getTailleInventaire());
 		
-		
-	}
-	
-	@Test
-	public void setTailleInventaireTest() {
-		Heros h = new Heros(1, 1, "Manger");
-		for (int i = 0; i < 10; i++) {
-			h.ajouterAInventaire(new Piege(1,1));
-		}
+		// set taille inferieure au nombre dobjet dans linventaire
 		h.setTailleInventaire(2);
-		fail("10 objets ne doit pas pouvoir reduire linventaire a une taille inferieure");
+		assertEquals(10, h.getTailleInventaire());
 		
+		// set taille inventaire avec un negatif
+
+		h.setTailleInventaire(-2);
+		assertEquals(6, h.getTailleInventaire());
 	}
 	
-	@Test
-	public void setTailleInventairNegatifeTest() {
-		Heros h = new Heros(1, 1, "Manger");
-		h.setTailleInventaire(-2);
-		fail("10 objets ne doit pas pouvoir reduire linventaire a une taille inferieure");
-		
-	}
-
 }

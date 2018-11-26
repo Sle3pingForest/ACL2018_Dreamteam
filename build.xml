@@ -2,20 +2,23 @@
 <!-- WARNING: Eclipse auto-generated file.
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
+              directory with the processing instruction <?eclipse.ant.import?
+              ../../../../../../usr/share/eclipse/dropins/jdt/plugins/org.junit_4.8.2.dist
+              ../../../../../../usr/share/eclipse/dropins/jdt/plugins
+              >
               as the first entry and export the buildfile again. --><project basedir="." default="build" name="ACL2018_Dreamteam">
     <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../../../usr/lib/eclipse"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.8"/>
-    <property name="source" value="1.8"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
     <path id="JUnit 4.libraryclasspath">
-        <pathelement location="C:/Users/Giang/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
-        <pathelement location="C:/Users/Giang/.p2/pool/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+        <pathelement location="lib/junit.jar"/>
+        <pathelement location="lib/org.hamcrest.core_1.3.0.jar"/>
     </path>
     <path id="ACL2018_Dreamteam.classpath">
         <pathelement location="bin"/>
-        <pathelement location="Jeu_ACL_v1.1.jar"/>
         <pathelement location="lib/jinput.jar"/>
         <pathelement location="lib/lwjgl.jar"/>
         <pathelement location="lib/slick.jar"/>
@@ -27,7 +30,6 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
-                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -59,23 +61,28 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+    <target name="Main">
+        <java classname="Main" failonerror="true" fork="yes">
+            <classpath refid="ACL2018_Dreamteam.classpath"/>
+        </java>
+    </target>
+    <target name="StateGame">
+        <java classname="StateGame" failonerror="true" fork="yes">
+            <jvmarg line="-Djava.library.path=lib/natives"/>
+            <classpath refid="ACL2018_Dreamteam.classpath"/>
+        </java>
+    </target>
     <target name="HerosTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
             <test name="test.HerosTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
             <classpath refid="ACL2018_Dreamteam.classpath"/>
         </junit>
     </target>
     <target name="Jeu">
         <java classname="Jeu" failonerror="true" fork="yes">
             <jvmarg line="-Djava.library.path=lib/natives"/>
-            <classpath refid="ACL2018_Dreamteam.classpath"/>
-        </java>
-    </target>
-    <target name="Labyrinthe">
-        <java classname="Labyrinthe" failonerror="true" fork="yes">
             <classpath refid="ACL2018_Dreamteam.classpath"/>
         </java>
     </target>
@@ -87,4 +94,5 @@
             <report format="frames" todir="${junit.output.dir}"/>
         </junitreport>
     </target>
+
 </project>

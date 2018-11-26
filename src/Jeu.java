@@ -55,7 +55,7 @@ public class Jeu extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
         this.game = game;
-        labyModel =  new Labyrinthe(30,30, 20);
+        labyModel =  new Labyrinthe(50,50, 10);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
@@ -63,7 +63,7 @@ public class Jeu extends BasicGameState {
         Song.jouerBackground();
         float x = labyModel.getHeros(0).getX();
         float y = labyModel.getHeros(0).getY();
-    	hud = new HudBarreDeVie();
+    	hud = new HudBarreDeVie(labyModel);
     	hudVictory = new HudVictoire();
     	hudVictory.init(x,y);
         this.hud.init(x,y);
@@ -115,6 +115,7 @@ public class Jeu extends BasicGameState {
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
             case Input.KEY_SPACE: labyModel.attaquer() ; break;
+            case Input.KEY_P: labyModel.tirer() ; break;
             case Input.KEY_B:	try {
 				save();
 				System.out.println("SAVE");

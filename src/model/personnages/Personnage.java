@@ -1,6 +1,10 @@
 package model.personnages;
 
 import model.Item.Item;
+import model.Labyrinthe;
+import model.mur.Mur;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 import java.io.Serializable;
 import java.util.Observable;
@@ -40,6 +44,8 @@ public abstract class Personnage extends Observable implements Serializable{
 
     public final static  float VITESSE = 0.2f;
     public final static int LARGEUR_SPRITE = 30;
+
+    protected Rectangle boxCollider;
 
 
 
@@ -147,7 +153,7 @@ public abstract class Personnage extends Observable implements Serializable{
         }
     }
     
-    public void attaquer(){
+    protected void attaquer(){
     	if(directionActu == BAS){
     		directionActu = ATTAQUER_BAS;
     	}
@@ -162,6 +168,12 @@ public abstract class Personnage extends Observable implements Serializable{
     		directionActu = ATTAQUER_DROITE;
     	}
     }
+    
+   
+  public void tirer(){
+    	
+    }
+
     
     public void mort(){
     
@@ -276,4 +288,94 @@ public abstract class Personnage extends Observable implements Serializable{
     	}
     }
 
+    /**
+     * Verifie les collision entre la futur position du personnage et un possible mur situé au dessus de lui
+     * @param lab labyrinthe
+     * @param futurX
+     * @param futurY
+     * @return boolean
+     */
+    protected boolean collisionVetical(Labyrinthe lab, float futurX, float futurY) {
+
+        int xCaseFuture = (int)((futurX)/ Labyrinthe.LARGEUR_MUR);
+        int yCaseFuture = (int)((futurY)/Labyrinthe.HAUTEUR_MUR);
+        Mur[][] tabMur = lab.getTabMur();
+        Item[][] lesObjets = lab.getLesObjets();
+
+        Rectangle mur1 = null;
+        Rectangle mur2 = null;
+
+        if(tabMur[xCaseFuture+1][yCaseFuture] != null){
+            mur1 = tabMur[xCaseFuture+1][yCaseFuture].getBoxCollider();
+        }
+
+        if(tabMur[xCaseFuture][yCaseFuture] != null){
+            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
+        }
+
+        if(mur1 != null){
+            if(boxCollider.intersects(mur1)){
+                return true;
+            }
+        }
+        if(mur2 != null){
+            if(boxCollider.intersects(mur2)){
+                return true;
+            }
+        }
+
+        /*if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        }
+
+
+        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        }*/
+
+        return false;
+    }
+
+    /**
+     * Verifie les collision entre la futur position du personnage et un possible mur situé à gauche de lui
+     * @param lab labyrinthe
+     * @param futurX
+     * @param futurY
+     * @return boolean
+     */
+    protected boolean collisionHorizontale(Labyrinthe lab,float futurX,float futurY){
+
+        int xCaseFuture = (int)((futurX)/ Labyrinthe.LARGEUR_MUR);
+        int yCaseFuture = (int)((futurY)/Labyrinthe.HAUTEUR_MUR);
+        Mur[][] tabMur = lab.getTabMur();
+        Item[][] lesObjets = lab.getLesObjets();
+
+        Rectangle mur1 = null;
+        Rectangle mur2 = null;
+
+        if (tabMur[xCaseFuture][yCaseFuture + 1] != null) {
+            mur1 = tabMur[xCaseFuture][yCaseFuture + 1].getBoxCollider();
+        }
+
+        if (tabMur[xCaseFuture][yCaseFuture] != null) {
+            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
+        }
+
+        if(mur1 != null){
+            if(boxCollider.intersects(mur1)){
+                return true;
+            }
+        }
+        if(mur2 != null){
+            if(boxCollider.intersects(mur2)){
+                return true;
+            }
+        }
+
+        /*
+        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        }*/
+        return false;
+    }
 }

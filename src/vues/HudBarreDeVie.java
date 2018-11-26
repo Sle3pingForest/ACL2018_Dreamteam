@@ -7,6 +7,12 @@ import org.newdawn.slick.SlickException;
 import model.Labyrinthe;
 
 public class HudBarreDeVie extends Hud{
+	private Labyrinthe laby;
+
+
+	public HudBarreDeVie(Labyrinthe lyb){
+		this.laby = lyb;
+	}
 
 	@Override
 	public void init(float x, float y) throws SlickException {
@@ -18,9 +24,13 @@ public class HudBarreDeVie extends Hud{
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		g.drawImage(this.playerbars,(1*Labyrinthe.HAUTEUR_MUR),(1*Labyrinthe.HAUTEUR_MUR));
-	
-	}
 
+		int taille = laby.getLink().getPointVie();
+		x = Labyrinthe.HAUTEUR_MUR;
+		y = Labyrinthe.HAUTEUR_MUR;
+		for (int i=1; i <= taille ; i++) {
+			g.drawImage(this.playerbars, x, y);
+			x+=18;
+		}
+	}
 }
