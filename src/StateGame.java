@@ -5,16 +5,18 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import vues.VueGenerateur.VueGenerateur;
 
 public class StateGame extends StateBasedGame {
     
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static int width = (int) screenSize.getWidth();
     private static int height = (int) screenSize.getHeight();
-    
+
     
     public static void main(String[] args) throws SlickException {
 	      new AppGameContainer(new StateGame(), width, height, true).start();
+        //new VueGenerateur();
 	}
     
     

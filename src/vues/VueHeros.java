@@ -343,6 +343,11 @@ public class VueHeros implements Serializable{
     	return heros.getX() + "  " + heros.getY();
     }
 
+    public static Image getImageGenerateur() throws SlickException {
+        SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_BLEU, 30, 30);
+        return spriteSheet.getSprite(0, 0);
+    }
+
 
     
     
