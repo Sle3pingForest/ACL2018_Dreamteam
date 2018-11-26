@@ -284,14 +284,16 @@ public class Labyrinthe implements Serializable{
 	public void attaquer(){
 		getHeros(0).attaquer(this);
 	}
+	
+	public void tirer(){
+		getHeros(0).tirer(this);
+	}
 
 	/*private ArrayList<Integer> getDirectionPossible(Monstre m){
 		ArrayList<Integer> lesDirectionPossible =  new ArrayList<Integer>();
-
 		int direction = m.getDirectionActu();
 		int xCase = (int)((m.getX())/LARGEUR_MUR);
 		int yCase = (int)((m.getY())/HAUTEUR_MUR);
-
 		switch (direction){
 		case Personnage.AVANCER_BAS:
 			if(tabMur[xCase][yCase+1] == null){
@@ -534,12 +536,9 @@ public class Labyrinthe implements Serializable{
 
 	/*public void deplacerMonstres(){
 		for(Monstre monstre :listeMonstres){
-
 			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
 			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
-
 			ArrayList<Integer> cheminValide = new ArrayList<>();
-
 			if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
 				cheminValide.add(2);
 			}
@@ -554,11 +553,9 @@ public class Labyrinthe implements Serializable{
 			}
 			// si le monstre est static 
 			//if (!check) direction = direction(monstre);
-
 			Random r = new Random();
 			int rd =  r.nextInt(cheminValide.size());
 			int direction = cheminValide.get(rd);
-
 			switch(direction){
 			case 0:
 				monstre.setVertical(-1);
@@ -576,7 +573,6 @@ public class Labyrinthe implements Serializable{
 				monstre.setHorizontal(-1);
 				monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
 			}
-
 		}
 	}*/
 
@@ -650,14 +646,11 @@ public class Labyrinthe implements Serializable{
 	/*A SUPPRIMER SI NON UTILISEE
 	public ArrayList<String> deplacementMonstre(int x,int y) {
 		String t = "";
-
 		ArrayList<String> chemin = new ArrayList<>();
 		chemin.add(t);
-
 		if (x == lesHeros.get(0).getX() && y == lesHeros.get(0).getY()) {
 			return chemin;
 		} else {
-
 			if ((x+1) < longueur && tabMur[x+1][y] == null && chemin.get(chemin.size()-1) != "z") {
 				chemin.add("s");
 				deplacementMonstre(x+1,y);
@@ -677,34 +670,26 @@ public class Labyrinthe implements Serializable{
 				deplacementMonstre(x,y-1);
 			}
 		}
-
 		return chemin;
 	}
-
-
-
 	public void depMonstre(int[][] tab) {
 		for (Monstre m: listeMonstres) {
 			deplacementIntelligentMonstre(m, tab);
 		}
 	}
-
 	public int[][] tabCheminMonstre() {
 		int x = (int)lesHeros.get(0).getX();
 		int y = (int)lesHeros.get(0).getY();
 		int[][] tab = new int[longueur][hauteur];
 		boolean trouve = false;
-
 		// initialise les cases a -1 qui signifie pas encore calcule
 		for(int v=0;v<tab.length;v++) {
 			Arrays.fill(tab[v], -1);
 		}
-
 		// positionne les monstres dans le tableau de recherche de chemin avec une valeur differente de -1
 		/*for (Monstre ms: listeMonstres) {
 			tab[ms.getX()][ms.getY()] = -2;
 		}
-
 		tab[x][y] = 0;
 		for (int i = 0; i < hauteur; i++) {
 			for (int j = 0; j < longueur; j++) {
@@ -726,7 +711,6 @@ public class Labyrinthe implements Serializable{
 	 * @see #calculChemin(int[][], Monstre)
 	 *
 	public void deplacementIntelligentMonstre(Monstre monstre, int[][] tab) {
-
 		ArrayList<String> dep = calculChemin(tab, monstre);
 		for (String ss : dep ) System.out.print(ss + "  " );
 		System.out.println();
@@ -749,8 +733,6 @@ public class Labyrinthe implements Serializable{
 			break;
 		}
 	}
-
-
 	/*
 	 * A COMPLETER
 	 * Cherche un chemin du monstre vers le heros en valuant les cases
@@ -763,7 +745,6 @@ public class Labyrinthe implements Serializable{
 		boolean faire[] = new boolean[4];
 		// tableau qui indique si la case a deja ete value
 		Arrays.fill(faire, false);
-
 		if (y >= 0 && y < hauteur && x >= 0 && x < longueur) {
 			if (tabMur[x][y] == null) {
 				// regarde pour chaque direction s'il existe un chemin dont la case n'a pas deja ete value
@@ -783,7 +764,6 @@ public class Labyrinthe implements Serializable{
 					tab[x][y-1] = tab[x][y] + 1;
 					faire[3] = true;
 				}
-
 				if (faire[0] ) remplirTableau(tab, x+1, y);
 				if (faire[1] ) remplirTableau(tab, x-1, y);
 				if (faire[2] ) remplirTableau(tab, x, y+1);
@@ -791,8 +771,6 @@ public class Labyrinthe implements Serializable{
 			}
 		}
 	}
-
-
 	/*
 	 * A COMPLETER
 	 * Calcul du chemin le plus cours entre ce monstre et le heros.
@@ -806,7 +784,6 @@ public class Labyrinthe implements Serializable{
 		ArrayList<String> liste = new ArrayList<>();
 		int min = Integer.MAX_VALUE;
 		String s = "";
-
 		int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
 		if (x == xh && y == yh) {
 			liste.add("");
@@ -859,10 +836,8 @@ public class Labyrinthe implements Serializable{
 		}
 		return liste;
 	}
-
 	//  verifie si un chemin vers le heros a ete trouve
 	// donc on regarde si une des 4 cases autour du heros est numerote
-
 	/*
 	 * A COMPLETER
 	 * verifie si un chemin vers le heros a ete trouve

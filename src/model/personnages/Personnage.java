@@ -169,6 +169,12 @@ public abstract class Personnage extends Observable implements Serializable{
     	}
     }
     
+   
+  public void tirer(){
+    	
+    }
+
+    
     public void mort(){
     
     	if(directionActu == ATTAQUER_BAS){
