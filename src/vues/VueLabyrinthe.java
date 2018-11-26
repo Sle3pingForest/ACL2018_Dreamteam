@@ -20,6 +20,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import vues.VueItem.VueEpee;
 import vues.VueItem.VueItem;
+import vues.VueItem.VueProjectile;
 import vues.VueItem.VuePiege;
 import vues.VueItem.VueTresor;
 import vues.VueMonstres.VueDragon;
@@ -32,6 +33,7 @@ public class VueLabyrinthe implements Serializable{
     private ArrayList<VueHeros> lesHerosVue;
     private ArrayList<VueItem> lesObjetsVue;
     private ArrayList<VueMonstres> lesMonstresVue;
+    private VueProjectile vueProjectille;
 
     
     private static VueLabyrinthe instance = null;
@@ -54,7 +56,6 @@ public class VueLabyrinthe implements Serializable{
 
     public void setLab(Labyrinthe lab) throws SlickException {
 	    this.lab = lab;
-
         ArrayList<Heros> lesHeros = lab.getLesHeros();
         for(int i = 0 ; i < lesHeros.size() ; i++){
             lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(i)));
@@ -77,7 +78,6 @@ public class VueLabyrinthe implements Serializable{
                 if(itemActu != null){
                     switch (itemActu.getClass().getName()) {
                         case "model.Item.Tresor":
-
                             lesObjetsVue.add(new VueTresor((Tresor) itemActu));
                             break;
 
@@ -92,6 +92,8 @@ public class VueLabyrinthe implements Serializable{
                 }
             }
         }
+        
+        this.vueProjectille = new VueProjectile(this.lab.getHeros(0).getLprojectile());
     }
 
     public void render(GameContainer container, Graphics g,int xMin , int xMax , int yMin , int yMax){
@@ -123,7 +125,9 @@ public class VueLabyrinthe implements Serializable{
         }
 
         for(VueItem i : lesObjetsVue){
-            i.render(container, g);
+            if(!i.getItem().isRamasser()) {
+                i.render(container, g);
+            }
         }
 
         for(VueMonstres m : lesMonstresVue){
@@ -133,6 +137,7 @@ public class VueLabyrinthe implements Serializable{
         for(VueHeros h : lesHerosVue){
             h.render(container,g);
         }
+        vueProjectille.render(container, g);
     }
 
     public model.Labyrinthe getLab() {
