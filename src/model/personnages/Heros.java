@@ -75,7 +75,8 @@ public class Heros extends Personnage {
     }
 
     public void setTailleInventaire(int tailleInventaire) {
-        this.tailleInventaire = tailleInventaire;
+    	if (tailleInventaire >= 0 &&  tailleInventaire >= this.inventaire.size())
+    		this.tailleInventaire = tailleInventaire;
     }
     
     public int getDirectionActu(){
@@ -137,15 +138,12 @@ public class Heros extends Personnage {
                 if (inventaire.size() < tailleInventaire) {
                     inventaire.add(i);
                     i.ramasser();
-                    System.out.println(inventaire);
                 }
             }
             else if(i.getClass().getName().equals("model.Item.Piege")){
                 if(!i.isRamasser()){
-                    System.out.println("Avant" + this.pointVie);
                     i.blesser(this);
                     i.ramasser();
-                    System.out.println("Après" + this.pointVie);
                 }
             }
         }else{
