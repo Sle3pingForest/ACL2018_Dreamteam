@@ -17,6 +17,10 @@ public abstract class VueItem {
         this.item = item;
     }
 
+    public Item getItem() {
+        return item;
+    }
+
     public void render(GameContainer container, Graphics g) {
         float x = item.getPosX();
         float y = item.getPosY();

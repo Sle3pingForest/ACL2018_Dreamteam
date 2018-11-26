@@ -1,6 +1,5 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -15,11 +14,11 @@ public class StateGame extends StateBasedGame {
 
     
     public static void main(String[] args) throws SlickException {
-	      new AppGameContainer(new StateGame(), width, height, false).start();
-        //new VueGenerateur();
+		new AppGameContainer(new StateGame(), width, height, true).start();
+		//new VueGenerateur();
+
 	}
-    
-    
+
 	public StateGame() {
 		super("Link The Labyrinthe's Master");
 		// TODO Auto-generated constructor stub

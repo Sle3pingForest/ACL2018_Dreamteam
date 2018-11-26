@@ -1,0 +1,64 @@
+
+    
+<project basedir="."  name="ACL2018_Dreamteam">
+<property name="ressources.dir" value="src" />
+<property name="bin.dir" value="bin" />
+<property name="lib.dir" value="lib" />
+<property name="test.dir" value="src/test"/>
+<property name="test.bin.dir" value="bin/test"/>
+	
+
+<path id="ACL2018_Dreamteam.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/jinput.jar"/>
+        <pathelement location="lib/lwjgl.jar"/>
+        <pathelement location="lib/slick.jar"/>
+        <pathelement location="lib/jogg-0.0.7.jar"/>
+        <pathelement location="lib/jorbis-0.0.15.jar"/>
+        <path refid="classpath.test"/>
+</path>
+	
+<path id="classpath.test">
+		<pathelement location="lib/junit.jar"/>
+		<pathelement location="lib/org.hamcrest.core_1.3.0.v20180420-1519.jar"/> 	
+		<pathelement location="${test.bin.dir}"/>
+</path>
+	
+	 <target name="clean">
+	        <delete dir="bin"/>
+	    </target>
+	    
+	    
+	
+
+	<target name="compile" >
+	 <mkdir dir="bin"/>
+	        <copy includeemptydirs="false" todir="bin">
+	            <fileset dir="src">
+	                <exclude name="**/*.java"/>
+	            </fileset>
+	        </copy>
+	</target>
+	
+	 <target name="test" depends="compile" >
+	    <junit printsummary="on" haltonfailure="yes" fork="true">
+	        <classpath>
+	          <path refid="ACL2018_Dreamteam.classpath"/>
+	          <pathelement location="${test.bin.dir}"/>
+	        </classpath>
+	        <formatter type="brief" usefile="false" />
+	        <batchtest>
+	            <fileset dir="${test.dir}" includes="**/*Test.java" />
+	        </batchtest>
+	    </junit>
+	  </target>
+
+
+    <target name="StateGame">
+        <java classname="StateGame" failonerror="true" fork="yes">
+            <jvmarg line="-Djava.library.path=lib/natives"/>
+            <classpath refid="ACL2018_Dreamteam.classpath"/>
+        </java>
+    </target>
+
+</project>

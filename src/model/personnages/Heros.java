@@ -76,7 +76,8 @@ public class Heros extends Personnage {
     }
 
     public void setTailleInventaire(int tailleInventaire) {
-        this.tailleInventaire = tailleInventaire;
+    	if (tailleInventaire >= 0 &&  tailleInventaire >= this.inventaire.size())
+    		this.tailleInventaire = tailleInventaire;
     }
     
     public int getDirectionActu(){
@@ -99,16 +100,17 @@ public class Heros extends Personnage {
 
 	 public void tirer(Labyrinthe lab){
 		 this.lprojectile.add(new Projectile(this.x, this.y));
-		 if(directionActu == BAS){
+		 int direction = directionActu%4;
+		 if(direction == BAS){
 	   		 	this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_BAS);
 	    	}
-	    	else if(directionActu == HAUT){
+	    	else if(direction == HAUT){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_HAUT);
 	    	}
-	    	else if(directionActu == GAUCHE){
+	    	else if(direction == GAUCHE){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_GAUCHE);
 	    	}
-	    	else if(directionActu == DROITE){
+	    	else if(direction == DROITE){
 	    		this.lprojectile.get(lprojectile.size() -1).deplacer(ATTAQUER_DROITE);
 	    	}
 	 }
@@ -136,15 +138,12 @@ public class Heros extends Personnage {
                 if (inventaire.size() < tailleInventaire) {
                     inventaire.add(i);
                     i.ramasser();
-                    System.out.println(inventaire);
                 }
             }
             else if(i.getClass().getName().equals("model.Item.Piege")){
                 if(!i.isRamasser()){
-                    System.out.println("Avant" + this.pointVie);
                     i.blesser(this);
                     i.ramasser();
-                    System.out.println("Après" + this.pointVie);
                 }
             }
         }else{
