@@ -10,9 +10,6 @@ public class Dragon extends Monstre{
 		this.nom="dragon";
 	}
 
-	public String getNom(){
-		return this.nom;
-	}
 	
 
 }

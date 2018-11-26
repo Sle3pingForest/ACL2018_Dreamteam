@@ -1,6 +1,7 @@
 import model.Labyrinthe;
 import model.personnages.Heros;
 
+import model.personnages.monstres.Monstre;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
@@ -55,7 +56,7 @@ public class Jeu extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
         this.game = game;
-        labyModel =  new Labyrinthe(10,10, 0);
+        labyModel =  new Labyrinthe(10,10, 1);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur

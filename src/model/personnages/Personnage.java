@@ -42,10 +42,10 @@ public abstract class Personnage extends Observable implements Serializable{
     public final static int MORT_DROITE = 15;
     public final static int MORT_GAUCHE = 16;
 
-    public final static  float VITESSE = 0.2f;
-    public final static int LARGEUR_SPRITE = 30;
-
     protected Rectangle boxCollider;
+
+    protected int SPRITE_LARGEUR = 0;
+    protected int SPRITE_HAUTEUR = 0;
 
 
 
@@ -377,5 +377,13 @@ public abstract class Personnage extends Observable implements Serializable{
             ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
         }*/
         return false;
+    }
+
+    public int getSPRITE_HAUTEUR() {
+        return SPRITE_HAUTEUR;
+    }
+
+    public int getSPRITE_LARGEUR(){
+        return  SPRITE_LARGEUR;
     }
 }

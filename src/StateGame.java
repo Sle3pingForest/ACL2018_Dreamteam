@@ -15,7 +15,7 @@ public class StateGame extends StateBasedGame {
 
     
     public static void main(String[] args) throws SlickException {
-	      new AppGameContainer(new StateGame(), width, height, true).start();
+	      new AppGameContainer(new StateGame(), width, height, false).start();
         //new VueGenerateur();
 	}
     

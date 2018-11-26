@@ -3,6 +3,7 @@ package model.personnages.monstres;
 import java.util.ArrayList;
 import java.util.Random;
 
+import model.personnages.Heros;
 import org.newdawn.slick.SlickException;
 
 import org.newdawn.slick.geom.Rectangle;
@@ -15,48 +16,23 @@ public abstract class Monstre extends Personnage {
 
 	public final static  float VITESSE_M = 0.05f;
 
-	protected  int LARGEUR_SPRITE = 30;    
-	protected  int HAUTEUR_SPRITE = 30;
-	protected  int HAUTEUR = 30;
-	protected  int LARGEUR = 30;
+	protected int largeur = 17;
+	protected int hauteur = 41;
+	protected int decalage_largeur = 15;
+	protected int decalage_hauteur = 20;
 	
-	protected float posXPrecedent, posYprecedent;
+	protected int xCasePrece;
+	protected int yCasePrece;
 
 
-
-	protected int pixelParcouruDepuisDernierChangement = 0 ;
 
 
 	public Monstre(int x, int y){
 		super(x,y);
-		posXPrecedent = x;
-		posYprecedent = y;
 		goBas();
-		boxCollider = new Rectangle(0,0,0,0);
-	}
-
-	public void directionAleatoire(){
-		vertical = 0;
-		horizontal = 0;
-		Random r = new Random();
-		int alea = r.nextInt(4);
-		switch(alea){
-			case 0:
-				vertical = -1;
-				directionActu = Personnage.AVANCER_HAUT;
-				break;
-			case 1:
-				horizontal = 1;
-				directionActu = Personnage.AVANCER_DROITE;
-				break;
-			case 2:
-				directionActu = Personnage.AVANCER_BAS;
-				vertical = 1;
-				break;
-			case 3:
-				directionActu = Personnage.AVANCER_GAUCHE;
-				horizontal = -1;
-		}
+		xCasePrece = getXCaseCentre();
+		yCasePrece = getYCaseCentre();
+		//collision = false;
 	}
 
 	/**
@@ -67,193 +43,261 @@ public abstract class Monstre extends Personnage {
 	 */
 	public void updateMonstre(Labyrinthe lab, int delta) throws SlickException{
 
+		float vitesseActu = delta*VITESSE_M;
 
-
-		float vitesseActu = delta*Monstre.VITESSE_M;
+		chekDirection(lab);
 
 		float futureX = x + horizontal * vitesseActu;
 		float futureY = y + vertical * vitesseActu;
 
-		if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR && futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
+		boxCollider.setY(futureY+decalage_hauteur);
+		boxCollider.setX(futureX+decalage_largeur);
+		boolean collision = false;
+
+
+		if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
 			if (getCollision()) {
-				intersection(lab,delta);
-				if(vertical == -1){
-					if(!collisionVetical(lab, futureX, futureY)){
-						setPosYprecedent(y);
-						setY(futureY);
-					}else
-					{
-						//monstre.directionAleatoire();
-						if(this instanceof Soldat){
-
-							changerDirection(lab, delta);
-						}
+				if(horizontal == 1){
+					if(!collisionHorizontale(lab, x+largeur, y)){
+						setX(futureX);
+					}else{
+						boxCollider.setX(x+decalage_largeur);
+						boxCollider.setY(y+decalage_hauteur);
+						collision = true;
 					}
 				}
-				if(vertical == 1){
-					if(!collisionVetical( lab,futureX, futureY)){
-						setPosYprecedent(y);
-						setY(futureY);
-					}else
-					{
-						//monstre.directionAleatoire();
-						changerDirection(lab, delta);
-					}
-				}
-
 				if(horizontal == -1){
 					if(!collisionHorizontale(lab, futureX, futureY)){
-						setPosXPrecedent(x);
 						setX(futureX);
-					}else
-					{
-						//monstre.directionAleatoire();
-						changerDirection(lab, delta);
-					}
-				}
-				if(horizontal == 1){
-					if(!collisionHorizontale(lab, futureX, futureY)){
-						setPosXPrecedent(x);
-						setX(futureX);
-					}else
-					{
-						//monstre.directionAleatoire();
-						changerDirection(lab, delta);
+					}else{
+						boxCollider.setX(x+decalage_largeur);
+						boxCollider.setY(y+decalage_hauteur);
+						collision = true;
 					}
 				}
 			} else {
 				setX(futureX);
-				setY(futureY);
+
 			}
 
+
+
+			if(futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
+				if (getCollision()) {
+					if(vertical == -1){
+						if(!collisionVetical(lab, futureX, futureY)){
+							setY(futureY);
+						}else{
+							boxCollider.setX(x+decalage_largeur);
+							boxCollider.setY(y+decalage_hauteur);
+							collision = true;
+						}
+					}
+					if(vertical == 1){
+						if(!collisionVetical( lab,futureX, futureY+hauteur)){
+							setY(futureY);
+						}else{
+							boxCollider.setX(x+decalage_largeur);
+							boxCollider.setY(y+decalage_hauteur);
+							collision = true;
+						}
+					}
+
+					if(collision) {
+						changerDirection(lab);
+					}
+				}else {
+					setY(futureY);
+				}
+			}
 		}
 	}
 
 	/**
 	 * Fonction qui permet au monstre de changer de direction si collision, pas de demi-tour si possible
 	 * @param lab
-	 * @param delta
 	 * @return boolean vrai s'il existe une sortie
 	 * @throws SlickException
 	 */
-	public boolean changerDirection(Labyrinthe lab, int delta) throws SlickException {
+	public void chekDirection(Labyrinthe lab){
 
+		int xCaseNouvelle = getXCaseCentre();
+		int yCaseNouvelle = getYCaseCentre();
+
+
+		if(horizontal == 1){
+			if (xCaseNouvelle != xCasePrece) {
+				if(x >= (xCaseNouvelle-1/2)*Labyrinthe.LARGEUR_MUR){
+					changerDirection(lab);
+				}
+			}
+		}
+
+		if(horizontal == -1){
+			if (xCaseNouvelle != xCasePrece) {
+				if(x <= (xCaseNouvelle+1/2)*Labyrinthe.LARGEUR_MUR){
+					changerDirection(lab);
+				}
+			}
+		}
+
+		if(vertical == 1){
+			if(y >= (yCaseNouvelle-1/2)*Labyrinthe.HAUTEUR_MUR)
+			{
+				if (yCaseNouvelle != yCasePrece)
+				{
+					changerDirection(lab);
+				}
+			}
+		}
+
+		if(vertical == -1){
+			if (yCaseNouvelle != yCasePrece) {
+				if(y <= (yCaseNouvelle+1/2)*Labyrinthe.HAUTEUR_MUR)
+				{
+					changerDirection(lab);
+				}
+			}
+		}
+
+
+
+	}
+
+	public void changerDirection(Labyrinthe lab){
+		int choix;
+		Random r = new Random();
+		int xCaseNouvelle = getXCaseCentre();
+		int yCaseNouvelle = getYCaseCentre();
+		ArrayList<Integer> lesDirection =  directionPossible(lab);
 		setVertical(0);
 		setHorizontal(0);
+		choix = r.nextInt(lesDirection.size());
+		choix = lesDirection.get(choix);
+		xCasePrece = xCaseNouvelle;
+		yCasePrece = yCaseNouvelle;
 
-		int x = (int)(getX() + 6 ) / Labyrinthe.LARGEUR_MUR;
-		int y = (int)(getY() + 19 ) / Labyrinthe.HAUTEUR_MUR;
-		float vitesseActu = delta*Monstre.VITESSE;
+		switch(choix){
+			case Personnage.AVANCER_BAS:
+				this.goBas();
+				break;
+			case Personnage.AVANCER_DROITE:
+				this.goDroite();
+				break;
+			case Personnage.AVANCER_GAUCHE:
+				this.goGauche();
+				break;
+			case Personnage.AVANCER_HAUT:
+				this.goHaut();
+				break;
+			default:
+				break;
+		}
+	}
 
-		float fx = getX();
-		float fy = getY();
-
-		float futureX = fx;
-		float futureY = fy;
-
-		int hauteur = lab.getHauteurLaby();
-		int longueur = lab.getLongueurLaby();
+	private ArrayList<Integer> directionPossible(Labyrinthe lab){
 		Mur[][] tabMur = lab.getTabMur();
-
-		boolean changer = false;
-
-		ArrayList<Integer> cheminValide = new ArrayList<>();
-
-
-		futureX = fx;
-		futureY = fy + vitesseActu;
-		if(y+1 < hauteur-1 && tabMur[x][y+1] == null && !collisionVetical(lab, futureX, futureY)) {
-			cheminValide.add(0);
-		}
-		futureX = fx + vitesseActu;
-		futureY = fy;
-		if(x+1 < longueur-1 && tabMur[x+1][y] == null && !collisionHorizontale(lab, futureX, futureY) ) {
-			cheminValide.add(1);
-		}
-		futureX = fx;
-		futureY = fy - vitesseActu;
-		if(y-1 > 0 && tabMur[x][y-1] == null  && !collisionVetical(lab, futureX, futureY)  ) {
-			cheminValide.add(2);
-		}
-		futureX = fx - vitesseActu;
-		futureY = fy;
-		if (x-1 > 0 && tabMur[x-1][y] == null && !collisionHorizontale(lab, futureX, futureY)) {
-			cheminValide.add(3);
-		}
-
-		if (cheminValide.size() > 0) {
-			Random r = new Random();
-			int rd =  r.nextInt(cheminValide.size());
-
-			int i = getDirectionActu();
-			int oppose = (i%4 - 2 >= 0) ? (i%4) - 2  : (i%4) + 2 ;
-			// si le monstre a choisit de retourner et qu'on a plus d'une direction possible
-			// on choisit une autre direction
-			while (cheminValide.size() > 1 &&  cheminValide.get(rd) == oppose ) {
-				rd =  r.nextInt(cheminValide.size());
+		int xCaseNouvelle = getXCaseCentre();
+		int yCaseNouvelle = getYCaseCentre();
+		ArrayList<Integer> lesDirectionPossible = new ArrayList<Integer>();
+		if(horizontal == -1){
+			if(tabMur[xCaseNouvelle-1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
 			}
-
-			int direction = cheminValide.get(rd);
-			switch(direction){
-				case 0:
-					setVertical(1);
-					break;
-				case 1:
-					setHorizontal(1);
-					break;
-				case 2:
-					setVertical(-1);
-					break;
-				case 3:
-					setHorizontal(-1);
+			if(tabMur[xCaseNouvelle][yCaseNouvelle+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
 			}
-
-			setDirectionActu(direction + 4);
-			changer = true;
+			if(tabMur[xCaseNouvelle][yCaseNouvelle-1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
 		}
 
-		return changer;
-	}
-
-	// si le monstre est sur une nouvelle case
-	// regarde dans toutes les directions les chemins possible
-
-	/**
-	 * Appel changerDirection à chaque position du monstre.
-	 * @param lab
-	 * @param delta
-	 * @throws SlickException
-	 * @see #changerDirection(Labyrinthe, int)
-	 */
-	private void intersection(Labyrinthe lab, int delta) throws SlickException {
-
-		int xAvant = (int)(getPosXPrecedent() ) / Labyrinthe.LARGEUR_MUR;
-		int yAvant = (int)(getPosYprecedent() ) / Labyrinthe.HAUTEUR_MUR;
-
-		int xActu = (int)(getX() ) / Labyrinthe.LARGEUR_MUR;
-		int yActu = (int)(getY() ) / Labyrinthe.HAUTEUR_MUR;
-
-		if (xAvant  != xActu || yAvant != yActu) {
-			changerDirection(lab, delta);
+		if(horizontal == 1){
+			if(tabMur[xCaseNouvelle+1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCaseNouvelle][yCaseNouvelle+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			if(tabMur[xCaseNouvelle][yCaseNouvelle-1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
 		}
-	}
-	
 
-	public float getPosXPrecedent() {
-		return posXPrecedent;
+		if(vertical == -1){
+			if(yCaseNouvelle-1 > 0){
+				if(tabMur[xCaseNouvelle][yCaseNouvelle-1] == null){
+					lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+				}
+			}
+			if(tabMur[xCaseNouvelle+1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCaseNouvelle-1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+		}
+
+		if(vertical == 1){
+			if(tabMur[xCaseNouvelle][yCaseNouvelle+1] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_BAS);
+			}
+			if(tabMur[xCaseNouvelle+1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_DROITE);
+			}
+			if(tabMur[xCaseNouvelle-1][yCaseNouvelle] == null){
+				lesDirectionPossible.add(Personnage.AVANCER_GAUCHE);
+			}
+			if(lesDirectionPossible.isEmpty()){
+				lesDirectionPossible.add(Personnage.AVANCER_HAUT);
+			}
+		}
+
+		return  lesDirectionPossible;
 	}
 
-	public float getPosYprecedent() {
-		return posYprecedent;
-	}
-	
 
-	public void setPosXPrecedent(float posXPrecedent) {
-		this.posXPrecedent = posXPrecedent;
+	public int getXCentre(){
+		return (int)(x +(decalage_largeur+ largeur)/2);
 	}
 
-	public void setPosYprecedent(float prosYprecedent) {
-		this.posYprecedent = prosYprecedent;
+	public int getYCentre(){
+		return (int)(y +(decalage_hauteur+ hauteur)/2);
 	}
 
+	public int getYCaseCentre(){
+		return (int)(getYCentre())/Labyrinthe.HAUTEUR_MUR;
+	}
+
+	public int getXCaseCentre(){
+		return (int)(getXCentre())/Labyrinthe.LARGEUR_MUR;
+	}
+
+
+
+
+	public int getLargeur(){
+		return  largeur;
+	}
+
+	public int getDecalage_hauteur() {
+		return decalage_hauteur;
+	}
+
+	public int getDecalage_largeur(){
+		return decalage_largeur;
+	}
+
+	public int getHauteur() {
+		return hauteur;
+	}
 }

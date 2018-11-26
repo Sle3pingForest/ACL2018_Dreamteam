@@ -30,7 +30,7 @@ public class Labyrinthe implements Serializable{
 
 	private int longeurCarte, hauteurCarte;
 
-	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
+	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT};
 	private Item [][]lesObjets;
 	private int [] tabNomItem = {ItemFactory.EPEE, ItemFactory.PIEGE};
 	private ItemFactory creationItem;
@@ -268,15 +268,12 @@ public class Labyrinthe implements Serializable{
 	 * @throws SlickException
 	 */
 	public void update(GameContainer container, int delta) throws SlickException {
-		
-		//deplacerMonstres();
+
 		for(Monstre m : listeMonstres){
 			if(m.getPointVie() >0 ){
 				m.updateMonstre(this, delta);
 			}
 		}
-
-
 		lesHeros.get(0).updateHeros(this,delta);
 
 	}
@@ -289,7 +286,7 @@ public class Labyrinthe implements Serializable{
 		getHeros(0).tirer(this);
 	}
 
-	/*private ArrayList<Integer> getDirectionPossible(Monstre m){
+	private ArrayList<Integer> getDirectionPossible(Monstre m){
 		ArrayList<Integer> lesDirectionPossible =  new ArrayList<Integer>();
 		int direction = m.getDirectionActu();
 		int xCase = (int)((m.getX())/LARGEUR_MUR);
@@ -353,7 +350,7 @@ public class Labyrinthe implements Serializable{
 			break;
 		}
 		return  lesDirectionPossible;
-	}*/
+	}
 
 
 	/**

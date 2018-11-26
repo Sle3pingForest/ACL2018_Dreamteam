@@ -28,9 +28,9 @@ public class VueObjets extends JPanel{
         mur = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/map/tuiles/Mur/ArbrePetit.png"));
         mur = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/map/tuiles/Mur/ArbrePetit.png"));
 
-        dragon = new ImageIcon(toAwtImage(VueDragon.getImageGenerateur(),false));
+       /* dragon = new ImageIcon(toAwtImage(VueDragon.getImageGenerateur(),false));
         soldat = new ImageIcon(toAwtImage(VueSoldat.getImageGenerateur(),false));
-        heros = new ImageIcon(toAwtImage(VueHeros.getImageGenerateur(),false));
+        heros = new ImageIcon(toAwtImage(VueHeros.getImageGenerateur(),false));*/
 
         this.setLayout(new GridLayout(NBOBJET/2,2));
         this.add(new JLabel(mur));

@@ -24,6 +24,7 @@ public class Heros extends Personnage {
     private final static int HAUTEUR=23;
     private final static  int DECALAGE_LARGEUR=5;
     private final static  int DECALAGE_HAUTEUR=20;
+    private final static float VITESSE = 0.2f;
 
     private int pointVie;
 
@@ -159,7 +160,7 @@ public class Heros extends Personnage {
      */
     public void updateHeros(Labyrinthe lab, int delta) throws SlickException{
 
-        float vitesseActu = delta*Heros.VITESSE;
+        float vitesseActu = delta*VITESSE;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
@@ -219,7 +220,7 @@ public class Heros extends Personnage {
             }
         }
 
-        toucherProjetile(lab);
+        /*toucherProjetile(lab);
 
 		float vitesseProjectille = delta*Projectile.VITESSE;
 		ArrayList<Projectile> lp = this.getLprojectile();
@@ -254,7 +255,7 @@ public class Heros extends Personnage {
 					p.setY(futureYP);
 				}
 			}
-		}
+		}*/
 
 
     }
