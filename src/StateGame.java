@@ -1,5 +1,7 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
+import model.generateur.Niveau;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -15,7 +17,7 @@ public class StateGame extends StateBasedGame {
     
     public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new StateGame(), width, height, true).start();
-		//new VueGenerateur();
+		//new VueGenerateur(new Niveau("niv"));
 
 	}
 
