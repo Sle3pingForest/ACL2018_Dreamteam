@@ -273,10 +273,10 @@ public class Heros extends Personnage {
 					m.mortMonstres(); 
 				}
 			}
-			if(this.getPointVie() <= 0){
+			/*if(this.getPointVie() <= 0){
                 Labyrinthe.MORT_HEROS = true;
 				this.mort();
-			}
+			}*/
 		}
 	}
 
