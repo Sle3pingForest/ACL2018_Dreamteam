@@ -276,17 +276,23 @@ public class Labyrinthe implements Serializable{
 				m.updateMonstre(this, delta);
 			}
 		}
-		lesHeros.get(0).updateHeros(this,delta);
-		collison();
+		if(!lesHeros.get(0).estMort()) {
+			lesHeros.get(0).updateHeros(this, delta);
+			collison();
+		}
 
 	}
 
 	public void attaquer(){
-		getHeros(0).attaquer(this);
+		if(!getHeros(0).estMort()) {
+			getHeros(0).attaquer(this);
+		}
 	}
 	
 	public void tirer(){
-		getHeros(0).tirer(this);
+		if(!getHeros(0).estMort()) {
+			getHeros(0).tirer(this);
+		}
 	}
 
 	private ArrayList<Integer> getDirectionPossible(Monstre m){
@@ -541,9 +547,11 @@ public class Labyrinthe implements Serializable{
 		Rectangle boxHero  = lesHeros.get(0).getBoxCollider();
 		Rectangle boxMonstre ;
 		for(Monstre monstre: listeMonstres){
-			boxMonstre = monstre.getBoxCollider();
-			if(boxHero.intersects(boxMonstre)){
-				lesHeros.get(0).setPointVie(monstre.getAttaque());
+			if(!monstre.estMort()) {
+				boxMonstre = monstre.getBoxCollider();
+				if (boxHero.intersects(boxMonstre)) {
+					lesHeros.get(0).setPointVie(monstre.getAttaque());
+				}
 			}
 		}
 	}
