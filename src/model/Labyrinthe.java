@@ -1,4 +1,5 @@
 package model;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 
 public class Labyrinthe implements Serializable{
@@ -275,6 +277,7 @@ public class Labyrinthe implements Serializable{
 			}
 		}
 		lesHeros.get(0).updateHeros(this,delta);
+		collison();
 
 	}
 
@@ -535,9 +538,12 @@ public class Labyrinthe implements Serializable{
 	 * Verifie la collision entre les monstres et les heros
 	 */
 	public void collison(){
+		Rectangle boxHero  = lesHeros.get(0).getBoxCollider();
+		Rectangle boxMonstre ;
 		for(Monstre monstre: listeMonstres){
-			if(lesHeros.get(0).getX() == monstre.getX() && lesHeros.get(0).getY() == monstre.getY()){
-				MORT_HEROS = true;
+			boxMonstre = monstre.getBoxCollider();
+			if(boxHero.intersects(boxMonstre)){
+				lesHeros.get(0).setPointVie(monstre.getAttaque());
 			}
 		}
 	}

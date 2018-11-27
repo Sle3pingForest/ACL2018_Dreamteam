@@ -127,9 +127,6 @@ public class Heros extends Personnage {
         return pointVie;
     }
 
-    public void setPointVie(int pointVie) {
-        this.pointVie = pointVie;
-    }
 
     public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor")) {
@@ -340,7 +337,7 @@ public class Heros extends Personnage {
             }
 
             if(estToucher){
-                setPointVie(m.getAttaque());
+               // setPointVie(m.getAttaque());
                 m.setPointVie(getAttaque());
                 if(m.getPointVie() <= 0){
                     m.mortMonstres();
