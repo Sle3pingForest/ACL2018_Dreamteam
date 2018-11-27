@@ -78,6 +78,7 @@ public class Jeu extends BasicGameState {
 
 	@Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	    //g.scale(1.2f,1.2f);
 	    Heros h = labyModel.getHeros(0);
         int cameraX = (int)(container.getWidth() / 2 - h.getX());
         int cameraY = (int)(container.getHeight() / 2 - h.getY());
@@ -98,12 +99,12 @@ public class Jeu extends BasicGameState {
         
 
         labyVue.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        this.hud.render(g);
+        this.hud.render(-cameraX, -cameraY,g);
         if (h.getPointVie() <= 0) {
         	this.hud_fin_du_jeu.init(h.getX(),h.getY() ); 
-        	this.hud_fin_du_jeu.render(g);
+        	this.hud_fin_du_jeu.render(cameraX, cameraY,g);
         }
-        if (h.getTresorDeMap() != null) this.hudVictory.render(g);
+        if (h.getTresorDeMap() != null) this.hudVictory.render(-cameraX, -cameraY,g);
     }
 
     public void keyPressed(int key, char c) {

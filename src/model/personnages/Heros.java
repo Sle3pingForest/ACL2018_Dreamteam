@@ -26,7 +26,6 @@ public class Heros extends Personnage {
     private final static  int DECALAGE_HAUTEUR=20;
     private final static float VITESSE = 0.2f;
 
-    private int pointVie;
 
 
     protected int tailleInventaire = 10;

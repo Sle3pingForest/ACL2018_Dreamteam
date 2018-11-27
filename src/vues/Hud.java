@@ -19,6 +19,6 @@ public abstract class Hud {
 	
 	public abstract void init(float x, float y) throws SlickException;
 	
-	public abstract void render(Graphics g);
+	public abstract void render(int cameraX ,int cameraY,Graphics g);
 
 }

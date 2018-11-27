@@ -17,7 +17,7 @@ public class HudEndGame extends Hud{
 		this.y = y;
 	}
 	
-	public void render(Graphics g) {
+	public void render(int cameraX, int cameraY,Graphics g) {
 		g.drawImage(this.playerbars,x/2,y/2);
 	}
 

@@ -155,6 +155,7 @@ public abstract class Personnage  implements Serializable{
     }
     
     protected void attaquer(){
+	    pointVie--;
         entrainDAttaque = true;
     	if(directionActu == BAS){
     		directionActu = ATTAQUER_BAS;
