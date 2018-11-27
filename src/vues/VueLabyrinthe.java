@@ -125,7 +125,7 @@ public class VueLabyrinthe implements Serializable{
         }
 
         for(VueItem i : lesObjetsVue){
-            if(!i.getItem().isRamasser()) {
+            if(!i.getItem().isRamasser() ) {
                 i.render(container, g);
             }
         }

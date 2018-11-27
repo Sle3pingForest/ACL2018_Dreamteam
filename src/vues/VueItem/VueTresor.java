@@ -1,6 +1,7 @@
 package vues.VueItem;
 
 import model.Item.Tresor;
+import model.Labyrinthe;
 import model.personnages.Heros;
 import org.newdawn.slick.*;
 
@@ -43,7 +44,6 @@ public class VueTresor extends VueItem {
 
     @Override
     public void render(GameContainer container, Graphics g) {
-        super.render(container, g);
         if(animationEnCour == 0 && !item.isRamasser()){
         	animationEnCour = 0;
         }
@@ -53,5 +53,8 @@ public class VueTresor extends VueItem {
         else if(animationEnCour == 0 && item.isRamasser()){
             animationEnCour = 1;
         }
+        float x = item.getPosX();
+        float y = item.getPosY();
+        g.drawAnimation(animations[animationEnCour],(int)(x+(Labyrinthe.LARGEUR_MUR-largeur_Sprite)/2),(int)y);
     }
 }
