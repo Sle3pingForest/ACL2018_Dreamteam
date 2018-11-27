@@ -24,8 +24,8 @@ public class Heros extends Personnage {
     private final static int HAUTEUR=23;
     private final static  int DECALAGE_LARGEUR=5;
     private final static  int DECALAGE_HAUTEUR=20;
+    private final static float VITESSE = 0.2f;
 
-    private int pointVie;
 
 
     protected int tailleInventaire = 10;
@@ -127,9 +127,6 @@ public class Heros extends Personnage {
         return pointVie;
     }
 
-    public void setPointVie(int pointVie) {
-        this.pointVie = pointVie;
-    }
 
     public void ajouterAInventaire(Item i){
         if(!i.getClass().getName().equals("model.Item.Tresor")) {
@@ -157,8 +154,8 @@ public class Heros extends Personnage {
      * @throws SlickException
      */
     public void updateHeros(Labyrinthe lab, int delta) throws SlickException{
-
-        float vitesseActu = delta*Heros.VITESSE;
+        entrainDAttaque = false;
+        float vitesseActu = delta*VITESSE;
 
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
@@ -340,7 +337,7 @@ public class Heros extends Personnage {
             }
 
             if(estToucher){
-                setPointVie(m.getAttaque());
+               // setPointVie(m.getAttaque());
                 m.setPointVie(getAttaque());
                 if(m.getPointVie() <= 0){
                     m.mortMonstres();

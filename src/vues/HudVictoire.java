@@ -1,5 +1,6 @@
 package vues;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -18,7 +19,7 @@ public class HudVictoire extends Hud{
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public void render(int cameraX, int cameraY, Graphics g, GameContainer container) {
 		// TODO Auto-generated method stub
 		if (compteur < 400) {
 			g.drawImage(this.playerbars,x/2,y/2);

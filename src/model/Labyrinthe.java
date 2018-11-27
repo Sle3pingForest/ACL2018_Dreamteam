@@ -1,4 +1,5 @@
 package model;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 
 public class Labyrinthe implements Serializable{
@@ -30,7 +32,7 @@ public class Labyrinthe implements Serializable{
 
 	private int longeurCarte, hauteurCarte;
 
-	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.DRAGON};
+	private int[] tabNomMonstre ={FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT,FabriqueMonstre.SOLDAT};
 	private Item [][]lesObjets;
 	private int [] tabNomItem = {ItemFactory.EPEE, ItemFactory.PIEGE};
 	private ItemFactory creationItem;
@@ -268,16 +270,14 @@ public class Labyrinthe implements Serializable{
 	 * @throws SlickException
 	 */
 	public void update(GameContainer container, int delta) throws SlickException {
-		
-		//deplacerMonstres();
+
 		for(Monstre m : listeMonstres){
 			if(m.getPointVie() >0 ){
 				m.updateMonstre(this, delta);
 			}
 		}
-
-
 		lesHeros.get(0).updateHeros(this,delta);
+		collison();
 
 	}
 
@@ -289,7 +289,7 @@ public class Labyrinthe implements Serializable{
 		getHeros(0).tirer(this);
 	}
 
-	/*private ArrayList<Integer> getDirectionPossible(Monstre m){
+	private ArrayList<Integer> getDirectionPossible(Monstre m){
 		ArrayList<Integer> lesDirectionPossible =  new ArrayList<Integer>();
 		int direction = m.getDirectionActu();
 		int xCase = (int)((m.getX())/LARGEUR_MUR);
@@ -353,7 +353,7 @@ public class Labyrinthe implements Serializable{
 			break;
 		}
 		return  lesDirectionPossible;
-	}*/
+	}
 
 
 	/**
@@ -534,55 +534,16 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-	/*public void deplacerMonstres(){
-		for(Monstre monstre :listeMonstres){
-			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
-			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
-			ArrayList<Integer> cheminValide = new ArrayList<>();
-			if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
-				cheminValide.add(2);
-			}
-			if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
-				cheminValide.add(1);
-			}
-			if(y-1 > 0 && tabMur[x][y-1] == null) {
-				cheminValide.add(0);
-			}
-			if (x-1 > 0 && tabMur[x-1][y] == null) {
-				cheminValide.add(3);
-			}
-			// si le monstre est static 
-			//if (!check) direction = direction(monstre);
-			Random r = new Random();
-			int rd =  r.nextInt(cheminValide.size());
-			int direction = cheminValide.get(rd);
-			switch(direction){
-			case 0:
-				monstre.setVertical(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_HAUT);
-				break;
-			case 1:
-				monstre.setHorizontal(1);
-				monstre.setDirectionActu(Personnage.AVANCER_DROITE);
-				break;
-			case 2:
-				monstre.setVertical(1);
-				monstre.setDirectionActu(Personnage.AVANCER_BAS);
-				break;
-			case 3:
-				monstre.setHorizontal(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
-			}
-		}
-	}*/
-
 	/**
 	 * Verifie la collision entre les monstres et les heros
 	 */
 	public void collison(){
+		Rectangle boxHero  = lesHeros.get(0).getBoxCollider();
+		Rectangle boxMonstre ;
 		for(Monstre monstre: listeMonstres){
-			if(lesHeros.get(0).getX() == monstre.getX() && lesHeros.get(0).getY() == monstre.getY()){
-				MORT_HEROS = true;
+			boxMonstre = monstre.getBoxCollider();
+			if(boxHero.intersects(boxMonstre)){
+				lesHeros.get(0).setPointVie(monstre.getAttaque());
 			}
 		}
 	}

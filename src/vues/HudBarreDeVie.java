@@ -1,13 +1,17 @@
 package vues;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import model.Labyrinthe;
+import org.newdawn.slick.geom.Rectangle;
+
 
 public class HudBarreDeVie extends Hud{
 	private Labyrinthe laby;
+	private int tailleCoeur = 18;
 
 
 	public HudBarreDeVie(Labyrinthe lyb){
@@ -23,14 +27,14 @@ public class HudBarreDeVie extends Hud{
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public void render(int cameraX,int cameraY,Graphics g,GameContainer container) {
 
 		int taille = laby.getLink().getPointVie();
-		x = Labyrinthe.HAUTEUR_MUR;
-		y = Labyrinthe.HAUTEUR_MUR;
+		x = (int)cameraX+Labyrinthe.LARGEUR_MUR;
+		y = (int)cameraY+Labyrinthe.HAUTEUR_MUR;
 		for (int i=1; i <= taille ; i++) {
 			g.drawImage(this.playerbars, x, y);
-			x+=18;
+			x+=tailleCoeur;
 		}
 	}
 }

@@ -4,6 +4,7 @@ import model.personnages.Heros;
 
 import java.io.Serializable;
 
+import model.personnages.Personnage;
 import org.newdawn.slick.*;
 public class VueHeros implements Serializable{
 
@@ -194,60 +195,64 @@ public class VueHeros implements Serializable{
     }
     
     private void attaquerDevantBas(String chemin ) throws SlickException {
-        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 41, 30);
        Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 12), 100);
-        animation.addFrame(spriteSheet.getSprite(4, 12), 100);
-        animation.addFrame(spriteSheet.getSprite(5,12), 100);
-        animation.addFrame(spriteSheet.getSprite(6,12), 100);
-        animation.addFrame(spriteSheet.getSprite(7,12), 100);
-        animation.addFrame(spriteSheet.getSprite(8,12), 100);
-        animation.addFrame(spriteSheet.getSprite(9,12), 100);
+       int duration = 30;
+        animation.addFrame(spriteSheet.getSprite(2, 12), duration);
+        animation.addFrame(spriteSheet.getSprite(3, 12), duration);
+        animation.addFrame(spriteSheet.getSprite(4,12), duration);
+        animation.addFrame(spriteSheet.getSprite(5,12), duration);
+        animation.addFrame(spriteSheet.getSprite(6,12), duration);
+        animation.addFrame(spriteSheet.getSprite(7,12), duration);
+        animation.addFrame(spriteSheet.getSprite(8,12), duration);
         this.animations[Heros.ATTAQUER_BAS] = animation;
     }
 
     private void attaquerDevantHaut(String chemin ) throws SlickException {
+        int duration = 30;
         SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
        Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 38), 100);
-        animation.addFrame(spriteSheet.getSprite(4, 38), 100);
-        animation.addFrame(spriteSheet.getSprite(5,38), 100);
-        animation.addFrame(spriteSheet.getSprite(6,38), 100);
-        animation.addFrame(spriteSheet.getSprite(7,38), 100);
-        animation.addFrame(spriteSheet.getSprite(8,38), 100);
-        animation.addFrame(spriteSheet.getSprite(9,38), 100);
+        animation.addFrame(spriteSheet.getSprite(3, 38), duration);
+        animation.addFrame(spriteSheet.getSprite(4, 38), duration);
+        animation.addFrame(spriteSheet.getSprite(5,38), duration);
+        animation.addFrame(spriteSheet.getSprite(6,38), duration);
+        animation.addFrame(spriteSheet.getSprite(7,38), duration);
+        animation.addFrame(spriteSheet.getSprite(8,38), duration);
+        animation.addFrame(spriteSheet.getSprite(9,38), duration);
         this.animations[Heros.ATTAQUER_HAUT] = animation;
     }
     
     private void attaquerDevantGauche(String chemin ) throws SlickException {
-        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+        int duration = 30;
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 41, 30);
         Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 64), 100);
-        animation.addFrame(spriteSheet.getSprite(4, 64), 100);
-        animation.addFrame(spriteSheet.getSprite(5,64), 100);
-        animation.addFrame(spriteSheet.getSprite(6,64), 100);
-        animation.addFrame(spriteSheet.getSprite(7,64), 100);
-        animation.addFrame(spriteSheet.getSprite(8,64), 100);
-        animation.addFrame(spriteSheet.getSprite(9,64), 100);
+        animation.addFrame(spriteSheet.getSprite(2, 64), duration);
+        animation.addFrame(spriteSheet.getSprite(3, 64), duration);
+        animation.addFrame(spriteSheet.getSprite(4,64), duration);
+        animation.addFrame(spriteSheet.getSprite(5,64), duration);
+        animation.addFrame(spriteSheet.getSprite(6,64), duration);
+        animation.addFrame(spriteSheet.getSprite(7,64), duration);
+        animation.addFrame(spriteSheet.getSprite(8,64), duration);
         this.animations[Heros.ATTAQUER_GAUCHE] = animation;
     }
     
     private void attaquerDevantDroite(String chemin ) throws SlickException {
-        SpriteSheet spriteSheet = new SpriteSheet(chemin, 40, 30);
+        int duration = 30;
+        SpriteSheet spriteSheet = new SpriteSheet(chemin, 41, 30);
         Animation animation = new Animation();
-        animation.addFrame(spriteSheet.getSprite(3, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(2, 64).getFlippedCopy(true,false), duration);
         
-        animation.addFrame(spriteSheet.getSprite(4, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(3, 64).getFlippedCopy(true,false), duration);
         
-        animation.addFrame(spriteSheet.getSprite(5, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(4, 64).getFlippedCopy(true,false), duration);
        
-        animation.addFrame( spriteSheet.getSprite(6, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame( spriteSheet.getSprite(5, 64).getFlippedCopy(true,false), duration);
         
-        animation.addFrame(spriteSheet.getSprite(7, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(6, 64).getFlippedCopy(true,false), duration);
         
-        animation.addFrame(spriteSheet.getSprite(8, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame(spriteSheet.getSprite(7, 64).getFlippedCopy(true,false), duration);
        
-        animation.addFrame( spriteSheet.getSprite(9, 64).getFlippedCopy(true,false), 100);
+        animation.addFrame( spriteSheet.getSprite(8, 64).getFlippedCopy(true,false), duration);
         this.animations[Heros.ATTAQUER_DROITE] = animation;
     }
     
@@ -336,17 +341,37 @@ public class VueHeros implements Serializable{
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();
     	float y = heros.getY();
-        g.drawAnimation(animations[heros.getDirectionActu()],(int)x,(int)y);
+    	int directActu = heros.getDirectionActu();
+    	if(animations[directActu].getFrame() == animations[directActu].getFrameCount()-1){
+            animations[directActu].restart();
+    	        switch(directActu)
+                {
+                    case Personnage.ATTAQUER_BAS :
+                        directActu = Personnage.BAS;
+                        break;
+                        case Personnage.ATTAQUER_DROITE:
+                            directActu = Personnage.DROITE;
+                            break;
+                            case Personnage.ATTAQUER_GAUCHE:
+                                directActu = Personnage.GAUCHE;
+                                break;
+                                case Personnage.ATTAQUER_HAUT:
+                                    directActu = Personnage.HAUT;
+                                    break;
+                                    default:
+                                        break;
+                }
+            heros.setDirectionActu(directActu);
+
+    	}
+
+        g.drawAnimation(animations[directActu],(int)x,(int)y);
     }
 
     public String tt() {
     	return heros.getX() + "  " + heros.getY();
     }
 
-    public static Image getImageGenerateur() throws SlickException {
-        SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_BLEU, 30, 30);
-        return spriteSheet.getSprite(0, 0);
-    }
 
 
     

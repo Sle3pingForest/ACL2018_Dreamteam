@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 import java.io.Serializable;
 import java.util.Observable;
 
-public abstract class Personnage extends Observable implements Serializable{
+public abstract class Personnage  implements Serializable{
 
 
     protected String nom;
@@ -42,14 +42,17 @@ public abstract class Personnage extends Observable implements Serializable{
     public final static int MORT_DROITE = 15;
     public final static int MORT_GAUCHE = 16;
 
-    public final static  float VITESSE = 0.2f;
-    public final static int LARGEUR_SPRITE = 30;
-
     protected Rectangle boxCollider;
+
+    protected int SPRITE_LARGEUR = 0;
+    protected int SPRITE_HAUTEUR = 0;
+
+
 
 
 
     protected int directionActu = BAS;
+    protected boolean entrainDAttaque = false;
     
 	// sert a enlever les collisions pour tester plus facilement
 	protected boolean collision = true;
@@ -154,6 +157,7 @@ public abstract class Personnage extends Observable implements Serializable{
     }
     
     protected void attaquer(){
+        entrainDAttaque = true;
     	if(directionActu == BAS){
     		directionActu = ATTAQUER_BAS;
     	}
@@ -177,17 +181,17 @@ public abstract class Personnage extends Observable implements Serializable{
     
     public void mort(){
     
-    	if(directionActu == ATTAQUER_BAS){
+    	if(directionActu == ATTAQUER_BAS || directionActu == BAS || directionActu == AVANCER_BAS ){
     		directionActu = MORT_BAS;
 		}
-    	else if(directionActu == ATTAQUER_HAUT){
+    	else if(directionActu == ATTAQUER_HAUT || directionActu == HAUT || directionActu == AVANCER_HAUT){
 			directionActu = MORT_HAUT;
 		}
-		else if(directionActu == ATTAQUER_GAUCHE){
+		else if(directionActu == ATTAQUER_GAUCHE || directionActu == GAUCHE || directionActu == AVANCER_GAUCHE){
 			directionActu = MORT_GAUCHE;
 			
 		}
-		else if(directionActu == ATTAQUER_DROITE){
+		else if(directionActu == ATTAQUER_DROITE || directionActu == DROITE || directionActu == AVANCER_DROITE){
 			directionActu = MORT_DROITE;
 		}
     }
@@ -283,9 +287,9 @@ public abstract class Personnage extends Observable implements Serializable{
     	if(i >= defense){
         	this.pointVie = this.pointVie- (i - defense);
     	}
-    	else{
-    		this.pointVie = this.pointVie;
-    	}
+    	if(pointVie<= 0){
+            mort();
+        }
     }
 
     /**
@@ -324,14 +328,14 @@ public abstract class Personnage extends Observable implements Serializable{
             }
         }
 
-        /*if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
             ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
         }
 
 
         if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
             ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }*/
+        }
 
         return false;
     }
@@ -372,10 +376,27 @@ public abstract class Personnage extends Observable implements Serializable{
             }
         }
 
-        /*
+
         if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
             ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
-        }*/
+        }
         return false;
     }
+
+    public int getSPRITE_HAUTEUR() {
+        return SPRITE_HAUTEUR;
+    }
+
+    public int getSPRITE_LARGEUR(){
+        return  SPRITE_LARGEUR;
+    }
+
+    public boolean getEntrainDAttaque(){
+        return  entrainDAttaque;
+    }
+
+    public Rectangle getBoxCollider(){
+        return boxCollider;
+    }
+
 }

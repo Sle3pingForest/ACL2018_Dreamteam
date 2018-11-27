@@ -30,6 +30,8 @@ public class Projectile extends Item {
 		this.touche = false;
 		// TODO Auto-generated constructor stub
 	}
+
+
 	
 
 	public boolean isTouche() {

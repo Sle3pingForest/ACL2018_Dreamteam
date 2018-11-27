@@ -19,11 +19,8 @@ public class VueSoldat extends VueMonstres {
 	private final static  String CHEMIN_BLEU = "main/resources/Personnages/Monstres/BlueSoldier.png";
 	private final static  String CHEMIN_MORT= "main/resources/Personnages/Monstres/death.png";
 
-	private final static int HAUTEUR_SPRITES = 41;
-	private final static int LARGEUR_SPRITES = 32;
 
 
-	// largeur orc 30 / hauteur orc 55
 
 	public VueSoldat(Soldat soldat) throws SlickException{
 		super(soldat);
@@ -34,10 +31,10 @@ public class VueSoldat extends VueMonstres {
 				this.chargerAnimation(CHEMIN_BLEU);
 				break;
 			case 1 :
-				this.chargerAnimation(CHEMIN_BLEU);
+				this.chargerAnimation(CHEMIN_ROUGE);
 				break;
 			case 2 :
-				this.chargerAnimation(CHEMIN_BLEU);
+				this.chargerAnimation(CHEMIN_VERT);
 				break;
 		}
 
@@ -45,17 +42,19 @@ public class VueSoldat extends VueMonstres {
 
 	protected void chargerAnimation(String chemin) throws SlickException{
 
-		chargerStaticGauche(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerStaticBas(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerStaticGauche(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerStaticHaut(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerStaticDroite(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
+		int largeur = m.getSPRITE_LARGEUR();
+		int hauteur = m.getSPRITE_HAUTEUR();
+		chargerStaticGauche(chemin,largeur, hauteur);
+		chargerStaticBas(chemin,largeur,hauteur);
+		chargerStaticGauche(chemin,  largeur,hauteur);
+		chargerStaticHaut(chemin,  largeur, hauteur);
+		chargerStaticDroite(chemin,  largeur, hauteur);
 
 
-		chargerMarcheBas(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerMarcheDroite(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerMarcheGauche(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		chargerMarcheHaut(chemin, LARGEUR_SPRITES, HAUTEUR_SPRITES);
+		chargerMarcheBas(chemin, largeur, hauteur);
+		chargerMarcheDroite(chemin, largeur, hauteur);
+		chargerMarcheGauche(chemin,  largeur, hauteur);
+		chargerMarcheHaut(chemin,  largeur, hauteur);
 		mortEffect();
 
 	}
@@ -152,9 +151,5 @@ public class VueSoldat extends VueMonstres {
 		this.animations[Monstre.MORT] = animation;
 	}
 
-	public static Image getImageGenerateur() throws SlickException {
-		SpriteSheet spriteSheet = new SpriteSheet(CHEMIN_BLEU, LARGEUR_SPRITES, HAUTEUR_SPRITES);
-		return spriteSheet.getSprite(0, 0);
-	}
 
 }
