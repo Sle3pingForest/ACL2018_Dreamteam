@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 import java.io.Serializable;
 import java.util.Observable;
 
-public abstract class Personnage extends Observable implements Serializable{
+public abstract class Personnage  implements Serializable{
 
 
     protected String nom;
@@ -50,6 +50,7 @@ public abstract class Personnage extends Observable implements Serializable{
 
 
     protected int directionActu = BAS;
+    protected boolean entrainDAttaque = false;
     
 	// sert a enlever les collisions pour tester plus facilement
 	protected boolean collision = true;
@@ -154,6 +155,7 @@ public abstract class Personnage extends Observable implements Serializable{
     }
     
     protected void attaquer(){
+        entrainDAttaque = true;
     	if(directionActu == BAS){
     		directionActu = ATTAQUER_BAS;
     	}
@@ -284,7 +286,7 @@ public abstract class Personnage extends Observable implements Serializable{
         	this.pointVie = this.pointVie- (i - defense);
     	}
     	else{
-    		this.pointVie = this.pointVie;
+    	//	this.pointVie = this.pointVie;
     	}
     }
 
@@ -385,5 +387,9 @@ public abstract class Personnage extends Observable implements Serializable{
 
     public int getSPRITE_LARGEUR(){
         return  SPRITE_LARGEUR;
+    }
+
+    public boolean getEntrainDAttaque(){
+        return  entrainDAttaque;
     }
 }

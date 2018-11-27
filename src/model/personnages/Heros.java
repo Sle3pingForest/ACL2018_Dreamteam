@@ -158,7 +158,7 @@ public class Heros extends Personnage {
      * @throws SlickException
      */
     public void updateHeros(Labyrinthe lab, int delta) throws SlickException{
-
+        entrainDAttaque = false;
         float vitesseActu = delta*VITESSE;
 
         float futureX = x + horizontal * vitesseActu;

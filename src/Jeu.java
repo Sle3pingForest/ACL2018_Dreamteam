@@ -58,7 +58,6 @@ public class Jeu extends BasicGameState {
         labyModel =  new Labyrinthe(50,50, 10);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
-        //lesHerosVue.add(new VueHeros(VueHeros.BLEU,lesHeros.get(0)));// car un joueur
         Song.chargerForet();
         Song.jouerBackground();
         float x = labyModel.getHeros(0).getX();

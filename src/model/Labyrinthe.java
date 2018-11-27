@@ -531,48 +531,6 @@ public class Labyrinthe implements Serializable{
 	}
 
 
-	/*public void deplacerMonstres(){
-		for(Monstre monstre :listeMonstres){
-			int x = (int)(monstre.getX() + 6)/ LARGEUR_MUR;
-			int y = (int)(monstre.getY() + 19) / HAUTEUR_MUR;
-			ArrayList<Integer> cheminValide = new ArrayList<>();
-			if(y+1 < hauteur-1 && tabMur[x][y+1] == null) {
-				cheminValide.add(2);
-			}
-			if(x+1 < longueur-1 && tabMur[x+1][y] == null) {
-				cheminValide.add(1);
-			}
-			if(y-1 > 0 && tabMur[x][y-1] == null) {
-				cheminValide.add(0);
-			}
-			if (x-1 > 0 && tabMur[x-1][y] == null) {
-				cheminValide.add(3);
-			}
-			// si le monstre est static 
-			//if (!check) direction = direction(monstre);
-			Random r = new Random();
-			int rd =  r.nextInt(cheminValide.size());
-			int direction = cheminValide.get(rd);
-			switch(direction){
-			case 0:
-				monstre.setVertical(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_HAUT);
-				break;
-			case 1:
-				monstre.setHorizontal(1);
-				monstre.setDirectionActu(Personnage.AVANCER_DROITE);
-				break;
-			case 2:
-				monstre.setVertical(1);
-				monstre.setDirectionActu(Personnage.AVANCER_BAS);
-				break;
-			case 3:
-				monstre.setHorizontal(-1);
-				monstre.setDirectionActu(Personnage.AVANCER_GAUCHE);
-			}
-		}
-	}*/
-
 	/**
 	 * Verifie la collision entre les monstres et les heros
 	 */
