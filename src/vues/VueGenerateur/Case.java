@@ -51,6 +51,9 @@ public class Case extends JLabel {
     public void ajouterHerbe(){
         niveau.suppCase(ligne,colonne);
     }
+    public void ajouterEpee(){
+        niveau.ajouterItem(type,ligne,colonne);
+    }
 
 
     public void ajouterElement(){
@@ -79,6 +82,11 @@ public class Case extends JLabel {
             case "tresor":
                 this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/tresor.png")));
                 ajouterTresor();
+                break;
+
+            case "epee":
+                this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/epee.png")));
+                ajouterEpee();
                 break;
 
             default:

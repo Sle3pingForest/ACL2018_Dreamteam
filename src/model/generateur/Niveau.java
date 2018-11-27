@@ -1,5 +1,6 @@
 package model.generateur;
 
+import model.Item.Epee;
 import model.Item.Item;
 import model.Item.Tresor;
 import model.mur.Mur;
@@ -7,10 +8,12 @@ import model.personnages.monstres.Dragon;
 import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Soldat;
 
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class Niveau extends Observable {
+public class Niveau extends Observable implements Serializable {
 
     private Mur[][] lesMurs;
     private ArrayList<Monstre> lesMonstres;
@@ -149,6 +152,9 @@ public class Niveau extends Observable {
         if(type.equals("tresor")){
             item = new Tresor(x,y,null);
         }
+        else if(type.equals("epee")){
+            item = new Epee(x,y);
+        }
         labEnCour.get(y).set(x,null);
         labItems.get(y).set(x, item);
         item.setPosX(x);
@@ -181,5 +187,15 @@ public class Niveau extends Observable {
         suppMur(x,y);
         this.xDebut = -1;
         this.yDebut = -1;
+    }
+
+    public void serialize() throws IOException {
+        File fichier =  new File("src/main/resources/sauvegardeEditeur/saveNiveau.save") ;
+
+        // ouverture d'un flux sur un fichier
+        ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
+
+        // sérialization de l'objet
+        oos.writeObject(this) ;
     }
 }
