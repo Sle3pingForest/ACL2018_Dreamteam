@@ -39,9 +39,11 @@ public class Niveau extends Observable {
         this.yDebut =y;
     }
 
-    public void ChangeDimension(int ligne, int colonne){
+    /*public void ChangeDimension(int ligne, int colonne){
+        for(int i = 0; i<) {
 
-    }
+        }
+    }*/
 
     public void ajouterLigne(int index ){
         ArrayList<Mur> ligneMur = new ArrayList<Mur>();
@@ -173,4 +175,11 @@ public class Niveau extends Observable {
     }
 
 
+    public void suppCase(int x, int y) {
+        suppItem(x,y);
+        suppMonstre(x,y);
+        suppMur(x,y);
+        this.xDebut = -1;
+        this.yDebut = -1;
+    }
 }

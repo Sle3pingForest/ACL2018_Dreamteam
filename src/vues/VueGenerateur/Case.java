@@ -33,23 +33,23 @@ public class Case extends JLabel {
     }
 
     public void ajouterMur(){
-        niveau.ajouterMur(colonne,ligne);
+        niveau.ajouterMur(ligne,colonne);
     }
 
     public void ajouterMonstre(){
-        niveau.ajouterMonstre(type,colonne,ligne);
+        niveau.ajouterMonstre(type,ligne,colonne);
     }
 
     public void ajouterHeros(){
-        niveau.placerHeros(colonne,ligne);
+        niveau.placerHeros(ligne,colonne);
     }
 
     public void ajouterTresor(){
-        niveau.ajouterItem(type,colonne,ligne);
+        niveau.ajouterItem(type,ligne,colonne);
     }
 
     public void ajouterHerbe(){
-
+        niveau.suppCase(ligne,colonne);
     }
 
 
