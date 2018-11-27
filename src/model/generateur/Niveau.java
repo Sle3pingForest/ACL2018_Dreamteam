@@ -1,8 +1,11 @@
 package model.generateur;
 
 import model.Item.Item;
+import model.Item.Tresor;
 import model.mur.Mur;
+import model.personnages.monstres.Dragon;
 import model.personnages.monstres.Monstre;
+import model.personnages.monstres.Soldat;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -34,6 +37,10 @@ public class Niveau extends Observable {
     public void placerHeros(int x,int y){
         this.xDebut = x;
         this.yDebut =y;
+    }
+
+    public void ChangeDimension(int ligne, int colonne){
+
     }
 
     public void ajouterLigne(int index ){
@@ -103,7 +110,8 @@ public class Niveau extends Observable {
         largeur--;
     }
 
-    public void ajouterMur(Mur mur,int x,int y){
+    public void ajouterMur(int x,int y){
+        Mur mur = new Mur(x,y);
         labEnCour.get(y).set(x,mur);
         mur.setPosX(x);
         mur.setPosY(y);
@@ -115,7 +123,14 @@ public class Niveau extends Observable {
         labEnCour.get(y).set(x,null);
     }
 
-    public void ajouterMonstre(Monstre monstre,int x,int y){
+    public void ajouterMonstre(String type,int x,int y){
+        Monstre monstre = null;
+        if(type.equals("dragon")){
+            monstre = new Dragon(x,y);
+        }
+        else if(type.equals("soldat")){
+            monstre = new Soldat(x,y);
+        }
         labEnCour.get(y).set(x,null);
         labMonstres.get(y).set(x, monstre);
         monstre.setX(x);
@@ -127,7 +142,11 @@ public class Niveau extends Observable {
     }
 
 
-    public void ajouterItem(Item item,int x,int y){
+    public void ajouterItem(String type,int x,int y){
+        Item item = null;
+        if(type.equals("tresor")){
+            item = new Tresor(x,y,null);
+        }
         labEnCour.get(y).set(x,null);
         labItems.get(y).set(x, item);
         item.setPosX(x);

@@ -5,14 +5,14 @@ import org.hamcrest.Description;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-public class MyTransferHandler extends TransferHandler implements Transferable{
+public class MyTransferHandler extends TransferHandler {
 
     //private Image image;
-    private String str;
     //private final DataFlavor flavors[] = { DataFlavor.imageFlavor };
     private final DataFlavor flavors[] = { DataFlavor.imageFlavor };
 
@@ -23,10 +23,10 @@ public class MyTransferHandler extends TransferHandler implements Transferable{
      * @return boolean
      */
     public boolean canImport(TransferHandler.TransferSupport info) {
-        if (!(info.getComponent() instanceof JLabel)) {
+        if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
             return false;
         }
-        return  true;
+        return true;
     }
 
     /**
@@ -35,40 +35,31 @@ public class MyTransferHandler extends TransferHandler implements Transferable{
      * @return boolean
      */
     public boolean importData(TransferHandler.TransferSupport support){
-        //Nous contrôlons si les données reçues sont d'un type autorisé
+        if(!canImport(support))
+            return false;
 
-        //On récupère notre objet Transferable, celui qui contient les données en transit
         Transferable data = support.getTransferable();
-        String s = null;
+        String str = "";
 
         try {
-            //Nous récupérons nos données en spécifiant ce que nous attendons
-            //i = (Image) data.getTransferData(DataFlavor.imageFlavor);
-            s = (String) data.getTransferData(DataFlavor.stringFlavor);
-
+            str = (String)data.getTransferData(DataFlavor.stringFlavor);
         } catch (UnsupportedFlavorException e){
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-
-        //Via le TRansferSupport, nous pouvons récupérer notre composant
         Case c = (Case)support.getComponent();
-        //Afin de lui affecter sa nouvelle valeur
-        c.setType(s);
-        //c.setIcon(new ImageIcon(i));
+        c.setType(str);
         c.ajouterElement();
 
-        return true;
+        return false;
     }
 
-    @Override
-    public Transferable createTransferable(JComponent comp) {
-        //image = null;
-        //image = (Image)((ImageIcon) (((JLabel)comp).getIcon())).getImage(); //We transfer image //image stays null
-        return this;
+    protected Transferable createTransferable(JComponent c) {
+        //On retourne un nouvel objet implémentant l'interface Transferable
+        //StringSelection implémente cette interface,  nous l'utilisons donc
+        return new StringSelection(((Case)c).getType());
     }
 
 
@@ -92,24 +83,5 @@ public class MyTransferHandler extends TransferHandler implements Transferable{
      */
     public int getSourceActions(JComponent c) {
         return COPY;
-    }
-
-    @Override
-    public DataFlavor[] getTransferDataFlavors() {
-        return flavors;
-    }
-
-    @Override
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavors[0].equals(flavor);
-    }
-
-    @Override
-    public Object getTransferData(DataFlavor flavor){
-
-        if (isDataFlavorSupported(flavor)) {
-           // return image;
-        }
-        return null;
     }
 }

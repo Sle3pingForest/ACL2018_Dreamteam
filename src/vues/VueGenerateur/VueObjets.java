@@ -18,12 +18,17 @@ public class VueObjets extends JPanel implements ActionListener {
     private ImageIcon dragon;
     private ImageIcon soldat;
     private ImageIcon heros;
-    private static int NBOBJET = 4;
+    private ImageIcon herbe;
+    private ImageIcon tresor;
 
-    private JLabel labelMur;
-    private JLabel labelSoldat;
-    private JLabel labelDragon;
-    private JLabel labelHeros;
+    private static int NBOBJET = 6;
+
+    private Case labelMur;
+    private Case labelSoldat;
+    private Case labelDragon;
+    private Case labelHeros;
+    private Case labelHerbe;
+    private Case labelTresor;
 
     private JTextField lon;
     private JTextField haut;
@@ -42,14 +47,24 @@ public class VueObjets extends JPanel implements ActionListener {
         dragon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/dragon.png"));;
         soldat = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/soldat.png"));;
         heros = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/heros.png"));;
-        mur.setDescription("test");
+        herbe = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/herbe.png"));;
+        tresor = new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/tresor.png"));;
 
         objet.setLayout(new GridLayout(NBOBJET/2,2));
 
-        labelMur = new JLabel(mur);
-        labelDragon = new JLabel(dragon);
-        labelSoldat = new JLabel(soldat);
-        labelHeros = new JLabel(heros);
+        labelMur = new Case(niv,-1,-1,mur);
+        labelDragon = new Case(niv,-1,-1,dragon);
+        labelSoldat = new Case(niv,-1,-1,soldat);
+        labelHeros = new Case(niv,-1,-1,heros);
+        labelHerbe = new Case(niv,-1,-1,herbe);
+        labelTresor = new Case(niv,-1,-1,tresor);
+
+        labelDragon.setType("dragon");
+        labelMur.setType("mur");
+        labelSoldat.setType("soldat");
+        labelHeros.setType("heros");
+        labelHerbe.setType("herbe");
+        labelTresor.setType("tresor");
 
         labelMur.setMinimumSize(new java.awt.Dimension(40,40));
         labelMur.setPreferredSize(new java.awt.Dimension(40,40));
@@ -61,6 +76,8 @@ public class VueObjets extends JPanel implements ActionListener {
         objet.add(labelDragon);
         objet.add(labelSoldat);
         objet.add(labelHeros);
+        objet.add(labelHerbe);
+        objet.add(labelTresor);
 
 
         JPanel dimension = new JPanel();
@@ -104,7 +121,6 @@ public class VueObjets extends JPanel implements ActionListener {
     }
 
     private void dragAndDrop(){
-        final String propertyName = "icon";
         labelMur.setTransferHandler(new MyTransferHandler());
         labelMur.addMouseListener(new MyMouseAdapter(this));
 
@@ -116,6 +132,12 @@ public class VueObjets extends JPanel implements ActionListener {
 
         labelHeros.setTransferHandler(new MyTransferHandler());
         labelHeros.addMouseListener(new MyMouseAdapter(this));
+
+        labelHerbe.setTransferHandler(new MyTransferHandler());
+        labelHerbe.addMouseListener(new MyMouseAdapter(this));
+
+        labelTresor.setTransferHandler(new MyTransferHandler());
+        labelTresor.addMouseListener(new MyMouseAdapter(this));
     }
 
     public void reInitIcon(){
@@ -123,6 +145,8 @@ public class VueObjets extends JPanel implements ActionListener {
         labelHeros.setIcon(heros);
         labelDragon.setIcon(dragon);
         labelSoldat.setIcon(soldat);
+        labelHerbe.setIcon(herbe);
+        labelTresor.setIcon(tresor);
     }
 
     @Override
