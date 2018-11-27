@@ -69,108 +69,118 @@ public abstract class Personnage  implements Serializable{
 	}
 
     public void goDroite(){
-        horizontal = 1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+        if(!estMort()) {
+            horizontal = 1;
+            if (vertical != 0) {
+                if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+                    directionActu = AVANCER_DROITE;
+                }
+            } else {
                 directionActu = AVANCER_DROITE;
             }
-        }else{
-            directionActu = AVANCER_DROITE;
         }
     }
 
     public void goGauche(){
-        horizontal = -1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+        if(!estMort()) {
+            horizontal = -1;
+            if (vertical != 0) {
+                if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+                    directionActu = AVANCER_GAUCHE;
+                }
+            } else {
                 directionActu = AVANCER_GAUCHE;
             }
-        }else{
-            directionActu = AVANCER_GAUCHE;
         }
     }
     public void goBas(){
-        vertical = 1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+        if(!estMort()) {
+            vertical = 1;
+            if (horizontal != 0) {
+                if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+                    directionActu = AVANCER_BAS;
+                }
+            } else {
                 directionActu = AVANCER_BAS;
             }
-        }else{
-            directionActu = AVANCER_BAS;
         }
     }
     public void goHaut(){
-
-        vertical = -1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+        if(!estMort()) {
+            vertical = -1;
+            if (horizontal != 0) {
+                if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+                    directionActu = AVANCER_HAUT;
+                }
+            } else {
                 directionActu = AVANCER_HAUT;
             }
-        }else{
-            directionActu = AVANCER_HAUT;
         }
     }
 
     public void arretGauche(){
 
-        if(horizontal == -1) {
-            horizontal = 0;
+        if(!estMort()) {
+            if(horizontal == -1) {
+                horizontal = 0;
 
-            if(vertical == 0){
-                directionActu = GAUCHE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
+                if(vertical == 0){
+                    directionActu = GAUCHE;
+                }else  if(vertical == -1){
+                    directionActu = AVANCER_HAUT;
+                }else{
+                    directionActu = AVANCER_BAS;
+                }
             }
         }
     }
 
     public  void arretDroite(){
+        if(!estMort()) {
+            if (horizontal == 1) {
+                horizontal = 0;
 
-        if(horizontal == 1) {
-            horizontal = 0;
-
-            if(vertical == 0){
-                directionActu = DROITE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
+                if (vertical == 0) {
+                    directionActu = DROITE;
+                } else if (vertical == -1) {
+                    directionActu = AVANCER_HAUT;
+                } else {
+                    directionActu = AVANCER_BAS;
+                }
             }
         }
     }
 
     public void arretBas(){
+        if(!estMort()) {
+            if (vertical == 1) {
+                vertical = 0;
 
-        if(vertical == 1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = BAS;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
+                if (horizontal == 0) {
+                    directionActu = BAS;
+                } else if (horizontal == -1) {
+                    directionActu = AVANCER_GAUCHE;
+                } else {
+                    directionActu = AVANCER_DROITE;
+                }
             }
         }
     }
     
     protected void attaquer(){
-        entrainDAttaque = true;
-    	if(directionActu == BAS){
-    		directionActu = ATTAQUER_BAS;
-    	}
-    	else if(directionActu == HAUT){
-    		directionActu = ATTAQUER_HAUT;
-    	}
-    	else if(directionActu == GAUCHE){
-    		directionActu = ATTAQUER_GAUCHE;
-    		
-    	}
-    	else if(directionActu == DROITE){
-    		directionActu = ATTAQUER_DROITE;
-    	}
+        if(!estMort()) {
+            entrainDAttaque = true;
+            if (directionActu == BAS) {
+                directionActu = ATTAQUER_BAS;
+            } else if (directionActu == HAUT) {
+                directionActu = ATTAQUER_HAUT;
+            } else if (directionActu == GAUCHE) {
+                directionActu = ATTAQUER_GAUCHE;
+
+            } else if (directionActu == DROITE) {
+                directionActu = ATTAQUER_DROITE;
+            }
+        }
     }
     
    
@@ -201,20 +211,23 @@ public abstract class Personnage  implements Serializable{
     }
     
     public void attaquerStop(){
-        directionActu = BAS;
+        if(!estMort()) {
+            directionActu = BAS;
+        }
    }
 
     public void arretHaut(){
+        if(!estMort()) {
+            if (vertical == -1) {
+                vertical = 0;
 
-        if(vertical == -1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = HAUT;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
+                if (horizontal == 0) {
+                    directionActu = HAUT;
+                } else if (horizontal == -1) {
+                    directionActu = AVANCER_GAUCHE;
+                } else {
+                    directionActu = AVANCER_DROITE;
+                }
             }
         }
     }
@@ -399,4 +412,7 @@ public abstract class Personnage  implements Serializable{
         return boxCollider;
     }
 
+    public boolean estMort(){
+        return pointVie <= 0;
+    }
 }
