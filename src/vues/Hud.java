@@ -3,6 +3,7 @@ package vues;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -19,6 +20,6 @@ public abstract class Hud {
 	
 	public abstract void init(float x, float y) throws SlickException;
 	
-	public abstract void render(int cameraX ,int cameraY,Graphics g);
+	public abstract void render(int cameraX , int cameraY, Graphics g, GameContainer container);
 
 }

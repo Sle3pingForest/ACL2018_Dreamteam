@@ -99,12 +99,12 @@ public class Jeu extends BasicGameState {
         
 
         labyVue.render(container,g,-cameraX,-cameraX+container.getWidth(),-cameraY,-cameraY+ container.getHeight());
-        this.hud.render(-cameraX, -cameraY,g);
+        this.hud.render(-cameraX, -cameraY,g, container);
         if (h.getPointVie() <= 0) {
         	this.hud_fin_du_jeu.init(h.getX(),h.getY() ); 
-        	this.hud_fin_du_jeu.render(cameraX, cameraY,g);
+        	this.hud_fin_du_jeu.render(-cameraX, -cameraY,g, container);
         }
-        if (h.getTresorDeMap() != null) this.hudVictory.render(-cameraX, -cameraY,g);
+        if (h.getTresorDeMap() != null) this.hudVictory.render(-cameraX, -cameraY,g, container);
     }
 
     public void keyPressed(int key, char c) {

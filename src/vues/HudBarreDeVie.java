@@ -27,7 +27,7 @@ public class HudBarreDeVie extends Hud{
 	}
 
 	@Override
-	public void render(int cameraX,int cameraY,Graphics g) {
+	public void render(int cameraX,int cameraY,Graphics g,GameContainer container) {
 
 		int taille = laby.getLink().getPointVie();
 		x = (int)cameraX+Labyrinthe.LARGEUR_MUR;
