@@ -36,7 +36,7 @@ public class VueObjets extends JPanel implements ActionListener {
     private Niveau niv;
 
 
-    public VueObjets(Niveau niv) {
+    public VueObjets(final Niveau niv) {
 
         this.niv = niv;
 
