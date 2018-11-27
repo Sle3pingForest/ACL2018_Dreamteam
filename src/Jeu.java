@@ -1,3 +1,4 @@
+import model.Item.Item;
 import model.Labyrinthe;
 import model.personnages.Heros;
 
@@ -114,7 +115,11 @@ public class Jeu extends BasicGameState {
             case Input.KEY_LEFT: labyModel.goGauche();   break;
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
-            case Input.KEY_SPACE: labyModel.attaquer() ; break;
+            case Input.KEY_SPACE: for (Item item : labyModel.getLink().getInventaire()){
+                if (item.getClass().getName().equals("model.Item.Epee")){
+                    labyModel.attaquer();
+                }
+            }  break;
             case Input.KEY_P: labyModel.tirer() ; break;
             case Input.KEY_B:	try {
 				save();

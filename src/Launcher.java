@@ -16,10 +16,9 @@ public class Launcher extends JFrame {
 
 
     public Launcher(int w,int h) {
-        super("Launcher");
-        setSize(382, 553);
-        setLocation((w-this.getSize().width)/2,(h-this.getSize().height)/2);
-        setContentPane(new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/background/launcher.jpg"))));
+
+        setTitle("Launcher");
+        setSize(100, 100);
 
         setLayout(new BorderLayout());
 
@@ -45,16 +44,10 @@ public class Launcher extends JFrame {
             }
         });
 
-        JPanel jp = new JPanel();
-        jp.setLayout(new GridLayout(1,2));
-        jp.add(jeu);
-        jp.add(editeur);
-
-        this.add(jp,BorderLayout.SOUTH);
+        this.add(jeu);
+        this.add(editeur);
 
         this.setVisible(true);
         this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
     }
-
-
 }

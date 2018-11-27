@@ -5,6 +5,9 @@ import model.generateur.Niveau;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+
+import controlleur.MyTransferHandler;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

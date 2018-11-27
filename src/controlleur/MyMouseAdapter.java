@@ -1,6 +1,9 @@
-package vues.VueGenerateur;
+package controlleur;
 
 import javax.swing.*;
+
+import vues.VueGenerateur.VueObjets;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
