@@ -15,7 +15,7 @@ public class Launcher extends JFrame {
     private JButton editeur;
 
 
-    public Launcher(int w,int h) {
+    public Launcher(final int w,final int h) {
 
         setTitle("Launcher");
         setSize(100, 100);

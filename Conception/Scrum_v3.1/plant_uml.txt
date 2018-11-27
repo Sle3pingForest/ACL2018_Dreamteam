@@ -15,7 +15,11 @@ BasicGame <|- Principal
 BasicGame <|-- Menu
 package "model" {
 
+class Niveau
+
 class Labyrinthe 
+Labyrinthe <|-- Niveau
+
 package "mur" {
 class Mur
 }
@@ -50,6 +54,15 @@ class VueLabyrinthe
 class Song
 class VueElementDecor
 class VueHeros
+abstract class Hub
+class HudBarreDeVie
+class HudVictoire
+
+Hub <|-- HudBarreDeVie
+Hub <|-- HudEndGame
+Hub <|-- HudVictoire
+
+Jeu <|-- Hub
 
 package vueItem {
 VueItem <|-- VueTresor
@@ -63,6 +76,17 @@ VueMonstres <|-- VueSoldat
 VueMonstres <|-- VueDragon
 }
 
+
+package VueGenerateur{
+class Case
+class VueCreaLaby
+class VueGenerateur
+class VueObjet
+VueGenerateur <|-- VueObjet
+VueGenerateur <|-- VueCreaLaby
+
+Niveau <|-- Case
+VueGenerateur "1" -- "1" Niveau
 }
 
 package org.newdawn.slick {
@@ -71,7 +95,7 @@ class BasicGame
 
 Labyrinthe "1" --* "*"  Mur
 Labyrinthe "1" --* "*" Item 
-Jeu --> "1" Labyrinthe
+Jeu --------> "1" Labyrinthe
 Jeu  --* "1" VueLabyrinthe
 
 VueLabyrinthe -* VueElementDecor

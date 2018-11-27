@@ -4,6 +4,10 @@ import model.generateur.Niveau;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import controlleur.MyMouseAdapter;
+import controlleur.MyTransferHandler;
+
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
@@ -36,7 +40,7 @@ public class VueObjets extends JPanel implements ActionListener {
     private Niveau niv;
 
 
-    public VueObjets(Niveau niv) {
+    public VueObjets(final Niveau niv) {
 
         this.niv = niv;
 
