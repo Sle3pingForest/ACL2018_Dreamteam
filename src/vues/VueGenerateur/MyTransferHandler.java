@@ -1,12 +1,20 @@
 package vues.VueGenerateur;
 
+import org.hamcrest.Description;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-public class MyTransferHandler extends TransferHandler{
+public class MyTransferHandler extends TransferHandler implements Transferable{
+
+    //private Image image;
+    private String str;
+    //private final DataFlavor flavors[] = { DataFlavor.imageFlavor };
+    private final DataFlavor flavors[] = { DataFlavor.imageFlavor };
 
     /**
      * Méthode permettant à l'objet de savoir si les données reçues
@@ -15,7 +23,10 @@ public class MyTransferHandler extends TransferHandler{
      * @return boolean
      */
     public boolean canImport(TransferHandler.TransferSupport info) {
-        return true;
+        if (!(info.getComponent() instanceof JLabel)) {
+            return false;
+        }
+        return  true;
     }
 
     /**
@@ -25,29 +36,41 @@ public class MyTransferHandler extends TransferHandler{
      */
     public boolean importData(TransferHandler.TransferSupport support){
         //Nous contrôlons si les données reçues sont d'un type autorisé
-        if(!canImport(support))
-            return false;
 
         //On récupère notre objet Transferable, celui qui contient les données en transit
         Transferable data = support.getTransferable();
-        ImageIcon i = new ImageIcon();
+        String s = null;
 
         try {
             //Nous récupérons nos données en spécifiant ce que nous attendons
-            i = (ImageIcon) data.getTransferData(DataFlavor.imageFlavor);
+            //i = (Image) data.getTransferData(DataFlavor.imageFlavor);
+            s = (String) data.getTransferData(DataFlavor.stringFlavor);
+
         } catch (UnsupportedFlavorException e){
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+
+
         //Via le TRansferSupport, nous pouvons récupérer notre composant
-        JLabel lab = (JLabel)support.getComponent();
+        Case c = (Case)support.getComponent();
         //Afin de lui affecter sa nouvelle valeur
-        lab.setIcon(i);
+        c.setType(s);
+        //c.setIcon(new ImageIcon(i));
+        c.ajouterElement();
 
         return true;
     }
+
+    @Override
+    public Transferable createTransferable(JComponent comp) {
+        //image = null;
+        //image = (Image)((ImageIcon) (((JLabel)comp).getIcon())).getImage(); //We transfer image //image stays null
+        return this;
+    }
+
 
     /**
      * Cette méthode est invoquée à la fin de l'action DROP
@@ -56,17 +79,7 @@ public class MyTransferHandler extends TransferHandler{
      * @param t
      * @param action
      */
-    protected void exportDone(JComponent c, Transferable t, int action){}
-
-    /**
-     * Dans cette méthode, nous allons créer l'objet utilisé par le système de drag'n drop
-     * afin de faire circuler les données entre les composants
-     * Vous pouvez voir qu'il s'agit d'un objet de type Transferable
-     * @param c
-     * @return
-     */
-    protected Transferable createTransferable(JComponent c) {
-        return null;
+    protected void exportDone(JComponent c, Transferable t, int action){
 
     }
 
@@ -81,4 +94,22 @@ public class MyTransferHandler extends TransferHandler{
         return COPY;
     }
 
+    @Override
+    public DataFlavor[] getTransferDataFlavors() {
+        return flavors;
+    }
+
+    @Override
+    public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return flavors[0].equals(flavor);
+    }
+
+    @Override
+    public Object getTransferData(DataFlavor flavor){
+
+        if (isDataFlavorSupported(flavor)) {
+           // return image;
+        }
+        return null;
+    }
 }

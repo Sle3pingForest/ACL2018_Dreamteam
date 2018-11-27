@@ -5,8 +5,9 @@ import model.mur.Mur;
 import model.personnages.monstres.Monstre;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Niveau {
+public class Niveau extends Observable {
 
     private Mur[][] lesMurs;
     private ArrayList<Monstre> lesMonstres;
@@ -17,6 +18,7 @@ public class Niveau {
     private ArrayList<ArrayList<Monstre>>  labMonstres;
     private ArrayList<ArrayList<Item>> labItems;
     private int hauteur =0,largeur=0;
+
 
     public Niveau(String nom) {
         this.nom = nom;
@@ -136,4 +138,20 @@ public class Niveau {
     public void suppItem(int x,int y){
         labMonstres.get(y).set(x,null);
     }
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public void setHauteurLargeur(int hauteur,int largeur) {
+        this.hauteur = hauteur;
+        this.largeur = largeur;
+        setChanged();
+        notifyObservers();
+    }
+    public int getLargeur() {
+        return largeur;
+    }
+
+
 }
