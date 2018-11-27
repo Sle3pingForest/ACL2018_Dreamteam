@@ -544,13 +544,16 @@ public class Labyrinthe implements Serializable{
 	 * Verifie la collision entre les monstres et les heros
 	 */
 	public void collison(){
-		Rectangle boxHero  = lesHeros.get(0).getBoxCollider();
-		Rectangle boxMonstre ;
-		for(Monstre monstre: listeMonstres){
-			if(!monstre.estMort()) {
-				boxMonstre = monstre.getBoxCollider();
-				if (boxHero.intersects(boxMonstre)) {
-					lesHeros.get(0).setPointVie(monstre.getAttaque());
+		if(!lesHeros.get(0).estInvulnerable()) {
+			Rectangle boxHero = lesHeros.get(0).getBoxColliderDegat();
+			Rectangle boxMonstre;
+			for (Monstre monstre : listeMonstres) {
+				if (!monstre.estMort()) {
+					boxMonstre = monstre.getBoxColliderDegat();
+					if (boxHero.intersects(boxMonstre)) {
+						lesHeros.get(0).setPointVie(monstre.getAttaque());
+						lesHeros.get(0).mettreInvulnerable();
+					}
 				}
 			}
 		}

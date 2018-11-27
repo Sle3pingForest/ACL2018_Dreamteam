@@ -27,6 +27,8 @@ public class Heros extends Personnage {
     private final static float VITESSE = 0.2f;
 
 
+    protected float tempsInvulnerable = 0.5f;
+    protected float tempsRestantInvulnerable = 0 ;
 
     protected int tailleInventaire = 10;
 
@@ -42,8 +44,8 @@ public class Heros extends Personnage {
     	this.projectile = new Projectile(x,y);
     	lprojectile = new ArrayList<>();
         boxCollider = new Rectangle(x+DECALAGE_LARGEUR,y+DECALAGE_HAUTEUR,LARGEUR-DECALAGE_LARGEUR,HAUTEUR-DECALAGE_HAUTEUR);
-
-    }
+		boxColliderDegat =  new Rectangle(x+DECALAGE_LARGEUR,y,LARGEUR,HAUTEUR);
+	}
     
     public void charge(Heros h) {
     	this.x = h.getX();
@@ -162,6 +164,8 @@ public class Heros extends Personnage {
 
         boxCollider.setY(futureY+DECALAGE_HAUTEUR);
         boxCollider.setX(futureX+DECALAGE_LARGEUR);
+        boxColliderDegat.setX(futureX+DECALAGE_LARGEUR);
+        boxColliderDegat.setY(futureY);
 
 
         if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
@@ -174,6 +178,8 @@ public class Heros extends Personnage {
                     }else{
                         boxCollider.setX(x+DECALAGE_LARGEUR);
                         boxCollider.setY(y+DECALAGE_HAUTEUR);
+						boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+						boxColliderDegat.setY(y);
                     }
                 }
                 if(horizontal == -1){
@@ -182,6 +188,8 @@ public class Heros extends Personnage {
                     }else{
                         boxCollider.setX(x+DECALAGE_LARGEUR);
                         boxCollider.setY(y+DECALAGE_HAUTEUR);
+						boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+						boxColliderDegat.setY(y);
                     }
                 }
             } else {
@@ -199,6 +207,8 @@ public class Heros extends Personnage {
                         }else{
                             boxCollider.setX(x+DECALAGE_LARGEUR);
                             boxCollider.setY(y+DECALAGE_HAUTEUR);
+							boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+							boxColliderDegat.setY(y);
                         }
                     }
                     if(vertical == 1){
@@ -207,6 +217,8 @@ public class Heros extends Personnage {
                         }else{
                             boxCollider.setX(x+DECALAGE_LARGEUR);
                             boxCollider.setY(y+DECALAGE_HAUTEUR);
+							boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+							boxColliderDegat.setY(y);
                         }
                     }
                 }else {
@@ -252,7 +264,9 @@ public class Heros extends Personnage {
 			}
 		}
 
-
+		if(estInvulnerable()){
+			tempsRestantInvulnerable -= delta*0.001;
+		}
     }
     
 	public void toucherProjetile(Labyrinthe lab){
@@ -273,10 +287,10 @@ public class Heros extends Personnage {
 					m.mortMonstres(); 
 				}
 			}
-			/*if(this.getPointVie() <= 0){
+			if(this.getPointVie() <= 0){
                 Labyrinthe.MORT_HEROS = true;
 				this.mort();
-			}*/
+			}
 		}
 	}
 
@@ -350,4 +364,12 @@ public class Heros extends Personnage {
         }
 
     }
+
+    public void mettreInvulnerable(){
+    	tempsRestantInvulnerable = tempsInvulnerable;
+	}
+
+	public boolean estInvulnerable(){
+    	return tempsRestantInvulnerable > 0;
+	}
 }

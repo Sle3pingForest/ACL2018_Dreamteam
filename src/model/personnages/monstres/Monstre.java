@@ -52,6 +52,8 @@ public abstract class Monstre extends Personnage {
 
 		boxCollider.setY(futureY+decalage_hauteur);
 		boxCollider.setX(futureX+decalage_largeur);
+		boxColliderDegat.setX(futureX+decalage_largeur);
+		boxColliderDegat.setY(futureY);
 
 
 		if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
@@ -62,6 +64,8 @@ public abstract class Monstre extends Personnage {
 					}else{
 						boxCollider.setX(x+decalage_largeur);
 						boxCollider.setY(y+decalage_hauteur);
+						boxColliderDegat.setX(x+decalage_largeur);
+						boxColliderDegat.setY(y);
 						collision = true;
 					}
 				}
@@ -71,6 +75,8 @@ public abstract class Monstre extends Personnage {
 					}else{
 						boxCollider.setX(x+decalage_largeur);
 						boxCollider.setY(y+decalage_hauteur);
+						boxColliderDegat.setX(x+decalage_largeur);
+						boxColliderDegat.setY(y);
 						collision = true;
 					}
 				}
@@ -89,6 +95,8 @@ public abstract class Monstre extends Personnage {
 						}else{
 							boxCollider.setX(x+decalage_largeur);
 							boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
+							boxColliderDegat.setY(y);
 							collision = true;
 						}
 					}
@@ -98,6 +106,8 @@ public abstract class Monstre extends Personnage {
 						}else{
 							boxCollider.setX(x+decalage_largeur);
 							boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
+							boxColliderDegat.setY(y);
 							collision = true;
 						}
 					}

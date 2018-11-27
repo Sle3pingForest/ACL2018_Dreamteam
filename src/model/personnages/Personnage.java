@@ -43,6 +43,7 @@ public abstract class Personnage  implements Serializable{
     public final static int MORT_GAUCHE = 16;
 
     protected Rectangle boxCollider;
+    protected Rectangle boxColliderDegat;
 
     protected int SPRITE_LARGEUR = 0;
     protected int SPRITE_HAUTEUR = 0;
@@ -410,6 +411,10 @@ public abstract class Personnage  implements Serializable{
 
     public Rectangle getBoxCollider(){
         return boxCollider;
+    }
+
+    public Rectangle getBoxColliderDegat(){
+        return boxColliderDegat;
     }
 
     public boolean estMort(){
