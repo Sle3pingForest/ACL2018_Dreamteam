@@ -153,7 +153,6 @@ public class Jeu extends BasicGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-	    System.out.println(delta);
         labyModel.update(container,delta);
         /*if(labyModel.isTresorTrouver()){
             //container.exit();
