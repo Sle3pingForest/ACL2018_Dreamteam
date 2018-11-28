@@ -48,7 +48,6 @@ public class JeuSerializableDAO implements JeuDAO{
 				//jeu_charge.setContainer((GameContainer) ois.readObject());
 				//jeu_charge.setLesHerosVue( (ArrayList<VueHeros>) ois.readObject());
 				//jeu_charge.setLaby((VueLabyrinthe) ois.readObject());
-				System.out.println("LOAD");
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
