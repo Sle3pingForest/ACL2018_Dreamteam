@@ -1,7 +1,5 @@
 package controlleur;
 
-import org.hamcrest.Description;
-
 import vues.VueGenerateur.Case;
 
 import javax.swing.*;

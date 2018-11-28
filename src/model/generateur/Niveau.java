@@ -198,4 +198,23 @@ public class Niveau extends Observable implements Serializable {
         // sérialization de l'objet
         oos.writeObject(this) ;
     }
+
+    /*public void deSerilize() throws FileNotFoundException {
+
+
+        // dans une méthode main
+        // on simplifie le code en retirant la gestion des exceptions
+        File fichier =  new File("tmp/marin.ser") ;
+
+        // ouverture d'un flux sur un fichier
+        ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
+
+        // désérialization de l'objet
+        Marin m = (Marin)ois.readObject() ;
+        System.out.println(m) ;
+
+        // fermeture du flux dans le bloc finally
+
+
+    }*/
 }
