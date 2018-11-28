@@ -1,6 +1,7 @@
 package model.Item;
 
 import model.personnages.Heros;
+import org.newdawn.slick.geom.Rectangle;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ public abstract class Item implements Serializable {
     private int posY;
     private boolean ramasser;
     private boolean ramassable;
+    protected Rectangle boxCollider;
 
     public Item(int posX, int posY){
         this.posX = posX;
@@ -51,6 +53,10 @@ public abstract class Item implements Serializable {
     }
 
     public void blesser(Heros heros){
-        heros.setPointVie(heros.getPointVie()-1);
+        heros.perdrePointDeVie(1);
+    }
+
+    public Rectangle getBoxCollider() {
+        return boxCollider;
     }
 }

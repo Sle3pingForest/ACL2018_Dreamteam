@@ -1,25 +1,19 @@
 package model.personnages.monstres;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import model.personnages.Heros;
-import org.newdawn.slick.SlickException;
-
-import org.newdawn.slick.geom.Rectangle;
 import model.Labyrinthe;
 import model.mur.Mur;
 import model.personnages.Personnage;
+import org.newdawn.slick.SlickException;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Monstre extends Personnage {
 
 
 	public final static  float VITESSE_M = 0.05f;
 
-	protected int largeur = 17;
-	protected int hauteur = 41;
-	protected int decalage_largeur = 15;
-	protected int decalage_hauteur = 20;
+
 	
 	protected int xCasePrece;
 	protected int yCasePrece;
@@ -275,21 +269,7 @@ public abstract class Monstre extends Personnage {
 	}
 
 
-	public int getXCentre(){
-		return (int)(x +(decalage_largeur+ largeur)/2);
-	}
 
-	public int getYCentre(){
-		return (int)(y +(decalage_hauteur+ hauteur)/2);
-	}
-
-	public int getYCaseCentre(){
-		return (int)(getYCentre())/Labyrinthe.HAUTEUR_MUR;
-	}
-
-	public int getXCaseCentre(){
-		return (int)(getXCentre())/Labyrinthe.LARGEUR_MUR;
-	}
 
 
 
