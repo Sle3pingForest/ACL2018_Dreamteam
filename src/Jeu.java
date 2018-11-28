@@ -73,7 +73,7 @@ public class Jeu extends BasicGameState {
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
     	labyVue = VueLabyrinthe.getInstance();
-    	labyModel.getHeros(0).charge(lesHeros2.get(0));
+        labyModel.getHeros(0).charge(lesHeros2.get(0));
 	}
     
 
@@ -123,7 +123,6 @@ public class Jeu extends BasicGameState {
             case Input.KEY_P: labyModel.tirer() ; break;
             case Input.KEY_B:	try {
 				save();
-				System.out.println("SAVE");
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

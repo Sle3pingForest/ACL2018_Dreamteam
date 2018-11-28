@@ -35,7 +35,7 @@ public class MainScreenGameState extends BasicGameState {
 		// TODO Auto-generated method stub
 		background.draw(0, 0, container.getWidth(), container.getHeight());
 		g.drawImage(press, width/2, (float) (height/2.5));
-		// g.drawString("Appuyez sur entrée", width/2, height/3);
+		// g.drawString("Appuyez sur entree", width/2, height/3);
 	}
 
 	@Override

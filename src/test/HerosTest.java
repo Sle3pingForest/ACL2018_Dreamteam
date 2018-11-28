@@ -1,4 +1,4 @@
-package test;
+/*package test;
 import static org.junit.Assert.*;
 
 import model.Item.Piege;
@@ -59,5 +59,7 @@ public class HerosTest {
 		h.setTailleInventaire(-2);
 		assertEquals(6, h.getTailleInventaire());
 	}
+
+
 	
-}
+}*/
