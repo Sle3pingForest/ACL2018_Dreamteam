@@ -2,16 +2,13 @@ package model.personnages;
 
 import model.Item.Item;
 import model.Item.Projectile;
-import model.Item.Piege;
-import model.Item.Ramassable;
 import model.Item.Tresor;
 import model.Labyrinthe;
-
-import java.util.ArrayList;
-
 import model.personnages.monstres.Monstre;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+
+import java.util.ArrayList;
 
 
 public class Heros extends Personnage {
