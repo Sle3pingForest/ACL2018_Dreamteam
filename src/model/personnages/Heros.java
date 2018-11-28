@@ -227,11 +227,11 @@ public class Heros extends Personnage {
             }
         }
 
-        toucherProjetile(lab);
 
 		float vitesseProjectille = delta*Projectile.VITESSE;
 		ArrayList<Projectile> lp = this.getLprojectile();
 		for (Projectile p : lp ) {
+	        toucherProjetile(lab,p);
 			float xP = p.getX();
 			float yP = p.getY();
 			int horizontalP = p.getHorizontal();
@@ -269,9 +269,9 @@ public class Heros extends Personnage {
 		}
     }
     
-	public void toucherProjetile(Labyrinthe lab){
-		float xP = this.getProjectile().getX()/Labyrinthe.LARGEUR_MUR;
-		float yP = this.getProjectile().getY()/Labyrinthe.HAUTEUR_MUR;
+	public void toucherProjetile(Labyrinthe lab, Projectile project){
+		float xP = project.getX()/Labyrinthe.LARGEUR_MUR;
+		float yP = project.getY()/Labyrinthe.HAUTEUR_MUR;
 		for(Monstre m : lab.getListeMonstres()){
 			float xM = m.getX()/Labyrinthe.LARGEUR_MUR;
 			float yM = m.getY()/Labyrinthe.HAUTEUR_MUR;
@@ -362,7 +362,6 @@ public class Heros extends Personnage {
                 mort();
             }
         }
-
     }
 
     public void mettreInvulnerable(){

@@ -4,7 +4,7 @@ import model.personnages.Personnage;
 
 public class Projectile extends Item {
 
-	public final static float VITESSE = 0.1f;
+	public final static float VITESSE = 0.3f;
     protected int vertical = 0;
     protected int horizontal = 0;
     //Position static
@@ -17,7 +17,7 @@ public class Projectile extends Item {
 
     protected int directionActu = -1;
 	protected boolean collision = true, touche;
-	protected int porte = 4;
+	protected int porte = 6;
 	protected float xInit, yInit;
     
 	
