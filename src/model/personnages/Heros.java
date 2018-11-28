@@ -17,21 +17,19 @@ public class Heros extends Personnage {
     private ArrayList<Item> inventaire;
     private Projectile projectile;
     private ArrayList<Projectile> lprojectile;
-    private final static int LARGEUR=21;
-    private final static int HAUTEUR=23;
-    private final static  int DECALAGE_LARGEUR=5;
-    private final static  int DECALAGE_HAUTEUR=20;
     private final static float VITESSE = 0.2f;
 
 
-    protected float tempsInvulnerable = 0.5f;
-    protected float tempsRestantInvulnerable = 0 ;
 
     protected int tailleInventaire = 10;
 
 
     public Heros(float x, float y, String nom){
     	super(x,y);
+		largeur=21;
+		hauteur=23;
+		decalage_largeur=5;
+		decalage_hauteur=20;
     	this.pointVie = 5;
     	this.nom = nom;
     	this.attaque = 3;
@@ -40,8 +38,8 @@ public class Heros extends Personnage {
     	tailleInventaire = 10;
     	this.projectile = new Projectile(x,y);
     	lprojectile = new ArrayList<>();
-        boxCollider = new Rectangle(x+DECALAGE_LARGEUR,y+DECALAGE_HAUTEUR,LARGEUR-DECALAGE_LARGEUR,HAUTEUR-DECALAGE_HAUTEUR);
-		boxColliderDegat =  new Rectangle(x+DECALAGE_LARGEUR,y,LARGEUR,HAUTEUR);
+        boxCollider = new Rectangle(x+decalage_largeur,y+decalage_hauteur,largeur-decalage_largeur,hauteur-decalage_hauteur);
+		boxColliderDegat =  new Rectangle(x+decalage_largeur,y,largeur,hauteur);
 	}
     
     public void charge(Heros h) {
@@ -137,7 +135,9 @@ public class Heros extends Personnage {
             }
             else if(i.getClass().getName().equals("model.Item.Piege")){
                 if(!i.isRamasser()){
-                    i.blesser(this);
+					System.out.println("Avant " + getPointVie());
+					i.blesser(this);
+					System.out.println("Après " + getPointVie());
                     i.ramasser();
                 }
             }
@@ -159,9 +159,9 @@ public class Heros extends Personnage {
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
 
-        boxCollider.setY(futureY+DECALAGE_HAUTEUR);
-        boxCollider.setX(futureX+DECALAGE_LARGEUR);
-        boxColliderDegat.setX(futureX+DECALAGE_LARGEUR);
+        boxCollider.setY(futureY+decalage_hauteur);
+        boxCollider.setX(futureX+decalage_largeur);
+        boxColliderDegat.setX(futureX+decalage_largeur);
         boxColliderDegat.setY(futureY);
 
 
@@ -170,12 +170,12 @@ public class Heros extends Personnage {
 
 
                 if(horizontal == 1){
-                    if(!collisionHorizontale(lab, x+LARGEUR, y)){
+                    if(!collisionHorizontale(lab, x+largeur, y)){
                         setX(futureX);
                     }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
-						boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setX(x+decalage_largeur);
+                        boxCollider.setY(y+decalage_hauteur);
+						boxColliderDegat.setX(x+decalage_largeur);
 						boxColliderDegat.setY(y);
                     }
                 }
@@ -183,9 +183,9 @@ public class Heros extends Personnage {
                     if(!collisionHorizontale(lab, futureX, futureY)){
                         setX(futureX);
                     }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
-						boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+                        boxCollider.setX(x+decalage_largeur);
+                        boxCollider.setY(y+decalage_hauteur);
+						boxColliderDegat.setX(x+decalage_largeur);
 						boxColliderDegat.setY(y);
                     }
                 }
@@ -202,19 +202,19 @@ public class Heros extends Personnage {
                         if(!collisionVetical(lab, futureX, futureY)){
                             setY(futureY);
                         }else{
-                            boxCollider.setX(x+DECALAGE_LARGEUR);
-                            boxCollider.setY(y+DECALAGE_HAUTEUR);
-							boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+                            boxCollider.setX(x+decalage_largeur);
+                            boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
 							boxColliderDegat.setY(y);
                         }
                     }
                     if(vertical == 1){
-                        if(!collisionVetical( lab,futureX, futureY+HAUTEUR)){
+                        if(!collisionVetical( lab,futureX, futureY+hauteur)){
                             setY(futureY);
                         }else{
-                            boxCollider.setX(x+DECALAGE_LARGEUR);
-                            boxCollider.setY(y+DECALAGE_HAUTEUR);
-							boxColliderDegat.setX(x+DECALAGE_LARGEUR);
+                            boxCollider.setX(x+decalage_largeur);
+                            boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
 							boxColliderDegat.setY(y);
                         }
                     }
@@ -279,7 +279,7 @@ public class Heros extends Personnage {
 
 			if(estToucher){
 				//lesHeros.get(0).setPointVie(m.getAttaque());
-				m.setPointVie(this.getAttaque()*5);
+				m.perdrePointDeVie(this.getAttaque()*5);
 				if(m.getPointVie() <= 0){
 					m.mortMonstres(); 
 				}
@@ -349,7 +349,7 @@ public class Heros extends Personnage {
 
             if(estToucher){
                // setPointVie(m.getAttaque());
-                m.setPointVie(getAttaque());
+                m.perdrePointDeVie(getAttaque());
                 if(m.getPointVie() <= 0){
                     m.mortMonstres();
                 }
@@ -361,11 +361,5 @@ public class Heros extends Personnage {
         }
     }
 
-    public void mettreInvulnerable(){
-    	tempsRestantInvulnerable = tempsInvulnerable;
-	}
 
-	public boolean estInvulnerable(){
-    	return tempsRestantInvulnerable > 0;
-	}
 }

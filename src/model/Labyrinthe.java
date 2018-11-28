@@ -1,15 +1,4 @@
 package model;
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 import model.Item.Item;
 import model.Item.ItemFactory;
 import model.Item.Tresor;
@@ -23,6 +12,10 @@ import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Labyrinthe implements Serializable{
@@ -551,7 +544,7 @@ public class Labyrinthe implements Serializable{
 				if (!monstre.estMort()) {
 					boxMonstre = monstre.getBoxColliderDegat();
 					if (boxHero.intersects(boxMonstre)) {
-						lesHeros.get(0).setPointVie(monstre.getAttaque());
+						lesHeros.get(0).perdrePointDeVie(monstre.getAttaque());
 						lesHeros.get(0).mettreInvulnerable();
 					}
 				}
