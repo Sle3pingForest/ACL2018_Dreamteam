@@ -83,6 +83,7 @@ public class VueCreaLaby extends JPanel implements Observer {
         jp.setPreferredSize(new Dimension(nbLigne*50,nbColonne*50));
 
         for(int i =0;i<nbLigne;i++){
+            //niv.ajouterLigne(i);
             for(int j =0;j<nbColonne;j++){
                 tabLab[i][j] = new Case(niv,i,j,new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/herbe.png")));
                 tabLab[i][j].setTransferHandler(new MyTransferHandler());

@@ -114,11 +114,12 @@ public class VueObjets extends JPanel implements ActionListener{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
+                /*try {
                     niv.serialize();
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                }
+                }*/
+                //niv.creerLab();
             }
         });
 

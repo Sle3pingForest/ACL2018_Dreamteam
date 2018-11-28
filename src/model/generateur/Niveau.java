@@ -16,13 +16,14 @@ import java.util.Observable;
 public class Niveau extends Observable implements Serializable {
 
     private Mur[][] lesMurs;
+    private Monstre[][] checkMonstres;
     private ArrayList<Monstre> lesMonstres;
     private Item[][] lesItems;
     private String nom;
     private int xFin,yFin,xDebut,yDebut;
-    private ArrayList<ArrayList<Mur>> labEnCour;
-    private ArrayList<ArrayList<Monstre>>  labMonstres;
-    private ArrayList<ArrayList<Item>> labItems;
+    private ArrayList<Mur> labEnCour;
+    private ArrayList<Monstre>  labMonstres;
+    private ArrayList<Item> labItems;
     private int hauteur =0,largeur=0;
 
 
@@ -32,9 +33,9 @@ public class Niveau extends Observable implements Serializable {
         this.yDebut = -1;
         this.xFin = -1;
         this.yFin = -1;
-        labEnCour = new ArrayList<ArrayList<Mur>>();
-        labMonstres = new ArrayList<ArrayList<Monstre>>();
-        labItems = new ArrayList<ArrayList<Item>>();
+        labEnCour = new ArrayList<Mur>();
+        labMonstres = new ArrayList<Monstre>();
+        labItems = new ArrayList<Item>();
     }
 
     public void placerHeros(int x,int y){
@@ -48,7 +49,7 @@ public class Niveau extends Observable implements Serializable {
         }
     }*/
 
-    public void ajouterLigne(int index ){
+    /*public void ajouterLigne(int index ){
         ArrayList<Mur> ligneMur = new ArrayList<Mur>();
         ArrayList<Monstre> ligneMonstre = new ArrayList<Monstre>();
         ArrayList<Item> ligneItemps = new ArrayList<Item>();
@@ -62,9 +63,9 @@ public class Niveau extends Observable implements Serializable {
         labMonstres.add(index,ligneMonstre);
         labItems.add(index,ligneItemps);
         hauteur++;
-    }
+    }*/
 
-    public void ajouterColonne(int index){
+    /*public void ajouterColonne(int index){
 
         for(int i = 0 ; i < hauteur ; i++){
             labEnCour.get(i).add(index,new Mur(largeur,i));
@@ -74,7 +75,7 @@ public class Niveau extends Observable implements Serializable {
 
         largeur++;
 
-    }
+    }*/
 
     public void suppLigne(int index){
 
@@ -94,7 +95,7 @@ public class Niveau extends Observable implements Serializable {
         hauteur--;
     }
 
-    public void suppColonne(int index){
+    /*public void suppColonne(int index){
 
         if(index == xDebut){
             xDebut = -1;
@@ -113,20 +114,25 @@ public class Niveau extends Observable implements Serializable {
         }
 
         largeur--;
-    }
+    }*/
 
     public void ajouterMur(int x,int y){
         Mur mur = new Mur(x,y);
-        labEnCour.get(y).set(x,mur);
-        mur.setPosX(x);
-        mur.setPosY(y);
-        labMonstres.get(y).set(x,null);
-        labItems.get(y).set(x,null);
+        lesMurs[x][y] = mur;
+        if(checkMonstres[x][y] != null){
+            labMonstres.remove(checkMonstres[x][y]);
+            checkMonstres[x][y] = null;
+        }
+
+        if(lesItems[x][y] != null){
+            lesItems[x][y] =null;
+        }
+
     }
 
-    public void suppMur(int x,int y){
+    /*public void suppMur(int x,int y){
         labEnCour.get(y).set(x,null);
-    }
+    }*/
 
     public void ajouterMonstre(String type,int x,int y){
         Monstre monstre = null;
@@ -136,15 +142,27 @@ public class Niveau extends Observable implements Serializable {
         else if(type.equals("soldat")){
             monstre = new Soldat(x,y);
         }
-        labEnCour.get(y).set(x,null);
-        labMonstres.get(y).set(x, monstre);
-        monstre.setX(x);
-        monstre.setY(y);
+
+        if(checkMonstres[x][y] != null){
+            labMonstres.remove(checkMonstres[x][y]);
+            checkMonstres[x][y] = null;
+        }
+
+        if(lesItems[x][y] != null){
+            lesItems[x][y] =null;
+        }
+
+        if(lesMurs[x][y] != null){
+            lesMurs[x][y] = null;
+        }
+
+        labMonstres.add(monstre);
+        checkMonstres[x][y] = monstre;
     }
 
-    public void suppMonstre(int x,int y){
+    /*public void suppMonstre(int x,int y){
         labMonstres.get(y).set(x,null);
-    }
+    }*/
 
 
     public void ajouterItem(String type,int x,int y){
@@ -155,16 +173,27 @@ public class Niveau extends Observable implements Serializable {
         else if(type.equals("epee")){
             item = new Epee(x,y);
         }
-        labEnCour.get(y).set(x,null);
-        labItems.get(y).set(x, item);
-        item.setPosX(x);
-        item.setPosY(y);
+
+        if(checkMonstres[x][y] != null){
+            labMonstres.remove(checkMonstres[x][y]);
+            checkMonstres[x][y] = null;
+        }
+
+        if(lesItems[x][y] != null){
+            lesItems[x][y] =null;
+        }
+
+        if(lesMurs[x][y] != null){
+            lesMurs[x][y] = null;
+        }
+
+        lesItems[x][y] = null;
 
     }
 
-    public void suppItem(int x,int y){
+    /*public void suppItem(int x,int y){
         labMonstres.get(y).set(x,null);
-    }
+    }*/
 
     public int getHauteur() {
         return hauteur;
@@ -182,11 +211,16 @@ public class Niveau extends Observable implements Serializable {
 
 
     public void suppCase(int x, int y) {
-        suppItem(x,y);
-        suppMonstre(x,y);
-        suppMur(x,y);
-        this.xDebut = -1;
-        this.yDebut = -1;
+
+        checkMonstres[x][y] = null;
+        lesItems[x][y] =null;
+        lesMurs[x][y] = null;
+        labMonstres.remove(checkMonstres[x][y]);
+
+        if(this.xDebut == x && this.yDebut == y){
+            this.xDebut = -1;
+            this.yDebut = -1;
+        }
     }
 
     public void serialize() throws IOException {
@@ -199,22 +233,29 @@ public class Niveau extends Observable implements Serializable {
         oos.writeObject(this) ;
     }
 
-    /*public void deSerilize() throws FileNotFoundException {
+    public void creerLab(){
+        System.out.println(labEnCour.size());
+        for(int i=0;i<labEnCour.size();i++){
+            /*for(int j=0;j<labEnCour.get(0).size();j++){
+                lesMurs[i][j]=labEnCour.get(i).get(j);
+                System.out.println(lesMurs[i][j]);
+            }*/
+        }
+    }
+
+    public void deSerilize() throws IOException, ClassNotFoundException {
 
 
         // dans une méthode main
         // on simplifie le code en retirant la gestion des exceptions
-        File fichier =  new File("tmp/marin.ser") ;
+        File fichier =  new File("src/main/resources/sauvegardeEditeur/saveNiveau.save") ;
 
         // ouverture d'un flux sur un fichier
         ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
 
         // désérialization de l'objet
-        Marin m = (Marin)ois.readObject() ;
-        System.out.println(m) ;
+        Niveau m = (Niveau)ois.readObject() ;
 
         // fermeture du flux dans le bloc finally
-
-
-    }*/
+    }
 }
