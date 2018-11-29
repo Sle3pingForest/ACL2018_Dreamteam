@@ -173,10 +173,11 @@ public class Heros extends Personnage {
                     if(!collisionHorizontale(lab, x+largeur, y)){
                         setX(futureX);
                     }else{
-                        boxCollider.setX(x+decalage_largeur);
-                        boxCollider.setY(y+decalage_hauteur);
-						boxColliderDegat.setX(x+decalage_largeur);
-						boxColliderDegat.setY(y);
+						setX(x-1);
+                        boxCollider.setX(x+decalage_largeur-1);
+                        boxCollider.setY(y+decalage_hauteur-1);
+						boxColliderDegat.setX(x+decalage_largeur-1);
+						boxColliderDegat.setY(y-1);
                     }
                 }
                 if(horizontal == -1){
