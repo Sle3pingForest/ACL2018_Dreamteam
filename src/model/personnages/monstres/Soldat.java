@@ -18,7 +18,7 @@ public class Soldat extends Monstre{
 		this.pointVie = 1;
 		this.nom ="Soldat";
 		boxCollider = new Rectangle(x+decalage_largeur,y+decalage_hauteur,largeur-decalage_largeur,hauteur-decalage_hauteur);
-
+		boxColliderDegat =  new Rectangle(x+decalage_largeur,y,largeur,hauteur);
 	}
 
 

@@ -1,15 +1,4 @@
 package model;
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 import model.Item.Item;
 import model.Item.ItemFactory;
 import model.Item.Tresor;
@@ -23,6 +12,10 @@ import model.personnages.monstres.Soldat;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Labyrinthe implements Serializable{
@@ -276,17 +269,23 @@ public class Labyrinthe implements Serializable{
 				m.updateMonstre(this, delta);
 			}
 		}
-		lesHeros.get(0).updateHeros(this,delta);
-		collison();
+		if(!lesHeros.get(0).estMort()) {
+			lesHeros.get(0).updateHeros(this, delta);
+			collison();
+		}
 
 	}
 
 	public void attaquer(){
-		getHeros(0).attaquer(this);
+		if(!getHeros(0).estMort()) {
+			getHeros(0).attaquer(this);
+		}
 	}
 	
 	public void tirer(){
-		getHeros(0).tirer(this);
+		if(!getHeros(0).estMort()) {
+			getHeros(0).tirer(this);
+		}
 	}
 
 	private ArrayList<Integer> getDirectionPossible(Monstre m){
@@ -538,12 +537,17 @@ public class Labyrinthe implements Serializable{
 	 * Verifie la collision entre les monstres et les heros
 	 */
 	public void collison(){
-		Rectangle boxHero  = lesHeros.get(0).getBoxCollider();
-		Rectangle boxMonstre ;
-		for(Monstre monstre: listeMonstres){
-			boxMonstre = monstre.getBoxCollider();
-			if(boxHero.intersects(boxMonstre)){
-				lesHeros.get(0).setPointVie(monstre.getAttaque());
+		if(!lesHeros.get(0).estInvulnerable()) {
+			Rectangle boxHero = lesHeros.get(0).getBoxColliderDegat();
+			Rectangle boxMonstre;
+			for (Monstre monstre : listeMonstres) {
+				if (!monstre.estMort()) {
+					boxMonstre = monstre.getBoxColliderDegat();
+					if (boxHero.intersects(boxMonstre)) {
+						lesHeros.get(0).perdrePointDeVie(monstre.getAttaque());
+						lesHeros.get(0).mettreInvulnerable();
+					}
+				}
 			}
 		}
 	}
@@ -604,227 +608,6 @@ public class Labyrinthe implements Serializable{
 		this.listeMonstres = listeMonstres;
 	}
 
-	/*A SUPPRIMER SI NON UTILISEE
-	public ArrayList<String> deplacementMonstre(int x,int y) {
-		String t = "";
-		ArrayList<String> chemin = new ArrayList<>();
-		chemin.add(t);
-		if (x == lesHeros.get(0).getX() && y == lesHeros.get(0).getY()) {
-			return chemin;
-		} else {
-			if ((x+1) < longueur && tabMur[x+1][y] == null && chemin.get(chemin.size()-1) != "z") {
-				chemin.add("s");
-				deplacementMonstre(x+1,y);
-			}
-			else if ( (x-1) >= 0
-					&& tabMur[x-1][y] == null
-					&& chemin.get(chemin.size()-1) != "s") {
-				chemin.add("z");
-				deplacementMonstre(x-1,y);
-			}
-			else if ((y+1) < hauteur && tabMur[x][y+1] == null && chemin.get(chemin.size()-1) != "q") {
-				chemin.add("d");
-				deplacementMonstre(x,y+1);
-			}
-			else if ((y-1) >= 0 && tabMur[x][y-1] == null && chemin.get(chemin.size()-1) != "d") {
-				chemin.add("q");
-				deplacementMonstre(x,y-1);
-			}
-		}
-		return chemin;
-	}
-	public void depMonstre(int[][] tab) {
-		for (Monstre m: listeMonstres) {
-			deplacementIntelligentMonstre(m, tab);
-		}
-	}
-	public int[][] tabCheminMonstre() {
-		int x = (int)lesHeros.get(0).getX();
-		int y = (int)lesHeros.get(0).getY();
-		int[][] tab = new int[longueur][hauteur];
-		boolean trouve = false;
-		// initialise les cases a -1 qui signifie pas encore calcule
-		for(int v=0;v<tab.length;v++) {
-			Arrays.fill(tab[v], -1);
-		}
-		// positionne les monstres dans le tableau de recherche de chemin avec une valeur differente de -1
-		/*for (Monstre ms: listeMonstres) {
-			tab[ms.getX()][ms.getY()] = -2;
-		}
-		tab[x][y] = 0;
-		for (int i = 0; i < hauteur; i++) {
-			for (int j = 0; j < longueur; j++) {
-				if (tabMur[j][i] != null) tab[j][i] = -5;
-			}
-		}
-		remplirTableau(tab, x, y);
-		return tab;
-	}*/
-
-
-
-
-	/*
-	 * A COMPLETER
-	 * Deplace ce monstre vers le heros en prenant le chemin le plus court.
-	 * @param monstre
-	 * @param tab tableau du labyrinthe
-	 * @see #calculChemin(int[][], Monstre)
-	 *
-	public void deplacementIntelligentMonstre(Monstre monstre, int[][] tab) {
-		ArrayList<String> dep = calculChemin(tab, monstre);
-		for (String ss : dep ) System.out.print(ss + "  " );
-		System.out.println();
-		// recupere le premier deplacement du monstre
-		String s = dep.get(0);
-		switch(s) {
-		case "s":
-			monstre.goBas();
-			break;
-		case "z":
-			monstre.goHaut();
-			break;
-		case "q":
-			monstre.goGauche();
-			break;
-		case "d":
-			monstre.goDroite();
-			break;
-		default:
-			break;
-		}
-	}
-	/*
-	 * A COMPLETER
-	 * Cherche un chemin du monstre vers le heros en valuant les cases
-	 * la valuation correspond au nombre de deplacement necessaire en partant du heros
-	 * @param tab
-	 * @param x
-	 * @param y
-	 *
-	private void remplirTableau(int[][] tab,int x,int y) {
-		boolean faire[] = new boolean[4];
-		// tableau qui indique si la case a deja ete value
-		Arrays.fill(faire, false);
-		if (y >= 0 && y < hauteur && x >= 0 && x < longueur) {
-			if (tabMur[x][y] == null) {
-				// regarde pour chaque direction s'il existe un chemin dont la case n'a pas deja ete value
-				if ((x+1) < longueur && tabMur[x+1][y] == null && tab[x+1][y] == -1 ) {
-					tab[x+1][y] = tab[x][y] + 1;
-					faire[0] = true;
-				}
-				if ( (x-1) >= 0 && tabMur[x-1][y] == null && tab[x-1][y] == -1) {
-					tab[x-1][y] = tab[x][y] + 1;
-					faire[1] = true;
-				}
-				if ((y+1) < hauteur && tabMur[x][y+1] == null && tab[x][y+1] == -1) {
-					tab[x][y+1] = tab[x][y] + 1;
-					faire[2] = true;
-				}
-				if ((y-1) >= 0 && tabMur[x][y-1] == null && tab[x][y-1] == -1) {
-					tab[x][y-1] = tab[x][y] + 1;
-					faire[3] = true;
-				}
-				if (faire[0] ) remplirTableau(tab, x+1, y);
-				if (faire[1] ) remplirTableau(tab, x-1, y);
-				if (faire[2] ) remplirTableau(tab, x, y+1);
-				if (faire[3] ) remplirTableau(tab, x, y-1);
-			}
-		}
-	}
-	/*
-	 * A COMPLETER
-	 * Calcul du chemin le plus cours entre ce monstre et le heros.
-	 * @param t
-	 * @param monstre
-	 * @return liste Liste des directions que ce monstre doit prendre pour aller a la position du heros.
-	 *
-	public ArrayList<String> calculChemin(int[][] t, Monstre monstre) {
-		int x = (int)monstre.getX() /LARGEUR_MUR;
-		int y = (int)monstre.getY() /LARGEUR_MUR;
-		ArrayList<String> liste = new ArrayList<>();
-		int min = Integer.MAX_VALUE;
-		String s = "";
-		int xh = (int)lesHeros.get(0).getX() /LARGEUR_MUR, yh = (int)lesHeros.get(0).getY() /LARGEUR_MUR;
-		if (x == xh && y == yh) {
-			liste.add("");
-		}
-		// Si le monstre est a 1 case du heros
-		else if (x == xh) {
-			if (y + 1 == yh) s = "s";
-			else s = "z";
-			liste.add(0,s);
-		} else if (y == yh) {
-			if (x + 1 == xh) s = "d";
-			else s = "q";
-			liste.add(0,s);
-		} else {
-			// sinon on lance la boucle  pour chercher le chemin le plus court
-			while (min > 1 && x >= 0 && y >= 0) {
-				// on stocke le chemin du heros vers le monstre
-				// tant quon est pas arrive a la case de deplacement +1 du monstre
-				s = "";
-				int i = -1,j = -1;
-				if ((x+1) < longueur && t[x+1][y] > 0 && min > t[x+1][y] ) {
-					min = t[x+1][y];
-					i = x+1;
-					j = y;
-					s = "d";
-				}
-				if ( (x-1) >= 0 && t[x-1][y] > 0 && min > t[x-1][y] ) {
-					min =  t[x-1][y];
-					i = x-1;
-					j = y;
-					s = "q";
-				}
-				if ((y+1) < hauteur && t[x][y+1] > 0 && min > t[x][y+1] ) {
-					min = t[x][y+1];
-					i = x;
-					j = y+1;
-					s = "s";
-				}
-				if ((y-1) >= 0 && t[x][y-1] > 0 && min > t[x][y-1] ) {
-					min =  t[x][y-1];
-					i = x;
-					j = y-1;
-					s = "z";
-				}
-				x = i;
-				y = j;
-				System.out.println(t[x][y] + " " +s );
-				liste.add(s);
-			}
-		}
-		return liste;
-	}
-	//  verifie si un chemin vers le heros a ete trouve
-	// donc on regarde si une des 4 cases autour du heros est numerote
-	/*
-	 * A COMPLETER
-	 * verifie si un chemin vers le heros a ete trouve
-	 * donc on regarde si une des 4 cases autour du heros est numerote
-	 * @param tab
-	 * @return
-	 *
-	public boolean verifChemin(int[][] tab) {
-		boolean trouve = false;
-		int x = (int)lesHeros.get(0).getX()/LARGEUR_MUR;
-		int y = (int)lesHeros.get(0).getY()/HAUTEUR_MUR;
-		if ((x+1) < longueur) {
-			if (tab[x+1][y] != -1 ) trouve = true;
-		}
-		if ( (x-1) >= 0) {
-			if (tab[x-1][y] != -1 ) trouve = true;
-		}
-		if ((y+1) < hauteur) {
-			if (tab[x][y+1] != -1 ) trouve = true;
-		}
-		if ((y-1) >= 0 ) {
-			if (tab[x][y-1] != -1 ) trouve = true;
-		}
-		return trouve;
-	}
-	*/
 
 	public int getLongeurCarte(){
 		return  longeurCarte;

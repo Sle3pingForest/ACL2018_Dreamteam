@@ -1,4 +1,4 @@
-package test;
+/*package test;
 import static org.junit.Assert.*;
 
 import model.Item.Epee;
@@ -60,5 +60,7 @@ public class HerosTest {
 		
 
 	}
+
+
 	
-}
+}*/

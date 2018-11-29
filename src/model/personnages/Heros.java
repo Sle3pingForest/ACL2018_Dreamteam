@@ -2,16 +2,13 @@ package model.personnages;
 
 import model.Item.Item;
 import model.Item.Projectile;
-import model.Item.Piege;
-import model.Item.Ramassable;
 import model.Item.Tresor;
 import model.Labyrinthe;
-
-import java.util.ArrayList;
-
 import model.personnages.monstres.Monstre;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+
+import java.util.ArrayList;
 
 
 public class Heros extends Personnage {
@@ -20,10 +17,6 @@ public class Heros extends Personnage {
     private ArrayList<Item> inventaire;
     private Projectile projectile;
     private ArrayList<Projectile> lprojectile;
-    private final static int LARGEUR=21;
-    private final static int HAUTEUR=23;
-    private final static  int DECALAGE_LARGEUR=5;
-    private final static  int DECALAGE_HAUTEUR=20;
     private final static float VITESSE = 0.2f;
 
 
@@ -33,6 +26,10 @@ public class Heros extends Personnage {
 
     public Heros(float x, float y, String nom){
     	super(x,y);
+		largeur=21;
+		hauteur=23;
+		decalage_largeur=5;
+		decalage_hauteur=20;
     	this.pointVie = 5;
     	this.nom = nom;
     	this.attaque = 3;
@@ -41,9 +38,9 @@ public class Heros extends Personnage {
     	tailleInventaire = 10;
     	this.projectile = new Projectile(x,y);
     	lprojectile = new ArrayList<>();
-        boxCollider = new Rectangle(x+DECALAGE_LARGEUR,y+DECALAGE_HAUTEUR,LARGEUR-DECALAGE_LARGEUR,HAUTEUR-DECALAGE_HAUTEUR);
-
-    }
+        boxCollider = new Rectangle(x+decalage_largeur,y+decalage_hauteur,largeur-decalage_largeur,hauteur-decalage_hauteur);
+		boxColliderDegat =  new Rectangle(x+decalage_largeur,y,largeur,hauteur);
+	}
     
     public void charge(Heros h) {
     	this.x = h.getX();
@@ -138,7 +135,9 @@ public class Heros extends Personnage {
             }
             else if(i.getClass().getName().equals("model.Item.Piege")){
                 if(!i.isRamasser()){
-                    i.blesser(this);
+					System.out.println("Avant " + getPointVie());
+					i.blesser(this);
+					System.out.println("Après " + getPointVie());
                     i.ramasser();
                 }
             }
@@ -160,8 +159,10 @@ public class Heros extends Personnage {
         float futureX = x + horizontal * vitesseActu;
         float futureY = y + vertical * vitesseActu;
 
-        boxCollider.setY(futureY+DECALAGE_HAUTEUR);
-        boxCollider.setX(futureX+DECALAGE_LARGEUR);
+        boxCollider.setY(futureY+decalage_hauteur);
+        boxCollider.setX(futureX+decalage_largeur);
+        boxColliderDegat.setX(futureX+decalage_largeur);
+        boxColliderDegat.setY(futureY);
 
 
         if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
@@ -169,19 +170,24 @@ public class Heros extends Personnage {
 
 
                 if(horizontal == 1){
-                    if(!collisionHorizontale(lab, x+LARGEUR, y)){
+                    if(!collisionHorizontale(lab, x+largeur, y)){
                         setX(futureX);
                     }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
+						setX(x-1);
+                        boxCollider.setX(x+decalage_largeur-1);
+                        boxCollider.setY(y+decalage_hauteur-1);
+						boxColliderDegat.setX(x+decalage_largeur-1);
+						boxColliderDegat.setY(y-1);
                     }
                 }
                 if(horizontal == -1){
                     if(!collisionHorizontale(lab, futureX, futureY)){
                         setX(futureX);
                     }else{
-                        boxCollider.setX(x+DECALAGE_LARGEUR);
-                        boxCollider.setY(y+DECALAGE_HAUTEUR);
+                        boxCollider.setX(x+decalage_largeur);
+                        boxCollider.setY(y+decalage_hauteur);
+						boxColliderDegat.setX(x+decalage_largeur);
+						boxColliderDegat.setY(y);
                     }
                 }
             } else {
@@ -197,16 +203,20 @@ public class Heros extends Personnage {
                         if(!collisionVetical(lab, futureX, futureY)){
                             setY(futureY);
                         }else{
-                            boxCollider.setX(x+DECALAGE_LARGEUR);
-                            boxCollider.setY(y+DECALAGE_HAUTEUR);
+                            boxCollider.setX(x+decalage_largeur);
+                            boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
+							boxColliderDegat.setY(y);
                         }
                     }
                     if(vertical == 1){
-                        if(!collisionVetical( lab,futureX, futureY+HAUTEUR)){
+                        if(!collisionVetical( lab,futureX, futureY+hauteur)){
                             setY(futureY);
                         }else{
-                            boxCollider.setX(x+DECALAGE_LARGEUR);
-                            boxCollider.setY(y+DECALAGE_HAUTEUR);
+                            boxCollider.setX(x+decalage_largeur);
+                            boxCollider.setY(y+decalage_hauteur);
+							boxColliderDegat.setX(x+decalage_largeur);
+							boxColliderDegat.setY(y);
                         }
                     }
                 }else {
@@ -215,11 +225,11 @@ public class Heros extends Personnage {
             }
         }
 
-        toucherProjetile(lab);
 
 		float vitesseProjectille = delta*Projectile.VITESSE;
 		ArrayList<Projectile> lp = this.getLprojectile();
 		for (Projectile p : lp ) {
+	        toucherProjetile(lab,p);
 			float xP = p.getX();
 			float yP = p.getY();
 			int horizontalP = p.getHorizontal();
@@ -252,12 +262,14 @@ public class Heros extends Personnage {
 			}
 		}
 
-
+		if(estInvulnerable()){
+			tempsRestantInvulnerable -= delta*0.001;
+		}
     }
     
-	public void toucherProjetile(Labyrinthe lab){
-		float xP = this.getProjectile().getX()/Labyrinthe.LARGEUR_MUR;
-		float yP = this.getProjectile().getY()/Labyrinthe.HAUTEUR_MUR;
+	public void toucherProjetile(Labyrinthe lab, Projectile project){
+		float xP = project.getX()/Labyrinthe.LARGEUR_MUR;
+		float yP = project.getY()/Labyrinthe.HAUTEUR_MUR;
 		for(Monstre m : lab.getListeMonstres()){
 			float xM = m.getX()/Labyrinthe.LARGEUR_MUR;
 			float yM = m.getY()/Labyrinthe.HAUTEUR_MUR;
@@ -268,15 +280,15 @@ public class Heros extends Personnage {
 
 			if(estToucher){
 				//lesHeros.get(0).setPointVie(m.getAttaque());
-				m.setPointVie(this.getAttaque()*5);
+				m.perdrePointDeVie(this.getAttaque()*5);
 				if(m.getPointVie() <= 0){
 					m.mortMonstres(); 
 				}
 			}
-			/*if(this.getPointVie() <= 0){
+			if(this.getPointVie() <= 0){
                 Labyrinthe.MORT_HEROS = true;
 				this.mort();
-			}*/
+			}
 		}
 	}
 
@@ -338,7 +350,7 @@ public class Heros extends Personnage {
 
             if(estToucher){
                // setPointVie(m.getAttaque());
-                m.setPointVie(getAttaque());
+                m.perdrePointDeVie(getAttaque());
                 if(m.getPointVie() <= 0){
                     m.mortMonstres();
                 }
@@ -348,6 +360,7 @@ public class Heros extends Personnage {
                 mort();
             }
         }
-
     }
+
+
 }

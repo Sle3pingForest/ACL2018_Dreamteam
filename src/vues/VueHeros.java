@@ -364,8 +364,12 @@ public class VueHeros implements Serializable{
             heros.setDirectionActu(directActu);
 
     	}
+        if(!heros.estMort() && heros.estInvulnerable()){
+            g.drawAnimation(animations[directActu],(int)x,(int)y,Color.red);
+        }else{
+            g.drawAnimation(animations[directActu],(int)x,(int)y);
+        }
 
-        g.drawAnimation(animations[directActu],(int)x,(int)y);
     }
 
     public String tt() {

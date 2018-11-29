@@ -16,13 +16,12 @@ public class Launcher extends JFrame {
 
 
     public Launcher(final int w,final int h) {
+        super("Launcher");
+        setSize(382, 553);
+        setLocation((w-this.getSize().width)/2,(h-this.getSize().height)/2);
+        setContentPane(new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/background/launcher.jpg"))));
 
-        setTitle("Launcher");
-        setSize(100, 100);
-
-        JPanel jp = new JPanel();
-
-        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
+        setLayout(new BorderLayout());
 
         jeu = new JButton("Lancer le jeu");
         editeur = new JButton("Ouvrir l'editeur de niveau");
@@ -31,7 +30,7 @@ public class Launcher extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new AppGameContainer(new StateGame(), w, h, true).start();
+                    new AppGameContainer(new StateGame(),   w, h, true).start();
                 } catch (SlickException e1) {
                     e1.printStackTrace();
                 }
@@ -41,15 +40,21 @@ public class Launcher extends JFrame {
         editeur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new VueGenerateur(new Niveau("niv"));
-               dispose();
+                new VueGenerateur(new Niveau("niv"));
+                dispose();
             }
         });
 
-        this.add(jeu);
-        this.add(editeur);
+        JPanel jp = new JPanel();
+        jp.setLayout(new GridLayout(1,2));
+        jp.add(jeu);
+        jp.add(editeur);
+
+        this.add(jp,BorderLayout.SOUTH);
 
         this.setVisible(true);
         this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
     }
+
+
 }

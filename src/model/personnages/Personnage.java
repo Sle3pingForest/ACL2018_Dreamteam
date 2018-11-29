@@ -3,11 +3,9 @@ package model.personnages;
 import model.Item.Item;
 import model.Labyrinthe;
 import model.mur.Mur;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import java.io.Serializable;
-import java.util.Observable;
 
 public abstract class Personnage  implements Serializable{
 
@@ -43,10 +41,19 @@ public abstract class Personnage  implements Serializable{
     public final static int MORT_GAUCHE = 16;
 
     protected Rectangle boxCollider;
+    protected Rectangle boxColliderDegat;
 
     protected int SPRITE_LARGEUR = 0;
     protected int SPRITE_HAUTEUR = 0;
 
+
+    protected int largeur = 17;
+    protected int hauteur = 41;
+    protected int decalage_largeur = 15;
+    protected int decalage_hauteur = 20;
+
+    protected float tempsInvulnerable = 0.5f;
+    protected float tempsRestantInvulnerable = 0 ;
 
 
 
@@ -69,108 +76,118 @@ public abstract class Personnage  implements Serializable{
 	}
 
     public void goDroite(){
-        horizontal = 1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+        if(!estMort()) {
+            horizontal = 1;
+            if (vertical != 0) {
+                if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+                    directionActu = AVANCER_DROITE;
+                }
+            } else {
                 directionActu = AVANCER_DROITE;
             }
-        }else{
-            directionActu = AVANCER_DROITE;
         }
     }
 
     public void goGauche(){
-        horizontal = -1;
-        if(vertical != 0) {
-            if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+        if(!estMort()) {
+            horizontal = -1;
+            if (vertical != 0) {
+                if (directionActu != AVANCER_HAUT && directionActu != AVANCER_BAS) {
+                    directionActu = AVANCER_GAUCHE;
+                }
+            } else {
                 directionActu = AVANCER_GAUCHE;
             }
-        }else{
-            directionActu = AVANCER_GAUCHE;
         }
     }
     public void goBas(){
-        vertical = 1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+        if(!estMort()) {
+            vertical = 1;
+            if (horizontal != 0) {
+                if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+                    directionActu = AVANCER_BAS;
+                }
+            } else {
                 directionActu = AVANCER_BAS;
             }
-        }else{
-            directionActu = AVANCER_BAS;
         }
     }
     public void goHaut(){
-
-        vertical = -1;
-        if(horizontal != 0) {
-            if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+        if(!estMort()) {
+            vertical = -1;
+            if (horizontal != 0) {
+                if (directionActu != AVANCER_GAUCHE && directionActu != AVANCER_DROITE) {
+                    directionActu = AVANCER_HAUT;
+                }
+            } else {
                 directionActu = AVANCER_HAUT;
             }
-        }else{
-            directionActu = AVANCER_HAUT;
         }
     }
 
     public void arretGauche(){
 
-        if(horizontal == -1) {
-            horizontal = 0;
+        if(!estMort()) {
+            if(horizontal == -1) {
+                horizontal = 0;
 
-            if(vertical == 0){
-                directionActu = GAUCHE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
+                if(vertical == 0){
+                    directionActu = GAUCHE;
+                }else  if(vertical == -1){
+                    directionActu = AVANCER_HAUT;
+                }else{
+                    directionActu = AVANCER_BAS;
+                }
             }
         }
     }
 
     public  void arretDroite(){
+        if(!estMort()) {
+            if (horizontal == 1) {
+                horizontal = 0;
 
-        if(horizontal == 1) {
-            horizontal = 0;
-
-            if(vertical == 0){
-                directionActu = DROITE;
-            }else  if(vertical == -1){
-                directionActu = AVANCER_HAUT;
-            }else{
-                directionActu = AVANCER_BAS;
+                if (vertical == 0) {
+                    directionActu = DROITE;
+                } else if (vertical == -1) {
+                    directionActu = AVANCER_HAUT;
+                } else {
+                    directionActu = AVANCER_BAS;
+                }
             }
         }
     }
 
     public void arretBas(){
+        if(!estMort()) {
+            if (vertical == 1) {
+                vertical = 0;
 
-        if(vertical == 1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = BAS;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
+                if (horizontal == 0) {
+                    directionActu = BAS;
+                } else if (horizontal == -1) {
+                    directionActu = AVANCER_GAUCHE;
+                } else {
+                    directionActu = AVANCER_DROITE;
+                }
             }
         }
     }
     
     protected void attaquer(){
-        entrainDAttaque = true;
-    	if(directionActu == BAS){
-    		directionActu = ATTAQUER_BAS;
-    	}
-    	else if(directionActu == HAUT){
-    		directionActu = ATTAQUER_HAUT;
-    	}
-    	else if(directionActu == GAUCHE){
-    		directionActu = ATTAQUER_GAUCHE;
-    		
-    	}
-    	else if(directionActu == DROITE){
-    		directionActu = ATTAQUER_DROITE;
-    	}
+        if(!estMort()) {
+            entrainDAttaque = true;
+            if (directionActu == BAS) {
+                directionActu = ATTAQUER_BAS;
+            } else if (directionActu == HAUT) {
+                directionActu = ATTAQUER_HAUT;
+            } else if (directionActu == GAUCHE) {
+                directionActu = ATTAQUER_GAUCHE;
+
+            } else if (directionActu == DROITE) {
+                directionActu = ATTAQUER_DROITE;
+            }
+        }
     }
     
    
@@ -201,20 +218,23 @@ public abstract class Personnage  implements Serializable{
     }
     
     public void attaquerStop(){
-        directionActu = BAS;
+        if(!estMort()) {
+            directionActu = BAS;
+        }
    }
 
     public void arretHaut(){
+        if(!estMort()) {
+            if (vertical == -1) {
+                vertical = 0;
 
-        if(vertical == -1) {
-            vertical = 0;
-
-            if(horizontal == 0){
-                directionActu = HAUT;
-            }else  if(horizontal == -1){
-                directionActu = AVANCER_GAUCHE;
-            }else{
-                directionActu = AVANCER_DROITE;
+                if (horizontal == 0) {
+                    directionActu = HAUT;
+                } else if (horizontal == -1) {
+                    directionActu = AVANCER_GAUCHE;
+                } else {
+                    directionActu = AVANCER_DROITE;
+                }
             }
         }
     }
@@ -283,11 +303,16 @@ public abstract class Personnage  implements Serializable{
         return this.nom;
     }
     
-    public void setPointVie(int i){
-    	if(i >= defense){
-        	this.pointVie = this.pointVie- (i - defense);
-    	}
-    	if(pointVie<= 0){
+    /*public void setPointVie(int i){
+        this.pointVie  = i;
+    }*/
+
+    public void perdrePointDeVie(int i){
+        if(i >= defense){
+            this.pointVie = this.pointVie- (i - defense);
+            mettreInvulnerable();
+        }
+        if(pointVie<= 0){
             mort();
         }
     }
@@ -328,13 +353,15 @@ public abstract class Personnage  implements Serializable{
             }
         }
 
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        if(lesObjets[xCaseFuture+1][yCaseFuture] != null && this instanceof Heros){
+            if(boxColliderDegat.intersects(lesObjets[xCaseFuture + 1][yCaseFuture].getBoxCollider())) {
+                ajouterAInventaire(lesObjets[xCaseFuture + 1][yCaseFuture]);
+            }
         }
-
-
         if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+            if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture].getBoxCollider())) {
+                ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+            }
         }
 
         return false;
@@ -377,8 +404,20 @@ public abstract class Personnage  implements Serializable{
         }
 
 
+        if(lesObjets[xCaseFuture][yCaseFuture + 1] != null && this instanceof Heros){
+            if(lesObjets[xCaseFuture][yCaseFuture + 1] != null && this instanceof Heros){
+                if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture + 1].getBoxCollider())) {
+                    ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture + 1]);
+                }
+            }
+        }
+
         if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+            if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
+                if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture].getBoxCollider())) {
+                    ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+                }
+            }
         }
         return false;
     }
@@ -399,4 +438,35 @@ public abstract class Personnage  implements Serializable{
         return boxCollider;
     }
 
+    public Rectangle getBoxColliderDegat(){
+        return boxColliderDegat;
+    }
+
+    public boolean estMort(){
+        return pointVie <= 0;
+    }
+
+    public void mettreInvulnerable(){
+        tempsRestantInvulnerable = tempsInvulnerable;
+    }
+
+    public boolean estInvulnerable(){
+        return tempsRestantInvulnerable > 0;
+    }
+
+    public int getXCentre(){
+        return (int)(x +(decalage_largeur+ largeur)/2);
+    }
+
+    public int getYCentre(){
+        return (int)(y +(decalage_hauteur+ hauteur)/2);
+    }
+
+    public int getYCaseCentre(){
+        return (int)(getYCentre())/Labyrinthe.HAUTEUR_MUR;
+    }
+
+    public int getXCaseCentre(){
+        return (int)(getXCentre())/Labyrinthe.LARGEUR_MUR;
+    }
 }

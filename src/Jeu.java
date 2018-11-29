@@ -1,3 +1,4 @@
+import model.Item.Item;
 import model.Labyrinthe;
 import model.personnages.Heros;
 
@@ -72,7 +73,7 @@ public class Jeu extends BasicGameState {
     
     public void init_new(ArrayList<Heros> lesHeros2) throws SlickException {
     	labyVue = VueLabyrinthe.getInstance();
-    	labyModel.getHeros(0).charge(lesHeros2.get(0));
+        labyModel.getHeros(0).charge(lesHeros2.get(0));
 	}
     
 
@@ -114,11 +115,14 @@ public class Jeu extends BasicGameState {
             case Input.KEY_LEFT: labyModel.goGauche();   break;
             case Input.KEY_DOWN: labyModel.goBas();   break;
             case Input.KEY_RIGHT: labyModel.goDroite();  break;
-            case Input.KEY_SPACE: labyModel.attaquer() ; break;
+            case Input.KEY_SPACE: for (Item item : labyModel.getLink().getInventaire()){
+                if (item.getClass().getName().equals("model.Item.Epee")){
+                    labyModel.attaquer();
+                }
+            }  break;
             case Input.KEY_P: labyModel.tirer() ; break;
             case Input.KEY_B:	try {
 				save();
-				System.out.println("SAVE");
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

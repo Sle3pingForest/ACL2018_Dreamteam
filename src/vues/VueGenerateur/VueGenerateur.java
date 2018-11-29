@@ -2,6 +2,7 @@ package vues.VueGenerateur;
 import model.generateur.Niveau;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,6 +13,7 @@ public class VueGenerateur extends JFrame {
     private VueCreaLaby vc;
     private final static int HAUTEUR = 1000;
     private final static int LARGEUR = HAUTEUR+130;
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
     public VueGenerateur(Niveau niv) {
 
@@ -19,6 +21,7 @@ public class VueGenerateur extends JFrame {
 
         setTitle("Generateur de Monde");
         setSize(LARGEUR, HAUTEUR);
+        setLocation((screen.width-this.getSize().width)/2,(screen.height-this.getSize().height)/2);
 
         vo = new VueObjets(niv);
         vc = new VueCreaLaby(niv,0, 0);

@@ -1,11 +1,8 @@
 package controlleur;
 
-import org.hamcrest.Description;
-
 import vues.VueGenerateur.Case;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
