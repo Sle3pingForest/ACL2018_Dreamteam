@@ -1,6 +1,7 @@
 package test;
 import static org.junit.Assert.*;
 
+import model.Item.Epee;
 import model.Item.Piege;
 import model.personnages.Heros;
 
@@ -35,15 +36,17 @@ public class HerosTest {
 		h.goHaut();
 		
 		assertEquals(h.getDirectionActu(), 6);
-		
-		h.setTailleInventaire(0);
-		
-		h.setTailleInventaire(10);
+
+
+		// set taille inventaire avec un negatif
+		h.setTailleInventaire(-2);
+		assertEquals(10, h.getTailleInventaire());
 		
 		for (int i = 0; i < 5; i++) {
-			h.ajouterAInventaire(new Piege(1,1));
+			Epee p = new Epee(1,1);
+			p.setRamassable(true);
+			h.ajouterAInventaire(p);
 		}
-		
 		assertEquals(10, h.getTailleInventaire());
 		
 		
@@ -51,13 +54,11 @@ public class HerosTest {
 		assertEquals(6, h.getTailleInventaire());
 		
 		// set taille inferieure au nombre dobjet dans linventaire
-		h.setTailleInventaire(2);
-		assertEquals(10, h.getTailleInventaire());
 		
-		// set taille inventaire avec un negatif
-
-		h.setTailleInventaire(-2);
+		h.setTailleInventaire(2);
 		assertEquals(6, h.getTailleInventaire());
+		
+
 	}
 	
 }
