@@ -56,7 +56,7 @@ public class Jeu extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
         this.game = game;
-        labyModel =  new Labyrinthe(50,50, 10);
+        labyModel =  new Labyrinthe(50,50,   10);
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         Song.chargerForet();

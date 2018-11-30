@@ -278,9 +278,14 @@ public abstract class Personnage  implements Serializable{
 
     public void setX(float x) {
         this.x = x;
+        boxCollider.setX(x+decalage_largeur);
+        boxColliderDegat.setX(x+decalage_largeur);
+
     }
     public void setY(float y) {
         this.y = y;
+        boxCollider.setY(y+decalage_hauteur);
+        boxColliderDegat.setY(y);
     }
 
 	public void setVertical(int vertical) {
@@ -320,26 +325,31 @@ public abstract class Personnage  implements Serializable{
     /**
      * Verifie les collision entre la futur position du personnage et un possible mur situé au dessus de lui
      * @param lab labyrinthe
-     * @param futurX
-     * @param futurY
      * @return boolean
      */
-    protected boolean collisionVetical(Labyrinthe lab, float futurX, float futurY) {
+    protected boolean collisionVetical(Labyrinthe lab) {
 
-        int xCaseFuture = (int)((futurX)/ Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futurY)/Labyrinthe.HAUTEUR_MUR);
+
+        int xCaseActu = getXCaseCentre();
+        int yCaseActu = getYCaseCentre();
+
         Mur[][] tabMur = lab.getTabMur();
         Item[][] lesObjets = lab.getLesObjets();
 
         Rectangle mur1 = null;
         Rectangle mur2 = null;
+        Rectangle mur3 = null;
 
-        if(tabMur[xCaseFuture+1][yCaseFuture] != null){
-            mur1 = tabMur[xCaseFuture+1][yCaseFuture].getBoxCollider();
+        if(tabMur[xCaseActu+1][yCaseActu+vertical] != null){
+            mur1 = tabMur[xCaseActu+1][yCaseActu+vertical].getBoxCollider();
         }
 
-        if(tabMur[xCaseFuture][yCaseFuture] != null){
-            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
+        if(tabMur[xCaseActu][yCaseActu+vertical] != null){
+            mur2 = tabMur[xCaseActu][yCaseActu+vertical].getBoxCollider();
+        }
+
+        if(tabMur[xCaseActu-1][yCaseActu+vertical] != null){
+            mur3 = tabMur[xCaseActu-1][yCaseActu+vertical].getBoxCollider();
         }
 
         if(mur1 != null){
@@ -352,15 +362,20 @@ public abstract class Personnage  implements Serializable{
                 return true;
             }
         }
-
-        if(lesObjets[xCaseFuture+1][yCaseFuture] != null && this instanceof Heros){
-            if(boxColliderDegat.intersects(lesObjets[xCaseFuture + 1][yCaseFuture].getBoxCollider())) {
-                ajouterAInventaire(lesObjets[xCaseFuture + 1][yCaseFuture]);
+        if(mur3 != null){
+            if(boxCollider.intersects(mur3)){
+                return true;
             }
         }
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture].getBoxCollider())) {
-                ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+
+        if(lesObjets[xCaseActu+1][yCaseActu+vertical] != null && this instanceof Heros){
+            if(boxColliderDegat.intersects(lesObjets[xCaseActu + 1][yCaseActu+vertical].getBoxCollider())) {
+                ajouterAInventaire(lesObjets[xCaseActu + 1][yCaseActu+vertical]);
+            }
+        }
+        if(lesObjets[xCaseActu][yCaseActu+vertical] != null && this instanceof Heros){
+            if(boxColliderDegat.intersects(lesObjets[xCaseActu][yCaseActu+vertical].getBoxCollider())) {
+                ajouterAInventaire(lesObjets[xCaseActu][yCaseActu+vertical]);
             }
         }
 
@@ -370,27 +385,33 @@ public abstract class Personnage  implements Serializable{
     /**
      * Verifie les collision entre la futur position du personnage et un possible mur situé à gauche de lui
      * @param lab labyrinthe
-     * @param futurX
-     * @param futurY
      * @return boolean
      */
-    protected boolean collisionHorizontale(Labyrinthe lab,float futurX,float futurY){
+    protected boolean collisionHorizontale(Labyrinthe lab){
 
-        int xCaseFuture = (int)((futurX)/ Labyrinthe.LARGEUR_MUR);
-        int yCaseFuture = (int)((futurY)/Labyrinthe.HAUTEUR_MUR);
+        int xCaseActu = getXCaseCentre();
+        int yCaseActu = getYCaseCentre();
         Mur[][] tabMur = lab.getTabMur();
         Item[][] lesObjets = lab.getLesObjets();
 
         Rectangle mur1 = null;
         Rectangle mur2 = null;
+        Rectangle mur3 = null;
 
-        if (tabMur[xCaseFuture][yCaseFuture + 1] != null) {
-            mur1 = tabMur[xCaseFuture][yCaseFuture + 1].getBoxCollider();
+
+        if (tabMur[xCaseActu+horizontal][yCaseActu + 1] != null) {
+            mur1 = tabMur[xCaseActu+horizontal][yCaseActu + 1].getBoxCollider();
         }
 
-        if (tabMur[xCaseFuture][yCaseFuture] != null) {
-            mur2 = tabMur[xCaseFuture][yCaseFuture].getBoxCollider();
+        if (tabMur[xCaseActu+horizontal][yCaseActu] != null) {
+            mur2 = tabMur[xCaseActu+horizontal][yCaseActu].getBoxCollider();
         }
+
+
+        if (tabMur[xCaseActu+horizontal][yCaseActu-1] != null) {
+            mur3 = tabMur[xCaseActu+horizontal][yCaseActu-1].getBoxCollider();
+        }
+
 
         if(mur1 != null){
             if(boxCollider.intersects(mur1)){
@@ -402,20 +423,25 @@ public abstract class Personnage  implements Serializable{
                 return true;
             }
         }
+        if(mur3 != null){
+            if(boxCollider.intersects(mur3)){
+                return true;
+            }
+        }
 
 
-        if(lesObjets[xCaseFuture][yCaseFuture + 1] != null && this instanceof Heros){
-            if(lesObjets[xCaseFuture][yCaseFuture + 1] != null && this instanceof Heros){
-                if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture + 1].getBoxCollider())) {
-                    ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture + 1]);
+        if(lesObjets[xCaseActu+horizontal][yCaseActu + 1] != null && this instanceof Heros){
+            if(lesObjets[xCaseActu+horizontal][yCaseActu + 1] != null && this instanceof Heros){
+                if(boxColliderDegat.intersects(lesObjets[xCaseActu+horizontal][yCaseActu + 1].getBoxCollider())) {
+                    ajouterAInventaire(lesObjets[xCaseActu+horizontal][yCaseActu + 1]);
                 }
             }
         }
 
-        if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-            if(lesObjets[xCaseFuture][yCaseFuture] != null && this instanceof Heros){
-                if(boxColliderDegat.intersects(lesObjets[xCaseFuture][yCaseFuture].getBoxCollider())) {
-                    ajouterAInventaire(lesObjets[xCaseFuture][yCaseFuture]);
+        if(lesObjets[xCaseActu+horizontal][yCaseActu] != null && this instanceof Heros){
+            if(lesObjets[xCaseActu+horizontal][yCaseActu] != null && this instanceof Heros){
+                if(boxColliderDegat.intersects(lesObjets[xCaseActu+horizontal][yCaseActu].getBoxCollider())) {
+                    ajouterAInventaire(lesObjets[xCaseActu+horizontal][yCaseActu]);
                 }
             }
         }
@@ -459,7 +485,7 @@ public abstract class Personnage  implements Serializable{
     }
 
     public int getYCentre(){
-        return (int)(y +(decalage_hauteur+ hauteur)/2);
+        return (int)(y +( hauteur+decalage_hauteur)/2);
     }
 
     public int getYCaseCentre(){
@@ -468,5 +494,9 @@ public abstract class Personnage  implements Serializable{
 
     public int getXCaseCentre(){
         return (int)(getXCentre())/Labyrinthe.LARGEUR_MUR;
+    }
+
+    public boolean isEntrainDAttaque() {
+        return entrainDAttaque;
     }
 }

@@ -30,7 +30,7 @@ public class Launcher extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new AppGameContainer(new StateGame(),   w, h, true).start();
+                    new AppGameContainer(new StateGame(),   w, h, false).start();
                 } catch (SlickException e1) {
                     e1.printStackTrace();
                 }

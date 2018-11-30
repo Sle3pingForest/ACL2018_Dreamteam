@@ -18,6 +18,11 @@ public class VueHeros implements Serializable{
     private final static  String CHEMIN_BLEU = "main/resources/Personnages/Heros/Bleu.png";
     private final static  String CHEMIN_VIOLET = "main/resources/Personnages/Heros/Violet.png";
 
+    private Sound attaque = new Sound("main/resources/song/bruitage/Heros/CoupDEpee/coupEpee1.ogg");
+    private Sound mort;
+    private Sound ramasserObjet = new Sound("main/resources/song/bruitage/Heros/RamasserObjet/ramasserObjet.ogg");
+    private Sound toucher;
+    private Sound gagner = new Sound("main/resources/song/bruitage/Heros/RamasserObjet/ramasserCoffre.ogg");
 
 
     private Animation[] animations = new Animation[20];
@@ -341,6 +346,18 @@ public class VueHeros implements Serializable{
     public void render(GameContainer container, Graphics g)  {
     	float x = heros.getX();
     	float y = heros.getY();
+    	if(heros.getEntrainDAttaque()){
+            Song.jouerSong(attaque);
+            heros.arretAttaque();
+        }
+        if(heros.getEntrainDeRamasser()){
+            Song.jouerSong(ramasserObjet);
+            heros.arretRamasser();
+        }
+        if(heros.viensDeGagner){
+            Song.jouerSong(gagner);
+            heros.viensDeGagner = false;
+        }
     	int directActu = heros.getDirectionActu();
     	if(animations[directActu].getFrame() == animations[directActu].getFrameCount()-1){
             animations[directActu].restart();
@@ -365,9 +382,11 @@ public class VueHeros implements Serializable{
 
     	}
         if(!heros.estMort() && heros.estInvulnerable()){
+
             g.drawAnimation(animations[directActu],(int)x,(int)y,Color.red);
-        }else{
-            g.drawAnimation(animations[directActu],(int)x,(int)y);
+        }else {
+            g.drawAnimation(animations[directActu], (int) x, (int) y);
+            //g.draw(heros.getBoxCollider());
         }
 
     }

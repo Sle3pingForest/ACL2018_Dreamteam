@@ -44,34 +44,18 @@ public abstract class Monstre extends Personnage {
 		float futureX = x + horizontal * vitesseActu;
 		float futureY = y + vertical * vitesseActu;
 
-		boxCollider.setY(futureY+decalage_hauteur);
-		boxCollider.setX(futureX+decalage_largeur);
-		boxColliderDegat.setX(futureX+decalage_largeur);
-		boxColliderDegat.setY(futureY);
 
 
 		if(futureX > 0 && futureX < lab.getLongeurCarte() - Labyrinthe.LARGEUR_MUR ){
 			if (getCollision()) {
 				if(horizontal == 1){
-					if(!collisionHorizontale(lab, x+largeur, y)){
-						setX(futureX);
-					}else{
-						boxCollider.setX(x+decalage_largeur);
-						boxCollider.setY(y+decalage_hauteur);
-						boxColliderDegat.setX(x+decalage_largeur);
-						boxColliderDegat.setY(y);
-						collision = true;
+					if(collisionHorizontale(lab)){
+
 					}
 				}
 				if(horizontal == -1){
-					if(!collisionHorizontale(lab, futureX, futureY)){
-						setX(futureX);
-					}else{
-						boxCollider.setX(x+decalage_largeur);
-						boxCollider.setY(y+decalage_hauteur);
-						boxColliderDegat.setX(x+decalage_largeur);
-						boxColliderDegat.setY(y);
-						collision = true;
+					if(!collisionHorizontale(lab)){
+
 					}
 				}
 			} else {
@@ -84,25 +68,13 @@ public abstract class Monstre extends Personnage {
 			if(futureY > 0 && futureY < lab.getHauteurCarte()- Labyrinthe.HAUTEUR_MUR){
 				if (getCollision()) {
 					if(vertical == -1){
-						if(!collisionVetical(lab, futureX, futureY)){
-							setY(futureY);
-						}else{
-							boxCollider.setX(x+decalage_largeur);
-							boxCollider.setY(y+decalage_hauteur);
-							boxColliderDegat.setX(x+decalage_largeur);
-							boxColliderDegat.setY(y);
-							collision = true;
+						if(collisionVetical(lab)){
+
 						}
 					}
 					if(vertical == 1){
-						if(!collisionVetical( lab,futureX, futureY+hauteur)){
-							setY(futureY);
-						}else{
-							boxCollider.setX(x+decalage_largeur);
-							boxCollider.setY(y+decalage_hauteur);
-							boxColliderDegat.setX(x+decalage_largeur);
-							boxColliderDegat.setY(y);
-							collision = true;
+						if(collisionVetical( lab)){
+
 						}
 					}
 
