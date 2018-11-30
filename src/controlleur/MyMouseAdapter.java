@@ -34,7 +34,6 @@ public class MyMouseAdapter extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
-        System.out.println(e.getX());
     }
 
     @Override
@@ -44,7 +43,6 @@ public class MyMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        vo.reInitIcon();
     }
 
     @Override

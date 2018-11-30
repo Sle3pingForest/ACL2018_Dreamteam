@@ -2,13 +2,14 @@ package model.generateur;
 
 import model.Item.Epee;
 import model.Item.Item;
+import model.Item.Piege;
 import model.Item.Tresor;
 import model.mur.Mur;
 import model.personnages.monstres.Dragon;
 import model.personnages.monstres.Monstre;
 import model.personnages.monstres.Soldat;
 
-import java.awt.*;
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -21,11 +22,7 @@ public class Niveau extends Observable implements Serializable {
     private Item[][] lesItems;
     private String nom;
     private int xFin,yFin,xDebut,yDebut;
-    private ArrayList<Mur> labEnCour;
-    private ArrayList<Monstre>  labMonstres;
-    private ArrayList<Item> labItems;
     private int hauteur =0,largeur=0;
-
 
     public Niveau(String nom) {
         this.nom = nom;
@@ -33,94 +30,37 @@ public class Niveau extends Observable implements Serializable {
         this.yDebut = -1;
         this.xFin = -1;
         this.yFin = -1;
-        labEnCour = new ArrayList<Mur>();
-        labMonstres = new ArrayList<Monstre>();
-        labItems = new ArrayList<Item>();
     }
 
     public void placerHeros(int x,int y){
+
+        if(xFin == x && yFin == y){
+            xFin = -1;
+            yFin = -1;
+        }
+
         this.xDebut = x;
-        this.yDebut =y;
+        this.yDebut = y;
+        setChanged();
+        notifyObservers();
     }
-
-    /*public void ChangeDimension(int ligne, int colonne){
-        for(int i = 0; i<) {
-
-        }
-    }*/
-
-    /*public void ajouterLigne(int index ){
-        ArrayList<Mur> ligneMur = new ArrayList<Mur>();
-        ArrayList<Monstre> ligneMonstre = new ArrayList<Monstre>();
-        ArrayList<Item> ligneItemps = new ArrayList<Item>();
-
-        for(int i = 0 ; i < largeur ; i++){
-            ligneMur.add(new Mur(i,hauteur));
-            ligneItemps.add(null);
-            ligneMonstre.add(null);
-        }
-        labEnCour.add(index,ligneMur);
-        labMonstres.add(index,ligneMonstre);
-        labItems.add(index,ligneItemps);
-        hauteur++;
-    }*/
-
-    /*public void ajouterColonne(int index){
-
-        for(int i = 0 ; i < hauteur ; i++){
-            labEnCour.get(i).add(index,new Mur(largeur,i));
-            labMonstres.get(i).add(index,null);
-            labItems.get(i).add(index,null);
-        }
-
-        largeur++;
-
-    }*/
-
-    public void suppLigne(int index){
-
-        if(index == yDebut){
-            xDebut = -1;
-            yDebut = -1;
-        }
-
-        if(index == yFin){
-            xFin = -1;
-            xFin = -1;
-        }
-
-        labEnCour.remove(index);
-        labMonstres.remove(index);
-        labItems.remove(index);
-        hauteur--;
-    }
-
-    /*public void suppColonne(int index){
-
-        if(index == xDebut){
-            xDebut = -1;
-            yDebut = -1;
-        }
-
-        if(index == xFin){
-            xFin = -1;
-            xFin = -1;
-        }
-
-        for(int i = 0 ; i < hauteur ; i++){
-            labEnCour.get(i).remove(index);
-            labMonstres.get(i).remove(index);
-            labItems.get(i).remove(index);
-        }
-
-        largeur--;
-    }*/
 
     public void ajouterMur(int x,int y){
+
+        if(xDebut == x && yDebut == y){
+            xDebut = -1;
+            yDebut = -1;
+        }
+
+        if(xFin == x && yFin == y){
+            xFin = -1;
+            yFin = -1;
+        }
+
         Mur mur = new Mur(x,y);
         lesMurs[x][y] = mur;
         if(checkMonstres[x][y] != null){
-            labMonstres.remove(checkMonstres[x][y]);
+            lesMonstres.remove(checkMonstres[x][y]);
             checkMonstres[x][y] = null;
         }
 
@@ -135,6 +75,17 @@ public class Niveau extends Observable implements Serializable {
     }*/
 
     public void ajouterMonstre(String type,int x,int y){
+
+        if(xDebut == x && yDebut == y){
+            xDebut = -1;
+            yDebut = -1;
+        }
+
+        if(xFin == x && yFin == y){
+            xFin = -1;
+            yFin = -1;
+        }
+
         Monstre monstre = null;
         if(type.equals("dragon")){
             monstre = new Dragon(x,y);
@@ -144,7 +95,7 @@ public class Niveau extends Observable implements Serializable {
         }
 
         if(checkMonstres[x][y] != null){
-            labMonstres.remove(checkMonstres[x][y]);
+            lesMonstres.remove(checkMonstres[x][y]);
             checkMonstres[x][y] = null;
         }
 
@@ -156,7 +107,7 @@ public class Niveau extends Observable implements Serializable {
             lesMurs[x][y] = null;
         }
 
-        labMonstres.add(monstre);
+        lesMonstres.add(monstre);
         checkMonstres[x][y] = monstre;
     }
 
@@ -166,96 +117,185 @@ public class Niveau extends Observable implements Serializable {
 
 
     public void ajouterItem(String type,int x,int y){
-        Item item = null;
-        if(type.equals("tresor")){
-            item = new Tresor(x,y,null);
-        }
-        else if(type.equals("epee")){
-            item = new Epee(x,y);
-        }
 
-        if(checkMonstres[x][y] != null){
-            labMonstres.remove(checkMonstres[x][y]);
-            checkMonstres[x][y] = null;
-        }
 
         if(lesItems[x][y] != null){
             lesItems[x][y] =null;
         }
 
+        if(xDebut == x && yDebut == y){
+            xDebut = -1;
+            yDebut =-1;
+        }
+
+        if(xFin == x && yFin == y){
+            xFin = -1;
+            yFin =-1;
+        }
+
+        Item item;
+        if(type.equals("tresor")){
+            System.out.println("lapin");
+            for(int i=0;i<lesItems.length;i++){
+                for(int j=0;j<lesItems.length;j++){
+                    if(lesItems[i][j] instanceof Tresor){
+                        System.out.println("lapin2");
+                        lesItems[i][j] = null;
+                    }
+                }
+            }
+            item = new Tresor(x,y,null);
+            xFin = x;
+            yFin = y;
+
+            lesItems[x][y] = item;
+            setChanged();
+            notifyObservers();
+        }
+        else if(type.equals("epee")){
+            item = new Epee(x,y);
+            lesItems[x][y] = item;
+        }
+
+        else if(type.equals("piege")){
+            item = new Piege(x,y);
+            lesItems[x][y] = item;
+        }
+
+
+        if(checkMonstres[x][y] != null){
+            lesMonstres.remove(checkMonstres[x][y]);
+            checkMonstres[x][y] = null;
+        }
+
         if(lesMurs[x][y] != null){
             lesMurs[x][y] = null;
         }
-
-        lesItems[x][y] = null;
-
     }
-
-    /*public void suppItem(int x,int y){
-        labMonstres.get(y).set(x,null);
-    }*/
 
     public int getHauteur() {
         return hauteur;
     }
 
-    public void setHauteurLargeur(int hauteur,int largeur) {
+    public void setDimensionInit(int hauteur, int largeur) {
+        xDebut = -1;
+        yDebut = -1;
         this.hauteur = hauteur;
         this.largeur = largeur;
+        lesMurs = new Mur[hauteur][largeur];
+        lesItems = new Item[hauteur][largeur];
+        checkMonstres = new Monstre[hauteur][largeur];
+        lesMonstres = new ArrayList<Monstre>();
         setChanged();
         notifyObservers();
     }
+
+    public void setHauteurLargeur(int hauteur, int largeur){
+        this.hauteur = hauteur;
+        this.largeur = largeur;
+    }
+
     public int getLargeur() {
         return largeur;
     }
 
+    public Mur getMur(int i,int j){
+        return lesMurs[i][j];
+    }
+
+    public Monstre getMonstre(int i,int j){
+        return checkMonstres[i][j];
+    }
+
+    public Item getItem(int i,int j){
+        return lesItems[i][j];
+    }
+
+    public int getXHeros(){
+        return xDebut;
+    }
+    public int getYHeros(){
+        return  yDebut;
+    }
 
     public void suppCase(int x, int y) {
 
         checkMonstres[x][y] = null;
         lesItems[x][y] =null;
         lesMurs[x][y] = null;
-        labMonstres.remove(checkMonstres[x][y]);
+        lesMonstres.remove(checkMonstres[x][y]);
 
         if(this.xDebut == x && this.yDebut == y){
             this.xDebut = -1;
             this.yDebut = -1;
         }
+
+        if(this.xFin == x && this.yFin == y){
+            this.xFin = -1;
+            this.yFin = -1;
+        }
     }
 
     public void serialize() throws IOException {
-        File fichier =  new File("src/main/resources/sauvegardeEditeur/saveNiveau.save") ;
 
-        // ouverture d'un flux sur un fichier
-        ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
+        JFileChooser dialogue = new JFileChooser(new File("."));
+        PrintWriter sortie;
+        File fichier = null;
 
-        // sérialization de l'objet
-        oos.writeObject(this) ;
-    }
+        if (dialogue.showOpenDialog(null)==
+                JFileChooser.APPROVE_OPTION) {
+            fichier = dialogue.getSelectedFile();
+            sortie = new PrintWriter
+                    (new FileWriter(fichier.getPath(), true));
+            sortie.close();
+        }
 
-    public void creerLab(){
-        System.out.println(labEnCour.size());
-        for(int i=0;i<labEnCour.size();i++){
-            /*for(int j=0;j<labEnCour.get(0).size();j++){
-                lesMurs[i][j]=labEnCour.get(i).get(j);
-                System.out.println(lesMurs[i][j]);
-            }*/
+
+        if (fichier !=null) {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+            // sérialization de l'objet
+            oos.writeObject(this);
         }
     }
 
     public void deSerilize() throws IOException, ClassNotFoundException {
 
 
-        // dans une méthode main
-        // on simplifie le code en retirant la gestion des exceptions
-        File fichier =  new File("src/main/resources/sauvegardeEditeur/saveNiveau.save") ;
+        JFileChooser dialogue = new JFileChooser(new File("."));
+        PrintWriter sortie;
+        File fichier = null;
 
-        // ouverture d'un flux sur un fichier
-        ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
+        if (dialogue.showOpenDialog(null)==
+                JFileChooser.APPROVE_OPTION) {
+            fichier = dialogue.getSelectedFile();
+            sortie = new PrintWriter
+                    (new FileWriter(fichier.getPath(), true));
+            sortie.close();
+        }
 
-        // désérialization de l'objet
-        Niveau m = (Niveau)ois.readObject() ;
+        if (fichier !=null) {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier));
+
+            // désérialization de l'objet
+            Niveau n = (Niveau) ois.readObject();
+            Charger(n);
+        }
 
         // fermeture du flux dans le bloc finally
+    }
+
+    private void Charger(Niveau n) {
+        setHauteurLargeur(n.hauteur,n.largeur);
+        this.lesMurs = n.lesMurs;
+        this.checkMonstres = n.checkMonstres;
+        this.lesMonstres = n.lesMonstres;
+        this.lesItems = n.lesItems;
+        this.nom = n.nom;
+        this.xFin = n.xFin;
+        this.yFin = n.yFin;
+        this.xDebut = n.xDebut;
+        this.yDebut = n.yDebut;
+        setChanged();
+        notifyObservers();
     }
 }

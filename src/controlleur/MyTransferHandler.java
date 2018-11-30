@@ -48,11 +48,12 @@ public class MyTransferHandler extends TransferHandler {
             e.printStackTrace();
         }
 
-        Case c = (Case)support.getComponent();
-        c.setType(str);
-        c.ajouterElement();
-
-        return false;
+        if(!(support.getComponent().getName()== "noChange")){
+            Case c = (Case)support.getComponent();
+            c.setType(str);
+            c.ajouterElement();
+        }
+        return true;
     }
 
     protected Transferable createTransferable(JComponent c) {

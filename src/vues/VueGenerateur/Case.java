@@ -44,15 +44,12 @@ public class Case extends JLabel {
         niveau.placerHeros(ligne,colonne);
     }
 
-    public void ajouterTresor(){
+    public void ajouterItem(){
         niveau.ajouterItem(type,ligne,colonne);
     }
 
     public void ajouterHerbe(){
         niveau.suppCase(ligne,colonne);
-    }
-    public void ajouterEpee(){
-        niveau.ajouterItem(type,ligne,colonne);
     }
 
 
@@ -81,18 +78,22 @@ public class Case extends JLabel {
 
             case "tresor":
                 this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/tresor.png")));
-                ajouterTresor();
+                ajouterItem();
                 break;
 
             case "epee":
                 this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/epee.png")));
-                ajouterEpee();
+                ajouterItem();
+                break;
+
+            case "piege":
+                this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/piege.png")));
+                ajouterItem();
                 break;
 
             default:
                 this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/generateur/herbe.png")));
                 ajouterHerbe();
-                break;
         }
 
     }
