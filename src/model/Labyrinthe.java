@@ -79,6 +79,24 @@ public class Labyrinthe implements Serializable{
 		produitItem(nbMonstres/5);
 	}
 
+	public Labyrinthe(Mur[][] labMur, Item[][] labItem, ArrayList<Monstre> listeMonstres, int xHeros, int yHeros){
+
+		this.tabMur = labMur;
+		this.lesObjets = labItem;
+		this.listeMonstres = listeMonstres;
+		link = new Heros(xHeros*LARGEUR_MUR,yHeros*HAUTEUR_MUR, "Link");
+		lesHeros = new ArrayList<Heros>();
+		lesHeros.add(link);
+
+		longeurCarte = tabMur.length * LARGEUR_MUR;
+		hauteurCarte = tabMur[0].length * HAUTEUR_MUR;
+		this.creationItem = new ItemFactory();
+		this.longueur = tabMur.length;
+		this.hauteur = tabMur[0].length;
+		this.creationMonstres = new FabriqueMonstre();
+
+	}
+
 	/**
 	 * Fonction qui creuse la map pour creer un labyrinthe
 	 * le heros est placé aleatoirement et à partir de lui on creuse dans un sens aleatoire en fonction de la fonction peutEtreCreusé()

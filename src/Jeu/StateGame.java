@@ -1,12 +1,11 @@
+package Jeu;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import model.generateur.Niveau;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import vues.VueGenerateur.VueGenerateur;
 
 public class StateGame extends StateBasedGame {
     
@@ -16,7 +15,6 @@ public class StateGame extends StateBasedGame {
 
     
     public static void main(String[] args) throws SlickException {
-		//new AppGameContainer(new StateGame(), width, height, true).start();
 		new Launcher(width,height);
 
 	}

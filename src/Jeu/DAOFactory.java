@@ -1,3 +1,5 @@
+package Jeu;
+
 import org.newdawn.slick.SlickException;
 
 public abstract class DAOFactory {

@@ -1,3 +1,5 @@
+package Jeu;
+
 import model.generateur.Niveau;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -16,7 +18,7 @@ public class Launcher extends JFrame {
 
 
     public Launcher(final int w,final int h) {
-        super("Launcher");
+        super("Jeu.Launcher");
         setSize(382, 553);
         setLocation((w-this.getSize().width)/2,(h-this.getSize().height)/2);
         setContentPane(new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("./src/main/resources/background/launcher.jpg"))));

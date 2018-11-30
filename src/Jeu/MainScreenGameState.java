@@ -1,6 +1,9 @@
+package Jeu;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import Jeu.Jeu;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,9 +12,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class EndGameScreenGameState extends BasicGameState {
+public class MainScreenGameState extends BasicGameState {
 
-	public static final int ID = 3;
+	public static final int ID = 1;
 	private Image background, press;
 	private StateBasedGame game;
 	private GameContainer container;
@@ -58,4 +61,5 @@ public class EndGameScreenGameState extends BasicGameState {
 		// TODO Auto-generated method stub
 		return ID;
 	}
+
 }

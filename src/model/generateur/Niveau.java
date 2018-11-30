@@ -32,7 +32,27 @@ public class Niveau extends Observable implements Serializable {
         this.yFin = -1;
     }
 
-    public void placerHeros(int x,int y){
+    public Mur[][] getLesMurs() {
+        return lesMurs;
+    }
+
+    public ArrayList<Monstre> getLesMonstres() {
+        return lesMonstres;
+    }
+
+    public Item[][] getLesItems() {
+        return lesItems;
+    }
+
+    public int getxDebut() {
+        return xDebut;
+    }
+
+    public int getyDebut() {
+        return yDebut;
+    }
+
+    public void placerHeros(int x, int y){
 
         if(xFin == x && yFin == y){
             xFin = -1;

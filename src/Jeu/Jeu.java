@@ -1,25 +1,24 @@
+package Jeu;
+
 import model.Item.Item;
 import model.Labyrinthe;
+import model.mur.Mur;
 import model.personnages.Heros;
 
+import model.personnages.monstres.Monstre;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import vues.Hud;
 import vues.HudBarreDeVie;
 import vues.HudEndGame;
 import vues.HudVictoire;
 import vues.Song;
-import vues.VueHeros;
 import vues.VueLabyrinthe;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /* C'est la class principal de notre jeu
 * Elle sair de boucle principal mais aussi de Controlleur pour les touche */
@@ -40,6 +39,14 @@ public class Jeu extends BasicGameState {
     private HudBarreDeVie hud;
     private HudEndGame hud_fin_du_jeu;
     private HudVictoire hudVictory;
+
+    public static Mur[][] LESMURS = null;
+    public static Item[][] LESITEMS;
+    public static ArrayList<Monstre> LESMONSTRES;
+    public static int XDEBUT;
+    public static  int YDEBUT;
+
+
     
     private static Jeu instance = null;
 	public static Jeu getInstance() {
@@ -56,7 +63,12 @@ public class Jeu extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
         this.game = game;
-        labyModel =  new Labyrinthe(50,50,   10);
+        if(LESMURS == null){
+            labyModel =  new Labyrinthe(50,50,   10);
+        }
+        else{
+            labyModel =  new Labyrinthe(LESMURS,LESITEMS,LESMONSTRES,XDEBUT,YDEBUT);
+        }
         labyVue = VueLabyrinthe.getInstance();
         labyVue.setLab(labyModel);
         Song.chargerForet();
@@ -160,7 +172,7 @@ public class Jeu extends BasicGameState {
 
     /*
     public static void main(String[] args) throws SlickException {
-        new AppGameContainer(new Jeu(), width, height, true).start();
+        new AppGameContainer(new Jeu.Jeu(), width, height, true).start();
     }*/
     
     public void save() throws SlickException {

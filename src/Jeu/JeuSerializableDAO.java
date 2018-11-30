@@ -1,3 +1,5 @@
+package Jeu;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,12 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 import model.personnages.Heros;
-import vues.VueHeros;
-import vues.VueLabyrinthe;
 
 public class JeuSerializableDAO implements JeuDAO{
 
@@ -31,7 +30,7 @@ public class JeuSerializableDAO implements JeuDAO{
 			oos.writeObject(j.getLesheros());
 			oos.close();
 		} catch (FileNotFoundException e1) {
-			System.out.println("Fichier non trouv�");
+			System.out.println("Fichier non trouve");
 		} catch (IOException e1) {
 			System.out.println("erreur IO");
 		}
@@ -53,7 +52,7 @@ public class JeuSerializableDAO implements JeuDAO{
 				e1.printStackTrace();
 			}
 			j.init_new(a);
-			//Jeu.load(jeu_charge);
+			//Jeu.Jeu.load(jeu_charge);
 			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block

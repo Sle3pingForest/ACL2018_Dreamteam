@@ -1,4 +1,6 @@
+package Jeu;
 
+import Jeu.Jeu;
 
 public interface JeuDAO {
 	

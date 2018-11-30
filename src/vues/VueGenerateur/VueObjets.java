@@ -10,14 +10,6 @@ import controlleur.MyMouseAdapter;
 import controlleur.MyTransferHandler;
 
 import java.awt.*;
-import java.awt.color.ColorSpace;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.image.*;
-import java.io.IOException;
-import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 public class VueObjets extends JPanel{
 
